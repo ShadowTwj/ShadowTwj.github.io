@@ -312,14 +312,14 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/Elasticsearch/</loc>
+    <loc>http://yoursite.com/tags/Guava/</loc>
     <lastmod>2021-04-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/Guava/</loc>
+    <loc>http://yoursite.com/tags/Elasticsearch/</loc>
     <lastmod>2021-04-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
