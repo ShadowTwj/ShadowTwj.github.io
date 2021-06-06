@@ -102,7 +102,7 @@
 
 
 
-  <meta name="keywords" content="Java," />
+  <meta name="keywords" content="Java,Spring," />
 
 
 
@@ -115,18 +115,22 @@
 
 
 
-<meta name="description" content="介绍ThreadPoolExecutor是Java中线程池的核心实现类 1234classDiagramExecutor &lt;|-- ExecutorService : 继承ExecutorService &lt;|-- AbstractExecutorService : 实现AbstractExecutorService &lt;|-- ThreadPoolExecutor : 继承  构造">
+<meta name="description" content="SpringBoot的一个很重要的特性就是自动配置，使用注解，让服务不再需要xml等各种配置文件然后使用main方法一键启动  @SpringBootApplication@SpringBootApplication 注解是 SpringBoot 的源头，一切都要从该注解开始说起 标注在类上时，表示该类是 SpringBoot 的主配置类，并从该类中的 main 方法来启动 SpringBoot">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ThreadPoolExecutor">
-<meta property="og:url" content="http://yoursite.com/2020/04/02/ThreadPoolExecutor/index.html">
+<meta property="og:title" content="SpringBoot自动配置">
+<meta property="og:url" content="http://yoursite.com/2021/06/04/SpringBoot%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE/index.html">
 <meta property="og:site_name" content="Tianwj&#39;s blog">
-<meta property="og:description" content="介绍ThreadPoolExecutor是Java中线程池的核心实现类 1234classDiagramExecutor &lt;|-- ExecutorService : 继承ExecutorService &lt;|-- AbstractExecutorService : 实现AbstractExecutorService &lt;|-- ThreadPoolExecutor : 继承  构造">
+<meta property="og:description" content="SpringBoot的一个很重要的特性就是自动配置，使用注解，让服务不再需要xml等各种配置文件然后使用main方法一键启动  @SpringBootApplication@SpringBootApplication 注解是 SpringBoot 的源头，一切都要从该注解开始说起 标注在类上时，表示该类是 SpringBoot 的主配置类，并从该类中的 main 方法来启动 SpringBoot">
 <meta property="og:locale">
-<meta property="article:published_time" content="2020-04-02T14:51:58.000Z">
-<meta property="article:modified_time" content="2020-04-02T15:57:14.000Z">
+<meta property="og:image" content="http://yoursite.com/images/SpringBoot%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE0.jpg">
+<meta property="og:image" content="http://yoursite.com/images/SpringBoot%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE1.png">
+<meta property="article:published_time" content="2021-06-04T07:20:28.000Z">
+<meta property="article:modified_time" content="2021-06-06T11:38:59.292Z">
 <meta property="article:author" content="tianwj">
 <meta property="article:tag" content="Java">
+<meta property="article:tag" content="Spring">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/SpringBoot%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE0.jpg">
 
 
 
@@ -181,13 +185,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/04/02/ThreadPoolExecutor/"/>
+  <link rel="canonical" href="http://yoursite.com/2021/06/04/SpringBoot自动配置/"/>
 
 
 
 
 
-  <title>ThreadPoolExecutor | Tianwj's blog</title>
+  <title>SpringBoot自动配置 | Tianwj's blog</title>
   
 
 
@@ -384,8 +388,8 @@
   
   
   <div class="post-date">
-			<div class="post-month">04月</div>
-			<div class="post-day">02</div>
+			<div class="post-month">06月</div>
+			<div class="post-day">04</div>
 	</div>
   
   <div class="post-badge">
@@ -400,7 +404,7 @@
   
 
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/02/ThreadPoolExecutor/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/06/04/SpringBoot%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -417,7 +421,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">ThreadPoolExecutor</h1>
+          <h1 class="post-title" itemprop="name headline">SpringBoot自动配置</h1>
         
 
         <div class="post-meta">
@@ -429,8 +433,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-02T22:51:58+08:00">
-                2020-04-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-06-04T15:20:28+08:00">
+                2021-06-04
               </time>
             
 
@@ -488,45 +492,73 @@
       
 
       
-        <h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>ThreadPoolExecutor是Java中线程池的核心实现类</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">classDiagram</span><br><span class="line">Executor &lt;|-- ExecutorService : 继承</span><br><span class="line">ExecutorService &lt;|-- AbstractExecutorService : 实现</span><br><span class="line">AbstractExecutorService &lt;|-- ThreadPoolExecutor : 继承</span><br></pre></td></tr></table></figure>
+        <blockquote>
+<p>SpringBoot的一个很重要的特性就是自动配置，使用注解，让服务不再需要xml等各种配置文件<br>然后使用main方法一键启动</p>
+</blockquote>
+<h2 id="SpringBootApplication"><a href="#SpringBootApplication" class="headerlink" title="@SpringBootApplication"></a>@SpringBootApplication</h2><p><code>@SpringBootApplication</code> 注解是 SpringBoot 的源头，一切都要从该注解开始说起</p>
+<p>标注在类上时，表示该类是 SpringBoot 的主配置类，并从该类中的 <code>main</code> 方法来启动 SpringBoot 应用</p>
+<p>注解源码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target(ElementType.TYPE)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Inherited</span></span><br><span class="line"><span class="meta">@SpringBootConfiguration</span></span><br><span class="line"><span class="meta">@EnableAutoConfiguration</span></span><br><span class="line"><span class="meta">@ComponentScan(excludeFilters = &#123;</span></span><br><span class="line"><span class="meta">		@Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),</span></span><br><span class="line"><span class="meta">		@Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) &#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> SpringBootApplication &#123;</span><br></pre></td></tr></table></figure>
 
-<h3 id="构造方法"><a href="#构造方法" class="headerlink" title="构造方法"></a>构造方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Creates a new &#123;<span class="doctag">@code</span> ThreadPoolExecutor&#125; with the given initial</span></span><br><span class="line"><span class="comment"> * parameters and default thread factory.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> corePoolSize      核心线程池大小</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> maximumPoolSize   最大线程池大小</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> keepAliveTime     线程池中超过corePoolSize数目的空闲线程最大存活时间；可以allowCoreThreadTimeOut(true)成为核心线程的有效时间</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> unit              keepAliveTime的时间单位</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> workQueue         阻塞任务队列</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> threadFactory     线程工厂，对线程命名 </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> handler           拒绝策略</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ThreadPoolExecutor</span><span class="params">(<span class="keyword">int</span> corePoolSize, <span class="keyword">int</span> maximumPoolSize, <span class="keyword">long</span> keepAliveTime, TimeUnit unit, BlockingQueue&lt;Runnable&gt; workQueue, ThreadFactory threadFactory, RejectedExecutionHandler handler)</span></span></span><br></pre></td></tr></table></figure>
-
-<h3 id="任务调度"><a href="#任务调度" class="headerlink" title="任务调度"></a>任务调度</h3><p>所有任务的调度都是由execute方法完成的，这部分完成的工作是：检查现在线程池的运行状态、运行线程数、运行策略，决定接下来执行的流程，是直接申请线程执行，或是缓冲到队列中执行，亦或是直接拒绝该任务。其执行过程如下：</p>
-<ol>
-<li>首先检测线程池运行状态，如果不是RUNNING，则直接拒绝，线程池要保证在RUNNING的状态下执行任务。</li>
-<li>如果workerCount &lt; corePoolSize，则创建并启动一个线程来执行新提交的任务。</li>
-<li>如果workerCount &gt;= corePoolSize，且线程池内的阻塞队列未满，则将任务添加到该阻塞队列中。</li>
-<li>如果workerCount &gt;= corePoolSize &amp;&amp; workerCount &lt; maximumPoolSize，且线程池内的阻塞队列已满，则创建并启动一个线程来执行新提交的任务。</li>
-<li>如果workerCount &gt;= maximumPoolSize，并且线程池内的阻塞队列已满, 则根据拒绝策略来处理该任务, 默认的处理方式是直接抛异常。</li>
-</ol>
-<h3 id="任务存储策略"><a href="#任务存储策略" class="headerlink" title="任务存储策略"></a>任务存储策略</h3><p>使用不同的队列可以实现不一样的任务存取策略</p>
+<p>可以看出主要包含了三个注解：</p>
 <ul>
-<li><strong>ArrayBlockingQueue:</strong> 一个用数组实现的有界阻塞队列，此队列按照先进先出(FIFO)的原则对元素进行排序。支持公平锁和非公平锁</li>
-<li><strong>LinkedBlockingQueue:</strong> 一个由链表结构组成的有界队列，此队列按照先进先出(FIFO)的原则对元素进行排序。此队列的默认长度是Integer.MAX_VALUE，所以默认创建的队列有容量危险</li>
-<li><strong>PriorityBlockingQueue:</strong> 一个支持线程优先级排序的无界队列，默认自然序进行排序，也可以自定义实现compareTo()方法来指定元素排序规则，不能保证同优先级元素的排序</li>
-<li><strong>DelayQueue:</strong> 一个实现<code>PriorityBlockingQueue</code>实现延迟获取的无界队列，在创建元素时，可以指定多久才能从队列中获取当前元素。只有延时期满后才能从队列中获取元素</li>
-<li><strong>SynchronousQueue:</strong> 一个不存储元素的阻塞队列，每一个put操作必须等待take操作，否则不能添加元素。支持公平锁和非公平锁。<code>SynchronousQueue</code>的一个使用场景是在线程里。<code>Executors.newCachedThreadPool()</code>就使用了<code>SynchronousQueue</code>，这个线程池根据需要(新任务到来时)创建新的线程，如果有空闲线程则会重复使用，线程空闲60秒后会被回收</li>
-<li><strong>LinkedTransferQueue:</strong> 一个由链表结构组成的无界阻塞队列，相当于其他队列，<code>LinkedTransferQueue</code>队列多了<code>transfer</code>和<code>tryTransfer</code>方法</li>
-<li><strong>LinkedBlockingDeque:</strong> 一个由链表结构组成的双向阻塞队列，队列的头和尾部都可以添加和移除元素，多线程并发时，可以将锁的竞争最多降低一半</li>
+<li><code>@SpringBootConfiguration</code></li>
+<li><code>@ComponentScan</code></li>
+<li><code>@EnableAutoConfiguration</code></li>
 </ul>
-<h3 id="RejectedExecutionHandler拒绝策略"><a href="#RejectedExecutionHandler拒绝策略" class="headerlink" title="RejectedExecutionHandler拒绝策略"></a>RejectedExecutionHandler拒绝策略</h3><ul>
-<li><p><strong>AbortPolicy:</strong> 默认策略，直接抛出异常阻止系统正常运行</p>
-</li>
-<li><p><strong>CallerRunsPolicy:</strong> “调用者运行”一种调节机制，该策略既不会抛弃任务，也不会抛出异常，而是将任务回馈至发起方比如main线程</p>
-</li>
-<li><p><strong>DiscardOldestPolicy:</strong> 抛弃队列中等待最久的任务，然后把当前任务加入队列中尝试再次提交当前任务</p>
-</li>
-<li><p><strong>DiscardPolicy:</strong> 直接丢弃任务，不给予任何处理也不跑出异常，如果允许任务丢失，这是最好的一种方案</p>
-</li>
+<h3 id="SpringBootConfiguration"><a href="#SpringBootConfiguration" class="headerlink" title="@SpringBootConfiguration"></a>@SpringBootConfiguration</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target(ElementType.TYPE)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> SpringBootConfiguration &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看 <code>@SpringBootConfiguration</code> 的源码发现其实就是一个 <code>@Configuration</code> 注解，表示这是一个 SpringBoot 的配置类</p>
+<h3 id="ComponentScan"><a href="#ComponentScan" class="headerlink" title="@ComponentScan"></a>@ComponentScan</h3><p><code>@ComponentScan</code> 表示开启组件扫描</p>
+<p>默认是扫描<strong>当前类</strong>下的package。将 <code>@Controller/@Service/@Component/@Repository</code> 等注解加载到IOC容器中</p>
+<h3 id="EnableAutoConfiguration"><a href="#EnableAutoConfiguration" class="headerlink" title="@EnableAutoConfiguration"></a>@EnableAutoConfiguration</h3><p><code>@EnableAutoConfiguration</code> 表示开启自动配置，SpringBoot 自动配置的原理都在这个注解中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target(ElementType.TYPE)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Inherited</span></span><br><span class="line"><span class="meta">@AutoConfigurationPackage</span></span><br><span class="line"><span class="meta">@Import(AutoConfigurationImportSelector.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> EnableAutoConfiguration &#123;</span><br></pre></td></tr></table></figure>
+
+<p><code>@EnableAutoConfiguration</code> 又主要包含 <code>@Import</code>、<code>@AutoConfigurationPackage</code> 俩个注解，先看下重点 <code>@Import</code> 这个注解</p>
+<h4 id="Import"><a href="#Import" class="headerlink" title="@Import"></a>@Import</h4><p><code>@Import</code> 注解是用来导入配置类或者一些需要前置加载的类，可以将多个配置类融合成一个配置类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target(ElementType.TYPE)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Import &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * &#123;<span class="doctag">@link</span> Configuration&#125;, &#123;<span class="doctag">@link</span> ImportSelector&#125;, &#123;<span class="doctag">@link</span> ImportBeanDefinitionRegistrar&#125;</span></span><br><span class="line"><span class="comment">	 * or regular component classes to import.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	Class&lt;?&gt;[] value();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看代码可以看出，有三种使用方式：</p>
+<ul>
+<li>导入普通 Java 类，导入的类会被加载为 Bean</li>
+<li>导入 <code>ImportSelector</code> 接口实现</li>
+<li>导入 <code>ImportBeanDefinitionRegistrar</code> 接口实现</li>
 </ul>
-<h3 id="execute-和submit-区别"><a href="#execute-和submit-区别" class="headerlink" title="execute()和submit()区别"></a>execute()和submit()区别</h3><ol>
-<li>接收的参数不一样</li>
-<li>submit有返回值，而execute没有</li>
-<li>submit方便Exception处理：可以通过捕获Future.get抛出的异常</li>
+<ol>
+<li><p>ImportSelector</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ImportSelector</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	* Select and return the names of which class(es) should be imported based on</span></span><br><span class="line"><span class="comment">	* the &#123;<span class="doctag">@link</span> AnnotationMetadata&#125; of the importing @&#123;<span class="doctag">@link</span> Configuration&#125; class.</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line">	String[] selectImports(AnnotationMetadata importingClassMetadata);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p> 接口中只有一个 <code>selectImports</code> 方法，用于返回全类名数组，会把返回数组中的类全部导入</p>
+</li>
+<li><p>ImportBeanDefinitionRegistrar</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ImportBeanDefinitionRegistrar</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	* Register bean definitions as necessary based on the given annotation metadata of</span></span><br><span class="line"><span class="comment">	* the importing &#123;<span class="doctag">@code</span> <span class="doctag">@Configuration</span>&#125; class.</span></span><br><span class="line"><span class="comment">	* &lt;p&gt;Note that &#123;<span class="doctag">@link</span> BeanDefinitionRegistryPostProcessor&#125; types may &lt;em&gt;not&lt;/em&gt; be</span></span><br><span class="line"><span class="comment">	* registered here, due to lifecycle constraints related to &#123;<span class="doctag">@code</span> <span class="doctag">@Configuration</span>&#125;</span></span><br><span class="line"><span class="comment">	* class processing.</span></span><br><span class="line"><span class="comment">	* <span class="doctag">@param</span> importingClassMetadata annotation metadata of the importing class</span></span><br><span class="line"><span class="comment">	* <span class="doctag">@param</span> registry current bean definition registry</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">registerBeanDefinitions</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">			AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry)</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p> <code>registerBeanDefinitions</code> 它可以手动注册bean到容器中</p>
+</li>
 </ol>
-<h3 id="例子："><a href="#例子：" class="headerlink" title="例子："></a>例子：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ThreadFactory factory &#x3D; new ThreadFactoryBuilder().setDaemon(true).setNameFormat(&quot;test-666-%d&quot;).build();</span><br><span class="line">ExecutorService threadPoolExecutor &#x3D; new ThreadPoolExecutor(5, 5, 0L, TimeUnit.SECONDS, new LinkedBlockingQueue&lt;Runnable&gt;(), factory);</span><br><span class="line">threadPoolExecutor.execute(()-&gt;&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;);</span><br><span class="line">&lt;!--threadPoolExecutor.submit(()-&gt;&#123;--&gt;</span><br><span class="line">&lt;!--    ...--&gt;</span><br><span class="line">&lt;!--&#125;);--&gt;</span><br><span class="line">threadPoolExecutor.shutdown();</span><br></pre></td></tr></table></figure>
+<h4 id="AutoConfigurationImportSelector-class"><a href="#AutoConfigurationImportSelector-class" class="headerlink" title="AutoConfigurationImportSelector.class"></a>AutoConfigurationImportSelector.class</h4><p><code>AutoConfigurationImportSelector.class</code> 类实现了 <code>ImportSelector</code> 接口，其中的核心方法是 <code>selectImports</code>，来返回需要导入的组件的全类名数组</p>
+<ul>
+<li><p><code>selectImports</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> String[] selectImports(AnnotationMetadata annotationMetadata) &#123;</span><br><span class="line">	<span class="keyword">if</span> (!isEnabled(annotationMetadata)) &#123;</span><br><span class="line">		<span class="keyword">return</span> NO_IMPORTS;</span><br><span class="line">	&#125;</span><br><span class="line">	AutoConfigurationMetadata autoConfigurationMetadata = AutoConfigurationMetadataLoader</span><br><span class="line">			.loadMetadata(<span class="keyword">this</span>.beanClassLoader);</span><br><span class="line">	AnnotationAttributes attributes = getAttributes(annotationMetadata);</span><br><span class="line">	<span class="comment">//获取全类名数组</span></span><br><span class="line">	List&lt;String&gt; configurations = getCandidateConfigurations(annotationMetadata,</span><br><span class="line">			attributes);</span><br><span class="line">	configurations = removeDuplicates(configurations);</span><br><span class="line">	Set&lt;String&gt; exclusions = getExclusions(annotationMetadata, attributes);</span><br><span class="line">	checkExcludedClasses(configurations, exclusions);</span><br><span class="line">	configurations.removeAll(exclusions);</span><br><span class="line">	configurations = filter(configurations, autoConfigurationMetadata);</span><br><span class="line">	fireAutoConfigurationImportEvents(configurations, exclusions);</span><br><span class="line">	<span class="keyword">return</span> StringUtils.toStringArray(configurations);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><code>getCandidateConfigurations</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> List&lt;String&gt; <span class="title">getCandidateConfigurations</span><span class="params">(AnnotationMetadata metadata,</span></span></span><br><span class="line"><span class="function"><span class="params">		AnnotationAttributes attributes)</span> </span>&#123;</span><br><span class="line">	<span class="comment">//获取EnableAutoConfiguration.class对应的全类名数组</span></span><br><span class="line">	List&lt;String&gt; configurations = SpringFactoriesLoader.loadFactoryNames(</span><br><span class="line">			getSpringFactoriesLoaderFactoryClass(), getBeanClassLoader());</span><br><span class="line">	Assert.notEmpty(configurations,</span><br><span class="line">			<span class="string">&quot;No auto configuration classes found in META-INF/spring.factories. If you &quot;</span></span><br><span class="line">					+ <span class="string">&quot;are using a custom packaging, make sure that file is correct.&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> configurations;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">protected</span> Class&lt;?&gt; getSpringFactoriesLoaderFactoryClass() &#123;</span><br><span class="line">	<span class="keyword">return</span> EnableAutoConfiguration.class;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><code>loadFactoryNames</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;String&gt; <span class="title">loadFactoryNames</span><span class="params">(Class&lt;?&gt; factoryClass, <span class="meta">@Nullable</span> ClassLoader classLoader)</span> </span>&#123;</span><br><span class="line">	String factoryClassName = factoryClass.getName();</span><br><span class="line">	<span class="comment">//返回 META-INF/spring.factories 文件下 EnableAutoConfiguration.class 对应的所有值</span></span><br><span class="line">	<span class="keyword">return</span> loadSpringFactories(classLoader).getOrDefault(factoryClassName, Collections.emptyList());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><code>loadSpringFactories</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//从当前项目的类路径中获取所有 META-INF/spring.factories 这个文件下的信息。</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Map&lt;String, List&lt;String&gt;&gt; loadSpringFactories(<span class="meta">@Nullable</span> ClassLoader classLoader) &#123;</span><br><span class="line">	MultiValueMap&lt;String, String&gt; result = cache.get(classLoader);</span><br><span class="line">	<span class="keyword">if</span> (result != <span class="keyword">null</span>) &#123;</span><br><span class="line">		<span class="keyword">return</span> result;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		<span class="comment">//FACTORIES_RESOURCE_LOCATION:META-INF/spring.factories</span></span><br><span class="line">		Enumeration&lt;URL&gt; urls = (classLoader != <span class="keyword">null</span> ?</span><br><span class="line">				classLoader.getResources(FACTORIES_RESOURCE_LOCATION) :</span><br><span class="line">				ClassLoader.getSystemResources(FACTORIES_RESOURCE_LOCATION));</span><br><span class="line">		result = <span class="keyword">new</span> LinkedMultiValueMap&lt;&gt;();</span><br><span class="line">		<span class="keyword">while</span> (urls.hasMoreElements()) &#123;</span><br><span class="line">			URL url = urls.nextElement();</span><br><span class="line">			UrlResource resource = <span class="keyword">new</span> UrlResource(url);</span><br><span class="line">			Properties properties = PropertiesLoaderUtils.loadProperties(resource);</span><br><span class="line">			<span class="keyword">for</span> (Map.Entry&lt;?, ?&gt; entry : properties.entrySet()) &#123;</span><br><span class="line">				String factoryClassName = ((String) entry.getKey()).trim();</span><br><span class="line">				<span class="keyword">for</span> (String factoryName : StringUtils.commaDelimitedListToStringArray((String) entry.getValue())) &#123;</span><br><span class="line">					result.add(factoryClassName, factoryName.trim());</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		cache.put(classLoader, result);</span><br><span class="line">		<span class="keyword">return</span> result;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">catch</span> (IOException ex) &#123;</span><br><span class="line">		<span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;Unable to load factories from location [&quot;</span> +</span><br><span class="line">				FACTORIES_RESOURCE_LOCATION + <span class="string">&quot;]&quot;</span>, ex);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="META-INF-spring-factories"><a href="#META-INF-spring-factories" class="headerlink" title="META-INF/spring.factories"></a>META-INF/spring.factories</h4><p><code>META-INF/spring.factories</code> 在很多第三方依赖中都会有这个文件，第三方依赖通过这个文件并配置 <code>EnableAutoConfiguration</code> 参数，然后自动配置会把这个参数下面的所有类都配置到 Spring 容器中，如图</p>
+<p><img src="/images/SpringBoot%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE0.jpg" alt="image"></p>
+<h4 id="AutoConfigurationPackage"><a href="#AutoConfigurationPackage" class="headerlink" title="@AutoConfigurationPackage"></a>@AutoConfigurationPackage</h4><p><code>@EnableAutoConfiguration</code> 注解中的另一个注解 <code>@AutoConfigurationPackage</code>，是用来自动配置包的，将主配置类 <code>@SpringBootConfiguration</code> 标注的类，所在包及下面所有子包里面的所有组件扫描到 Spring 容器中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target(ElementType.TYPE)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Inherited</span></span><br><span class="line"><span class="meta">@Import(AutoConfigurationPackages.Registrar.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> AutoConfigurationPackage &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，<code>AutoConfigurationPackage</code> 注解依然使用了 <code>import</code> 注解，不过使用的是 <code>ImportBeanDefinitionRegistrar</code> 接口实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Registrar</span> <span class="keyword">implements</span> <span class="title">ImportBeanDefinitionRegistrar</span>, <span class="title">DeterminableImports</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="comment">//把所在包及其子包里边的组件扫描注册到Spring容器中</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">registerBeanDefinitions</span><span class="params">(AnnotationMetadata metadata,</span></span></span><br><span class="line"><span class="function"><span class="params">			BeanDefinitionRegistry registry)</span> </span>&#123;</span><br><span class="line">		register(registry, <span class="keyword">new</span> PackageImport(metadata).getPackageName());</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Set&lt;Object&gt; <span class="title">determineImports</span><span class="params">(AnnotationMetadata metadata)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> Collections.singleton(<span class="keyword">new</span> PackageImport(metadata));</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p> SpringBoot的自动装配是由 <code>@EnableAutoConfiguration</code> 注解来实现的，而 <code>@EnableAutoConfiguration</code> 注解又是通过 <code>@AutoConfigurationPackage</code> 和 <code>@Import(AutoConfigurationImportSelector.class)</code> 来实现服务自身的自动配置和第三方依赖的自动配置</p>
+<p>注解关系如图：</p>
+<p> <img src="/images/SpringBoot%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE1.png" alt="image"></p>
+
       
     </div>
     
@@ -578,6 +610,8 @@
           
             <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
           
+            <a href="/tags/Spring/" rel="tag"><i class="fa fa-tag"></i> Spring</a>
+          
         </div>
       
 
@@ -589,8 +623,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/02/01/%E4%BA%8B%E7%89%A9%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/" rel="next" title="事物隔离级别">
-                <i class="fa fa-chevron-left"></i> 事物隔离级别
+              <a href="/2021/02/19/Web%20fragments/" rel="next" title="Web fragments">
+                <i class="fa fa-chevron-left"></i> Web fragments
               </a>
             
           </div>
@@ -598,10 +632,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/04/06/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E4%B8%8E%E9%94%81%E4%BC%98%E5%8C%96/" rel="prev" title="线程安全与锁优化">
-                线程安全与锁优化 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -817,7 +847,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">构造方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6"><span class="nav-number">3.</span> <span class="nav-text">任务调度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E5%AD%98%E5%82%A8%E7%AD%96%E7%95%A5"><span class="nav-number">4.</span> <span class="nav-text">任务存储策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RejectedExecutionHandler%E6%8B%92%E7%BB%9D%E7%AD%96%E7%95%A5"><span class="nav-number">5.</span> <span class="nav-text">RejectedExecutionHandler拒绝策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#execute-%E5%92%8Csubmit-%E5%8C%BA%E5%88%AB"><span class="nav-number">6.</span> <span class="nav-text">execute()和submit()区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90%EF%BC%9A"><span class="nav-number">7.</span> <span class="nav-text">例子：</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SpringBootApplication"><span class="nav-number">1.</span> <span class="nav-text">@SpringBootApplication</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SpringBootConfiguration"><span class="nav-number">1.1.</span> <span class="nav-text">@SpringBootConfiguration</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ComponentScan"><span class="nav-number">1.2.</span> <span class="nav-text">@ComponentScan</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EnableAutoConfiguration"><span class="nav-number">1.3.</span> <span class="nav-text">@EnableAutoConfiguration</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Import"><span class="nav-number">1.3.1.</span> <span class="nav-text">@Import</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AutoConfigurationImportSelector-class"><span class="nav-number">1.3.2.</span> <span class="nav-text">AutoConfigurationImportSelector.class</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#META-INF-spring-factories"><span class="nav-number">1.3.3.</span> <span class="nav-text">META-INF&#x2F;spring.factories</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AutoConfigurationPackage"><span class="nav-number">1.3.4.</span> <span class="nav-text">@AutoConfigurationPackage</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
