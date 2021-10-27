@@ -118,6 +118,53 @@
       </tags>
   </entry>
   <entry>
+    <title>Elasticsearch安装启动报错</title>
+    <url>/2018/01/02/Elasticsearch%E5%AE%89%E8%A3%85%E5%90%AF%E5%8A%A8%E6%8A%A5%E9%94%99/</url>
+    <content><![CDATA[<p>Elasticsearch在启动./elasticsearch时报错:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[2018-01-02T10:47:17,157][WARN ][o.e.b.ElasticsearchUncaughtExceptionHandler] [node-1] uncaught exception in thread [main]</span><br><span class="line">org.elasticsearch.bootstrap.StartupException: java.lang.RuntimeException: can not run elasticsearch as root</span><br><span class="line">	at org.elasticsearch.bootstrap.Elasticsearch.init(Elasticsearch.java:125) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.bootstrap.Elasticsearch.execute(Elasticsearch.java:112) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.cli.EnvironmentAwareCommand.execute(EnvironmentAwareCommand.java:86) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.cli.Command.mainWithoutErrorHandling(Command.java:124) ~[elasticsearch-cli-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.cli.Command.main(Command.java:90) ~[elasticsearch-cli-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:92) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:85) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">Caused by: java.lang.RuntimeException: can not run elasticsearch as root</span><br><span class="line">	at org.elasticsearch.bootstrap.Bootstrap.initializeNatives(Bootstrap.java:104) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.bootstrap.Bootstrap.setup(Bootstrap.java:171) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.bootstrap.Bootstrap.init(Bootstrap.java:322) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.bootstrap.Elasticsearch.init(Elasticsearch.java:121) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	... 6 more</span><br></pre></td></tr></table></figure>
+<p>这是因为在Elasticsearch5.0以后不让用root用户直接运行，所以需要创建新用户：<br>1.创建新用户adduser xxx,给新用户添加密码passwd xxx<br>2.root给xxx赋权限，chown -R xxx /elasticsearch安装目录<br>3.切换用户su xxx<br>4.再执行./elasticsearch启动ES</p>
+]]></content>
+      <categories>
+        <category>存储</category>
+      </categories>
+      <tags>
+        <tag>Elasticsearch</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Guava CaChe</title>
+    <url>/2017/11/08/Guava-CaChe/</url>
+    <content><![CDATA[<p>Guava CaChe是本地（进程内）缓存</p>
+<blockquote>
+<h4 id="引包"><a href="#引包" class="headerlink" title="引包"></a>引包</h4></blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;  </span><br><span class="line">    &lt;groupId&gt;com.google.guava&lt;&#x2F;groupId&gt;  </span><br><span class="line">    &lt;artifactId&gt;guava&lt;&#x2F;artifactId&gt;  </span><br><span class="line">    &lt;version&gt;19.0&lt;&#x2F;version&gt;  </span><br><span class="line">&lt;&#x2F;dependency&gt;  </span><br></pre></td></tr></table></figure>
+<blockquote>
+<h4 id="Cache接口及其实现"><a href="#Cache接口及其实现" class="headerlink" title="Cache接口及其实现"></a>Cache接口及其实现</h4></blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Cache&lt;k, v&gt; cache &#x3D; CacheBuilder.newBuilder()  </span><br><span class="line">        &#x2F;&#x2F;设置cache的初始大小为10，要合理设置该值  </span><br><span class="line">        .initialCapacity(10)  </span><br><span class="line">        &#x2F;&#x2F;设置并发数为5，即同一时间最多只能有5个线程往cache执行写入操作  </span><br><span class="line">        .concurrencyLevel(5)  </span><br><span class="line">        &#x2F;&#x2F;设置cache中的数据在写入之后的存活时间为10秒  </span><br><span class="line">        .expireAfterWrite(10, TimeUnit.SECONDS)  </span><br><span class="line">        &#x2F;&#x2F;构建cache实例  </span><br><span class="line">        .....</span><br><span class="line">        .build();  </span><br></pre></td></tr></table></figure>
+<p>接口Cache是泛型，很好的支持了不同类型的key和value<br>TimeUnit.SECONDS 存活时间单位为秒<br>TimeUnit.HOURSC 存活时间单位为小时<br>TimeUnit.DAYS 存活时间单位为天</p>
+<p>例如:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">LoadingCache&lt;Key, Object&gt; cache&#x3D; CacheBuilder.newBuilder()</span><br><span class="line">        .expireAfterWrite(10, TimeUnit.MINUTES)</span><br><span class="line">        .build(</span><br><span class="line">            new CacheLoader&lt;Key, Object&gt;() &#123;</span><br><span class="line">                public Object load(Key key) throws AnyException &#123;</span><br><span class="line">                    return getObject(key);</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<h4 id="Cache提供的常用方法"><a href="#Cache提供的常用方法" class="headerlink" title="Cache提供的常用方法"></a>Cache提供的常用方法</h4></blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;** </span><br><span class="line"> * 该接口的实现被认为是线程安全的，即可在多线程中调用 </span><br><span class="line"> * 通过被定义单例使用 </span><br><span class="line"> *&#x2F;  </span><br><span class="line">public interface Cache&lt;K, V&gt; &#123;  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 通过key获取缓存中的value，若不存在直接返回null </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  V getIfPresent(Object key);  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 通过key获取缓存中的value，若不存在就通过valueLoader来加载该value </span><br><span class="line">   * 整个过程为 &quot;if cached, return; otherwise create, cache and return&quot; </span><br><span class="line">   * 注意valueLoader要么返回非null值，要么抛出异常，绝对不能返回null </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  V get(K key, Callable&lt;? extends V&gt; valueLoader) throws ExecutionException;  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 添加缓存，若key存在，就覆盖旧值 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void put(K key, V value);  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 删除该key关联的缓存 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void invalidate(Object key);  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 删除所有缓存 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void invalidateAll();  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 执行一些维护操作，包括清理缓存 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void cleanUp();  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<h4 id="清除缓存"><a href="#清除缓存" class="headerlink" title="清除缓存"></a>清除缓存</h4></blockquote>
+<h5 id="基于存活时间的清除"><a href="#基于存活时间的清除" class="headerlink" title="基于存活时间的清除"></a>基于存活时间的清除</h5><p>这应该是最常用的清除策略，在构建Cache实例的时候，CacheBuilder提供两种基于存活时间的构建方法：<br>（1）expireAfterAccess(long, TimeUnit)：缓存项在创建后，在给定时间内没有被读/写访问，则清除。<br>（2）expireAfterWrite(long, TimeUnit)：缓存项在创建后，在给定时间内没有被写访问（创建或覆盖），则清除。expireAfterWrite()方法有些类似于redis中的expire命令，但显然它只能设置所有缓存都具有相同的存活时间。</p>
+<h5 id="基于容量的清除"><a href="#基于容量的清除" class="headerlink" title="基于容量的清除"></a>基于容量的清除</h5><p>在构建Cache实例的时候，通过CacheBuilder.maximumSize(long)方法可以设置Cache的最大容量数，当缓存数量达到或接近该最大值时，Cache将清除掉那些最近最少使用的缓存。<br>以上是这种方式是以缓存的“数量”作为容量的计算方式，还有另外一种基于“权重”的计算方式。比如每一项缓存所占据的内存空间大小都不一样，可以看作它们有不同的“权重”（weights）。你可以使用CacheBuilder.weigher(Weigher)指定一个权重函数，并且用CacheBuilder.maximumWeight(long)指定最大总重</p>
+<h5 id="显式清除"><a href="#显式清除" class="headerlink" title="显式清除"></a>显式清除</h5><p>任何时候，都可以显式地清除缓存项，而不是等到它被回收，Cache接口提供了如下API：<br>（1）个别清除：Cache.invalidate(key)<br>（2）批量清除：Cache.invalidateAll(keys)<br>（3）清除所有缓存项：Cache.invalidateAll()  </p>
+<h5 id="基于引用的清除"><a href="#基于引用的清除" class="headerlink" title="基于引用的清除"></a>基于引用的清除</h5><p>在构建Cache实例过程中，通过设置使用弱引用的键、或弱引用的值、或软引用的值，从而使JVM在GC时顺带实现缓存的清除，不过一般不轻易使用这个特性。<br>（1）CacheBuilder.weakKeys()：使用弱引用存储键<br>（2）CacheBuilder.weakValues()：使用弱引用存储值<br>（3）CacheBuilder.softValues()：使用软引用存储值  </p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Guava</tag>
+        <tag>Cache</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Bean Copy</title>
     <url>/2019/09/25/Bean-Copy/</url>
     <content><![CDATA[<blockquote>
@@ -161,20 +208,6 @@
       </categories>
       <tags>
         <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Elasticsearch安装启动报错</title>
-    <url>/2018/01/02/Elasticsearch%E5%AE%89%E8%A3%85%E5%90%AF%E5%8A%A8%E6%8A%A5%E9%94%99/</url>
-    <content><![CDATA[<p>Elasticsearch在启动./elasticsearch时报错:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[2018-01-02T10:47:17,157][WARN ][o.e.b.ElasticsearchUncaughtExceptionHandler] [node-1] uncaught exception in thread [main]</span><br><span class="line">org.elasticsearch.bootstrap.StartupException: java.lang.RuntimeException: can not run elasticsearch as root</span><br><span class="line">	at org.elasticsearch.bootstrap.Elasticsearch.init(Elasticsearch.java:125) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.bootstrap.Elasticsearch.execute(Elasticsearch.java:112) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.cli.EnvironmentAwareCommand.execute(EnvironmentAwareCommand.java:86) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.cli.Command.mainWithoutErrorHandling(Command.java:124) ~[elasticsearch-cli-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.cli.Command.main(Command.java:90) ~[elasticsearch-cli-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:92) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:85) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">Caused by: java.lang.RuntimeException: can not run elasticsearch as root</span><br><span class="line">	at org.elasticsearch.bootstrap.Bootstrap.initializeNatives(Bootstrap.java:104) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.bootstrap.Bootstrap.setup(Bootstrap.java:171) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.bootstrap.Bootstrap.init(Bootstrap.java:322) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.bootstrap.Elasticsearch.init(Elasticsearch.java:121) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	... 6 more</span><br></pre></td></tr></table></figure>
-<p>这是因为在Elasticsearch5.0以后不让用root用户直接运行，所以需要创建新用户：<br>1.创建新用户adduser xxx,给新用户添加密码passwd xxx<br>2.root给xxx赋权限，chown -R xxx /elasticsearch安装目录<br>3.切换用户su xxx<br>4.再执行./elasticsearch启动ES</p>
-]]></content>
-      <categories>
-        <category>存储</category>
-      </categories>
-      <tags>
-        <tag>Elasticsearch</tag>
       </tags>
   </entry>
   <entry>
@@ -224,36 +257,22 @@
       </tags>
   </entry>
   <entry>
-    <title>Guava CaChe</title>
-    <url>/2017/11/08/Guava-CaChe/</url>
-    <content><![CDATA[<p>Guava CaChe是本地（进程内）缓存</p>
-<blockquote>
-<h4 id="引包"><a href="#引包" class="headerlink" title="引包"></a>引包</h4></blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;  </span><br><span class="line">    &lt;groupId&gt;com.google.guava&lt;&#x2F;groupId&gt;  </span><br><span class="line">    &lt;artifactId&gt;guava&lt;&#x2F;artifactId&gt;  </span><br><span class="line">    &lt;version&gt;19.0&lt;&#x2F;version&gt;  </span><br><span class="line">&lt;&#x2F;dependency&gt;  </span><br></pre></td></tr></table></figure>
-<blockquote>
-<h4 id="Cache接口及其实现"><a href="#Cache接口及其实现" class="headerlink" title="Cache接口及其实现"></a>Cache接口及其实现</h4></blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Cache&lt;k, v&gt; cache &#x3D; CacheBuilder.newBuilder()  </span><br><span class="line">        &#x2F;&#x2F;设置cache的初始大小为10，要合理设置该值  </span><br><span class="line">        .initialCapacity(10)  </span><br><span class="line">        &#x2F;&#x2F;设置并发数为5，即同一时间最多只能有5个线程往cache执行写入操作  </span><br><span class="line">        .concurrencyLevel(5)  </span><br><span class="line">        &#x2F;&#x2F;设置cache中的数据在写入之后的存活时间为10秒  </span><br><span class="line">        .expireAfterWrite(10, TimeUnit.SECONDS)  </span><br><span class="line">        &#x2F;&#x2F;构建cache实例  </span><br><span class="line">        .....</span><br><span class="line">        .build();  </span><br></pre></td></tr></table></figure>
-<p>接口Cache是泛型，很好的支持了不同类型的key和value<br>TimeUnit.SECONDS 存活时间单位为秒<br>TimeUnit.HOURSC 存活时间单位为小时<br>TimeUnit.DAYS 存活时间单位为天</p>
-<p>例如:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">LoadingCache&lt;Key, Object&gt; cache&#x3D; CacheBuilder.newBuilder()</span><br><span class="line">        .expireAfterWrite(10, TimeUnit.MINUTES)</span><br><span class="line">        .build(</span><br><span class="line">            new CacheLoader&lt;Key, Object&gt;() &#123;</span><br><span class="line">                public Object load(Key key) throws AnyException &#123;</span><br><span class="line">                    return getObject(key);</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure>
+    <title>Java字符串生成对应MD5摘要</title>
+    <url>/2017/10/13/Java%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%94%9F%E6%88%90%E5%AF%B9%E5%BA%94MD5%E6%91%98%E8%A6%81/</url>
+    <content><![CDATA[<p>MD5全名Message-Digest Algorithm 5（信息-摘要算法）是一种不可逆的加密算法  </p>
+<p>MD5可以用来一致性验证、数字签名和安全访问认证</p>
+<p>在Java中有时需要生成给定字符串的MD5摘要：</p>
+<h5 id="1-导包"><a href="#1-导包" class="headerlink" title="1.导包"></a>1.导包</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;commons-codec&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;commons-codec&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.8&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="2-调用md5Hex方法"><a href="#2-调用md5Hex方法" class="headerlink" title="2.调用md5Hex方法"></a>2.调用md5Hex方法</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">String str &#x3D; &quot;123456&quot;;</span><br><span class="line">String md5 &#x3D; DigestUtils.md5Hex(str);</span><br><span class="line">System.out.println(md5); </span><br><span class="line">&#x2F;&#x2F;e10adc3949ba59abbe56e057f20f883e</span><br></pre></td></tr></table></figure>
+<p>还可以加盐来增加保密性：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">String salt &#x3D; &quot;MD5盐&quot;;</span><br><span class="line">md5 &#x3D; DigestUtils.md5Hex(salt+str);</span><br><span class="line">System.out.println(md5); </span><br><span class="line">&#x2F;&#x2F;196c6ed9e9e3af1a576f5938b35f1b46</span><br></pre></td></tr></table></figure>
 
-<blockquote>
-<h4 id="Cache提供的常用方法"><a href="#Cache提供的常用方法" class="headerlink" title="Cache提供的常用方法"></a>Cache提供的常用方法</h4></blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;** </span><br><span class="line"> * 该接口的实现被认为是线程安全的，即可在多线程中调用 </span><br><span class="line"> * 通过被定义单例使用 </span><br><span class="line"> *&#x2F;  </span><br><span class="line">public interface Cache&lt;K, V&gt; &#123;  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 通过key获取缓存中的value，若不存在直接返回null </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  V getIfPresent(Object key);  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 通过key获取缓存中的value，若不存在就通过valueLoader来加载该value </span><br><span class="line">   * 整个过程为 &quot;if cached, return; otherwise create, cache and return&quot; </span><br><span class="line">   * 注意valueLoader要么返回非null值，要么抛出异常，绝对不能返回null </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  V get(K key, Callable&lt;? extends V&gt; valueLoader) throws ExecutionException;  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 添加缓存，若key存在，就覆盖旧值 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void put(K key, V value);  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 删除该key关联的缓存 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void invalidate(Object key);  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 删除所有缓存 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void invalidateAll();  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 执行一些维护操作，包括清理缓存 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void cleanUp();  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<h4 id="清除缓存"><a href="#清除缓存" class="headerlink" title="清除缓存"></a>清除缓存</h4></blockquote>
-<h5 id="基于存活时间的清除"><a href="#基于存活时间的清除" class="headerlink" title="基于存活时间的清除"></a>基于存活时间的清除</h5><p>这应该是最常用的清除策略，在构建Cache实例的时候，CacheBuilder提供两种基于存活时间的构建方法：<br>（1）expireAfterAccess(long, TimeUnit)：缓存项在创建后，在给定时间内没有被读/写访问，则清除。<br>（2）expireAfterWrite(long, TimeUnit)：缓存项在创建后，在给定时间内没有被写访问（创建或覆盖），则清除。expireAfterWrite()方法有些类似于redis中的expire命令，但显然它只能设置所有缓存都具有相同的存活时间。</p>
-<h5 id="基于容量的清除"><a href="#基于容量的清除" class="headerlink" title="基于容量的清除"></a>基于容量的清除</h5><p>在构建Cache实例的时候，通过CacheBuilder.maximumSize(long)方法可以设置Cache的最大容量数，当缓存数量达到或接近该最大值时，Cache将清除掉那些最近最少使用的缓存。<br>以上是这种方式是以缓存的“数量”作为容量的计算方式，还有另外一种基于“权重”的计算方式。比如每一项缓存所占据的内存空间大小都不一样，可以看作它们有不同的“权重”（weights）。你可以使用CacheBuilder.weigher(Weigher)指定一个权重函数，并且用CacheBuilder.maximumWeight(long)指定最大总重</p>
-<h5 id="显式清除"><a href="#显式清除" class="headerlink" title="显式清除"></a>显式清除</h5><p>任何时候，都可以显式地清除缓存项，而不是等到它被回收，Cache接口提供了如下API：<br>（1）个别清除：Cache.invalidate(key)<br>（2）批量清除：Cache.invalidateAll(keys)<br>（3）清除所有缓存项：Cache.invalidateAll()  </p>
-<h5 id="基于引用的清除"><a href="#基于引用的清除" class="headerlink" title="基于引用的清除"></a>基于引用的清除</h5><p>在构建Cache实例过程中，通过设置使用弱引用的键、或弱引用的值、或软引用的值，从而使JVM在GC时顺带实现缓存的清除，不过一般不轻易使用这个特性。<br>（1）CacheBuilder.weakKeys()：使用弱引用存储键<br>（2）CacheBuilder.weakValues()：使用弱引用存储值<br>（3）CacheBuilder.softValues()：使用软引用存储值  </p>
 ]]></content>
       <categories>
         <category>Java</category>
       </categories>
       <tags>
         <tag>Java</tag>
-        <tag>Guava</tag>
-        <tag>Cache</tag>
       </tags>
   </entry>
   <entry>
@@ -307,22 +326,63 @@
       </tags>
   </entry>
   <entry>
-    <title>Java字符串生成对应MD5摘要</title>
-    <url>/2017/10/13/Java%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%94%9F%E6%88%90%E5%AF%B9%E5%BA%94MD5%E6%91%98%E8%A6%81/</url>
-    <content><![CDATA[<p>MD5全名Message-Digest Algorithm 5（信息-摘要算法）是一种不可逆的加密算法  </p>
-<p>MD5可以用来一致性验证、数字签名和安全访问认证</p>
-<p>在Java中有时需要生成给定字符串的MD5摘要：</p>
-<h5 id="1-导包"><a href="#1-导包" class="headerlink" title="1.导包"></a>1.导包</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;commons-codec&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;commons-codec&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.8&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
-<h5 id="2-调用md5Hex方法"><a href="#2-调用md5Hex方法" class="headerlink" title="2.调用md5Hex方法"></a>2.调用md5Hex方法</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">String str &#x3D; &quot;123456&quot;;</span><br><span class="line">String md5 &#x3D; DigestUtils.md5Hex(str);</span><br><span class="line">System.out.println(md5); </span><br><span class="line">&#x2F;&#x2F;e10adc3949ba59abbe56e057f20f883e</span><br></pre></td></tr></table></figure>
-<p>还可以加盐来增加保密性：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">String salt &#x3D; &quot;MD5盐&quot;;</span><br><span class="line">md5 &#x3D; DigestUtils.md5Hex(salt+str);</span><br><span class="line">System.out.println(md5); </span><br><span class="line">&#x2F;&#x2F;196c6ed9e9e3af1a576f5938b35f1b46</span><br></pre></td></tr></table></figure>
+    <title>Java线程：Atomic</title>
+    <url>/2018/01/09/Java%E7%BA%BF%E7%A8%8B%EF%BC%9AAtomic/</url>
+    <content><![CDATA[<blockquote>
+<p>==<strong>原文链接：<a href="http://thomaschen2011.iteye.com/blog/1468085">http://thomaschen2011.iteye.com/blog/1468085</a></strong>==  </p>
+</blockquote>
+<h4 id="一、何谓Atomic？"><a href="#一、何谓Atomic？" class="headerlink" title="一、何谓Atomic？"></a>一、何谓Atomic？</h4><p>Atomic一词跟原子有点关系，后者曾被人认为是最小物质的单位。计算机中的Atomic是指不能分割成若干部分的意思。如果一段代码被认为是Atomic，则表示这段代码在执行过程中，是不能被中断的。通常来说，原子指令由硬件提供，供软件来实现原子方法（某个线程进入该方法后，就不会被中断，直到其执行完成）</p>
+<p> 在x86 平台上，CPU提供了在指令执行期间对总线加锁的手段。CPU芯片上有一条引线#HLOCK pin，如果汇编语言的程序中在一条指令前面加上前缀”LOCK”，经过汇编以后的机器代码就使CPU在执行这条指令的时候把#HLOCK pin的电位拉低，持续到这条指令结束时放开，从而把总线锁住，这样同一总线上别的CPU就暂时不能通过总线访问内存了，保证了这条指令在多处理器环境中的原子性。</p>
+<h4 id="二、JDK1-5的原子包：java-util-concurrent-atomic"><a href="#二、JDK1-5的原子包：java-util-concurrent-atomic" class="headerlink" title="二、JDK1.5的原子包：java.util.concurrent.atomic"></a>二、JDK1.5的原子包：java.util.concurrent.atomic</h4><p>这个包里面提供了一组原子类。==其基本的特性就是在多线程环境下，当有多个线程同时执行这些类的实例包含的方法时，具有排他性，即当某个线程进入方法，执行其中的指令时，不会被其他线程打断，而别的线程就像自旋锁一样，一直等到该方法执行完成，才由JVM从等待队列中选择一个另一个线程进入，这只是一种逻辑上的理解==。实际上是借助硬件的相关指令来实现的，不会阻塞线程(或者说只是在硬件级别上阻塞了)。其中的类可以分成4组</p>
+<ul>
+<li>AtomicBoolean，AtomicInteger，AtomicLong，AtomicReference  </li>
+<li>AtomicIntegerArray，AtomicLongArray  </li>
+<li>AtomicLongFieldUpdater，AtomicIntegerFieldUpdater，AtomicReferenceFieldUpdater  </li>
+<li>AtomicMarkableReference，AtomicStampedReference，AtomicReferenceArray  </li>
+</ul>
+<p>Atomic类的作用:  </p>
+<ul>
+<li>使得让对单一数据的操作，实现了原子化  </li>
+<li>使用Atomic类构建复杂的，无需阻塞的代码<br>访问对2个或2个以上的atomic变量（或者对单个atomic变量进行2次或2次以上的操作）通常认为是需要同步的，以达到让这些操作能被作为一个原子单元。  </li>
+</ul>
+<h5 id="2-1-AtomicBoolean-AtomicInteger-AtomicLong-AtomicReference"><a href="#2-1-AtomicBoolean-AtomicInteger-AtomicLong-AtomicReference" class="headerlink" title="2.1 AtomicBoolean , AtomicInteger, AtomicLong, AtomicReference"></a>2.1 AtomicBoolean , AtomicInteger, AtomicLong, AtomicReference</h5><p>这四种基本类型用来处理布尔，整数，长整数，对象四种数据。  </p>
+<ul>
+<li><p>构造函数（两个构造函数）  </p>
+</li>
+<li><p>默认的构造函数：初始化的数据分别是false，0，0，null  </p>
+</li>
+<li><p>带参构造函数：参数为初始化的数据 </p>
+</li>
+<li><p>set( )和get( )方法：可以原子地设定和获取atomic的数据。类似于volatile，保证数据会在主存中设置或读取  </p>
+</li>
+<li><p>getAndSet( )方法  </p>
+</li>
+<li><p>原子的将变量设定为新数据，同时返回先前的旧数据  </p>
+</li>
+<li><p>其本质是get( )操作，然后做set( )操作。尽管这2个操作都是atomic，但是他们合并在一起的时候，就不是atomic。在Java的源程序的级别上，如果不依赖synchronized的机制来完成这个工作，是不可能的。只有依靠native方法才可以。  </p>
+</li>
+<li><p>compareAndSet( ) 和weakCompareAndSet( )方法  </p>
+</li>
+<li><p>这两个方法都是conditional modifier方法。这2个方法接受2个参数，一个是期望数据(expected)，一个是新数据(new)；如果atomic里面的数据和期望数据一致，则将新数据设定给atomic的数据，返回true，表明成功；否则就不设定，并返回false。  </p>
+</li>
+<li><p>对于AtomicInteger、AtomicLong还提供了一些特别的方法。getAndIncrement( )、incrementAndGet( )、getAndDecrement( )、decrementAndGet ( )、addAndGet( )、getAndAdd( )以实现一些加法，减法原子操作。(==注意 –i、++i不是原子操作，其中包含有3个操作步骤：第一步，读取i；第二步，加1或减1；第三步：写回内存==)  </p>
+</li>
+</ul>
+<h6 id="2-1-1-1个例子-使用AtomicReference创建线程安全的堆栈"><a href="#2-1-1-1个例子-使用AtomicReference创建线程安全的堆栈" class="headerlink" title="2.1.1 1个例子-使用AtomicReference创建线程安全的堆栈"></a>2.1.1 1个例子-使用AtomicReference创建线程安全的堆栈</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class LinkedStack&lt;T&gt; &#123;  </span><br><span class="line">  </span><br><span class="line">    private AtomicReference&lt;Node&lt;T&gt;&gt; stacks &#x3D; new AtomicReference&lt;Node&lt;T&gt;&gt;();  </span><br><span class="line">  </span><br><span class="line">    public T push(T e) &#123;  </span><br><span class="line">        Node&lt;T&gt; oldNode, newNode;  </span><br><span class="line">        while (true) &#123; &#x2F;&#x2F;这里的处理非常的特别，也是必须如此的。  </span><br><span class="line">            oldNode &#x3D; stacks.get();  </span><br><span class="line">            newNode &#x3D; new Node&lt;T&gt;(e, oldNode);  </span><br><span class="line">            if (stacks.compareAndSet(oldNode, newNode)) &#123;  </span><br><span class="line">                return e;  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">      </span><br><span class="line">    public T pop() &#123;  </span><br><span class="line">        Node&lt;T&gt; oldNode, newNode;  </span><br><span class="line">        while (true) &#123;  </span><br><span class="line">            oldNode &#x3D; stacks.get();  </span><br><span class="line">            newNode &#x3D; oldNode.next;  </span><br><span class="line">            if (stacks.compareAndSet(oldNode, newNode)) &#123;  </span><br><span class="line">                return oldNode.object;  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    private static final class Node&lt;T&gt; &#123;  </span><br><span class="line">        private T object;  </span><br><span class="line">          </span><br><span class="line">        private Node&lt;T&gt; next;  </span><br><span class="line">  </span><br><span class="line">        private Node(T object, Node&lt;T&gt; next) &#123;  </span><br><span class="line">            this.object &#x3D; object;  </span><br><span class="line">            this.next &#x3D; next;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
 
+<h6 id="2-1-2-几个问题"><a href="#2-1-2-几个问题" class="headerlink" title="2.1.2 几个问题"></a>2.1.2 几个问题</h6><p>Q1： compareAndSet和weakCompareAndSet的区别？</p>
+<p>A1： 有人认为这是个坑，因为这2个方法其中的内容是一模一样的。疑惑ing（环境JDK1.6.0_20_b02）</p>
+<p>Q2：volatile boolean和AtomicBoolean的区别？</p>
+<p>Q3：volatile int和AtomicInteger的区别？</p>
+<p>Q4：LazySet()和Set()的区别？</p>
 ]]></content>
       <categories>
-        <category>Java</category>
+        <category>转载</category>
       </categories>
       <tags>
         <tag>Java</tag>
+        <tag>转载</tag>
+        <tag>并发</tag>
       </tags>
   </entry>
   <entry>
@@ -416,90 +476,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Java线程：Atomic</title>
-    <url>/2018/01/09/Java%E7%BA%BF%E7%A8%8B%EF%BC%9AAtomic/</url>
-    <content><![CDATA[<blockquote>
-<p>==<strong>原文链接：<a href="http://thomaschen2011.iteye.com/blog/1468085">http://thomaschen2011.iteye.com/blog/1468085</a></strong>==  </p>
-</blockquote>
-<h4 id="一、何谓Atomic？"><a href="#一、何谓Atomic？" class="headerlink" title="一、何谓Atomic？"></a>一、何谓Atomic？</h4><p>Atomic一词跟原子有点关系，后者曾被人认为是最小物质的单位。计算机中的Atomic是指不能分割成若干部分的意思。如果一段代码被认为是Atomic，则表示这段代码在执行过程中，是不能被中断的。通常来说，原子指令由硬件提供，供软件来实现原子方法（某个线程进入该方法后，就不会被中断，直到其执行完成）</p>
-<p> 在x86 平台上，CPU提供了在指令执行期间对总线加锁的手段。CPU芯片上有一条引线#HLOCK pin，如果汇编语言的程序中在一条指令前面加上前缀”LOCK”，经过汇编以后的机器代码就使CPU在执行这条指令的时候把#HLOCK pin的电位拉低，持续到这条指令结束时放开，从而把总线锁住，这样同一总线上别的CPU就暂时不能通过总线访问内存了，保证了这条指令在多处理器环境中的原子性。</p>
-<h4 id="二、JDK1-5的原子包：java-util-concurrent-atomic"><a href="#二、JDK1-5的原子包：java-util-concurrent-atomic" class="headerlink" title="二、JDK1.5的原子包：java.util.concurrent.atomic"></a>二、JDK1.5的原子包：java.util.concurrent.atomic</h4><p>这个包里面提供了一组原子类。==其基本的特性就是在多线程环境下，当有多个线程同时执行这些类的实例包含的方法时，具有排他性，即当某个线程进入方法，执行其中的指令时，不会被其他线程打断，而别的线程就像自旋锁一样，一直等到该方法执行完成，才由JVM从等待队列中选择一个另一个线程进入，这只是一种逻辑上的理解==。实际上是借助硬件的相关指令来实现的，不会阻塞线程(或者说只是在硬件级别上阻塞了)。其中的类可以分成4组</p>
-<ul>
-<li>AtomicBoolean，AtomicInteger，AtomicLong，AtomicReference  </li>
-<li>AtomicIntegerArray，AtomicLongArray  </li>
-<li>AtomicLongFieldUpdater，AtomicIntegerFieldUpdater，AtomicReferenceFieldUpdater  </li>
-<li>AtomicMarkableReference，AtomicStampedReference，AtomicReferenceArray  </li>
-</ul>
-<p>Atomic类的作用:  </p>
-<ul>
-<li>使得让对单一数据的操作，实现了原子化  </li>
-<li>使用Atomic类构建复杂的，无需阻塞的代码<br>访问对2个或2个以上的atomic变量（或者对单个atomic变量进行2次或2次以上的操作）通常认为是需要同步的，以达到让这些操作能被作为一个原子单元。  </li>
-</ul>
-<h5 id="2-1-AtomicBoolean-AtomicInteger-AtomicLong-AtomicReference"><a href="#2-1-AtomicBoolean-AtomicInteger-AtomicLong-AtomicReference" class="headerlink" title="2.1 AtomicBoolean , AtomicInteger, AtomicLong, AtomicReference"></a>2.1 AtomicBoolean , AtomicInteger, AtomicLong, AtomicReference</h5><p>这四种基本类型用来处理布尔，整数，长整数，对象四种数据。  </p>
-<ul>
-<li><p>构造函数（两个构造函数）  </p>
-</li>
-<li><p>默认的构造函数：初始化的数据分别是false，0，0，null  </p>
-</li>
-<li><p>带参构造函数：参数为初始化的数据 </p>
-</li>
-<li><p>set( )和get( )方法：可以原子地设定和获取atomic的数据。类似于volatile，保证数据会在主存中设置或读取  </p>
-</li>
-<li><p>getAndSet( )方法  </p>
-</li>
-<li><p>原子的将变量设定为新数据，同时返回先前的旧数据  </p>
-</li>
-<li><p>其本质是get( )操作，然后做set( )操作。尽管这2个操作都是atomic，但是他们合并在一起的时候，就不是atomic。在Java的源程序的级别上，如果不依赖synchronized的机制来完成这个工作，是不可能的。只有依靠native方法才可以。  </p>
-</li>
-<li><p>compareAndSet( ) 和weakCompareAndSet( )方法  </p>
-</li>
-<li><p>这两个方法都是conditional modifier方法。这2个方法接受2个参数，一个是期望数据(expected)，一个是新数据(new)；如果atomic里面的数据和期望数据一致，则将新数据设定给atomic的数据，返回true，表明成功；否则就不设定，并返回false。  </p>
-</li>
-<li><p>对于AtomicInteger、AtomicLong还提供了一些特别的方法。getAndIncrement( )、incrementAndGet( )、getAndDecrement( )、decrementAndGet ( )、addAndGet( )、getAndAdd( )以实现一些加法，减法原子操作。(==注意 –i、++i不是原子操作，其中包含有3个操作步骤：第一步，读取i；第二步，加1或减1；第三步：写回内存==)  </p>
-</li>
-</ul>
-<h6 id="2-1-1-1个例子-使用AtomicReference创建线程安全的堆栈"><a href="#2-1-1-1个例子-使用AtomicReference创建线程安全的堆栈" class="headerlink" title="2.1.1 1个例子-使用AtomicReference创建线程安全的堆栈"></a>2.1.1 1个例子-使用AtomicReference创建线程安全的堆栈</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class LinkedStack&lt;T&gt; &#123;  </span><br><span class="line">  </span><br><span class="line">    private AtomicReference&lt;Node&lt;T&gt;&gt; stacks &#x3D; new AtomicReference&lt;Node&lt;T&gt;&gt;();  </span><br><span class="line">  </span><br><span class="line">    public T push(T e) &#123;  </span><br><span class="line">        Node&lt;T&gt; oldNode, newNode;  </span><br><span class="line">        while (true) &#123; &#x2F;&#x2F;这里的处理非常的特别，也是必须如此的。  </span><br><span class="line">            oldNode &#x3D; stacks.get();  </span><br><span class="line">            newNode &#x3D; new Node&lt;T&gt;(e, oldNode);  </span><br><span class="line">            if (stacks.compareAndSet(oldNode, newNode)) &#123;  </span><br><span class="line">                return e;  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">      </span><br><span class="line">    public T pop() &#123;  </span><br><span class="line">        Node&lt;T&gt; oldNode, newNode;  </span><br><span class="line">        while (true) &#123;  </span><br><span class="line">            oldNode &#x3D; stacks.get();  </span><br><span class="line">            newNode &#x3D; oldNode.next;  </span><br><span class="line">            if (stacks.compareAndSet(oldNode, newNode)) &#123;  </span><br><span class="line">                return oldNode.object;  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    private static final class Node&lt;T&gt; &#123;  </span><br><span class="line">        private T object;  </span><br><span class="line">          </span><br><span class="line">        private Node&lt;T&gt; next;  </span><br><span class="line">  </span><br><span class="line">        private Node(T object, Node&lt;T&gt; next) &#123;  </span><br><span class="line">            this.object &#x3D; object;  </span><br><span class="line">            this.next &#x3D; next;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
-
-<h6 id="2-1-2-几个问题"><a href="#2-1-2-几个问题" class="headerlink" title="2.1.2 几个问题"></a>2.1.2 几个问题</h6><p>Q1： compareAndSet和weakCompareAndSet的区别？</p>
-<p>A1： 有人认为这是个坑，因为这2个方法其中的内容是一模一样的。疑惑ing（环境JDK1.6.0_20_b02）</p>
-<p>Q2：volatile boolean和AtomicBoolean的区别？</p>
-<p>Q3：volatile int和AtomicInteger的区别？</p>
-<p>Q4：LazySet()和Set()的区别？</p>
-]]></content>
-      <categories>
-        <category>转载</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>转载</tag>
-        <tag>并发</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>JetBrick-template模板转换字符串</title>
-    <url>/2018/01/11/JetBrick-template%E6%A8%A1%E6%9D%BF%E8%BD%AC%E6%8D%A2%E5%AD%97%E7%AC%A6%E4%B8%B2/</url>
-    <content><![CDATA[<h4 id="一、概述"><a href="#一、概述" class="headerlink" title="一、概述"></a>一、概述</h4><p>jetbrick-template 是一个新一代 Java 模板引擎，具有高性能和高扩展性。 适合于动态 HTML 页面输出或者代码生成，可替代 JSP 页面或者 Velocity 等模板。 指令和 Velocity 相似，表达式和 Java 保持一致，易学易用。  </p>
-<p>这里只是简单的利用jetbrick-template模板来转换字符串。  </p>
-<h4 id="二、用法"><a href="#二、用法" class="headerlink" title="二、用法"></a>二、用法</h4><p>Maven包:  </p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;com.github.subchen&lt;&#x2F;groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;jetbrick-template&lt;&#x2F;artifactId&gt;</span><br><span class="line">  &lt;version&gt;2.1.2&lt;&#x2F;version&gt;</span><br><span class="line">  &lt;classifier&gt;sources&lt;&#x2F;classifier&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
-
-<p>例子:  </p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Test</span><br><span class="line">public void jetxTest() &#123;</span><br><span class="line">  &#x2F;&#x2F;创建引擎</span><br><span class="line">  JetEngine jetEngine &#x3D; JetEngine.create();</span><br><span class="line"></span><br><span class="line">  String template &#x3D; &quot;Hello, $&#123;username&#125;&quot;;</span><br><span class="line">  &#x2F;&#x2F;得到JetBrick模板，可以是string也可以是文件</span><br><span class="line">  &#x2F;&#x2F;.getTemplate()传入模板jetx文件路径, .createTemplate()传入模板字符串</span><br><span class="line">  JetTemplate jetTemplate &#x3D; jetEngine.createTemplate(template);</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F;设置需要替换的变量值</span><br><span class="line">  Map&lt;String, Object&gt; context &#x3D; Maps.newHashMap();</span><br><span class="line">  context.put(&quot;username&quot;, &quot;张三&quot;);</span><br><span class="line"></span><br><span class="line">  StringWriter writer &#x3D; new StringWriter();</span><br><span class="line">  &#x2F;&#x2F;转换模板</span><br><span class="line">  jetTemplate.render(context, writer);</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F;输出结果</span><br><span class="line">  System.out.println(&quot;------------&quot;);</span><br><span class="line">  System.out.println(writer.toString());</span><br><span class="line">  System.out.println(&quot;------------&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>结果:  </p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">------------</span><br><span class="line">Hello, 张三</span><br><span class="line">------------</span><br></pre></td></tr></table></figure>
-
-
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>JetBrick</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Linux expect</title>
     <url>/2020/09/13/Linux-expect/</url>
     <content><![CDATA[<blockquote>
@@ -545,74 +521,27 @@
       </tags>
   </entry>
   <entry>
-    <title>MyBatis中#和$的区别</title>
-    <url>/2017/11/03/MyBatis%E4%B8%AD-%E5%92%8C-%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
-    <content><![CDATA[<blockquote>
-<p>#{ }：解析为一个 JDBC 预编译语句（prepared statement）的参数标记符，在SQL中解析为字符串</p>
-</blockquote>
-<p>如:  </p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SELECT * FROM test WHERE id=#&#123;id&#125;</span><br></pre></td></tr></table></figure>
+    <title>JetBrick-template模板转换字符串</title>
+    <url>/2018/01/11/JetBrick-template%E6%A8%A1%E6%9D%BF%E8%BD%AC%E6%8D%A2%E5%AD%97%E7%AC%A6%E4%B8%B2/</url>
+    <content><![CDATA[<h4 id="一、概述"><a href="#一、概述" class="headerlink" title="一、概述"></a>一、概述</h4><p>jetbrick-template 是一个新一代 Java 模板引擎，具有高性能和高扩展性。 适合于动态 HTML 页面输出或者代码生成，可替代 JSP 页面或者 Velocity 等模板。 指令和 Velocity 相似，表达式和 Java 保持一致，易学易用。  </p>
+<p>这里只是简单的利用jetbrick-template模板来转换字符串。  </p>
+<h4 id="二、用法"><a href="#二、用法" class="headerlink" title="二、用法"></a>二、用法</h4><p>Maven包:  </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;com.github.subchen&lt;&#x2F;groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;jetbrick-template&lt;&#x2F;artifactId&gt;</span><br><span class="line">  &lt;version&gt;2.1.2&lt;&#x2F;version&gt;</span><br><span class="line">  &lt;classifier&gt;sources&lt;&#x2F;classifier&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
 
-<p>解析为SQL时为</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> test1 <span class="keyword">WHERE</span> id<span class="operator">=</span>&quot;1&quot;</span><br></pre></td></tr></table></figure>
+<p>例子:  </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Test</span><br><span class="line">public void jetxTest() &#123;</span><br><span class="line">  &#x2F;&#x2F;创建引擎</span><br><span class="line">  JetEngine jetEngine &#x3D; JetEngine.create();</span><br><span class="line"></span><br><span class="line">  String template &#x3D; &quot;Hello, $&#123;username&#125;&quot;;</span><br><span class="line">  &#x2F;&#x2F;得到JetBrick模板，可以是string也可以是文件</span><br><span class="line">  &#x2F;&#x2F;.getTemplate()传入模板jetx文件路径, .createTemplate()传入模板字符串</span><br><span class="line">  JetTemplate jetTemplate &#x3D; jetEngine.createTemplate(template);</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F;设置需要替换的变量值</span><br><span class="line">  Map&lt;String, Object&gt; context &#x3D; Maps.newHashMap();</span><br><span class="line">  context.put(&quot;username&quot;, &quot;张三&quot;);</span><br><span class="line"></span><br><span class="line">  StringWriter writer &#x3D; new StringWriter();</span><br><span class="line">  &#x2F;&#x2F;转换模板</span><br><span class="line">  jetTemplate.render(context, writer);</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F;输出结果</span><br><span class="line">  System.out.println(&quot;------------&quot;);</span><br><span class="line">  System.out.println(writer.toString());</span><br><span class="line">  System.out.println(&quot;------------&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<blockquote>
-<p>${}：在SQL中解析为变量，不带引号</p>
-</blockquote>
-<p>如:</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SELECT * FROM $&#123;tableName&#125; WHERE id=&quot;1&quot;</span><br></pre></td></tr></table></figure>
+<p>结果:  </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">------------</span><br><span class="line">Hello, 张三</span><br><span class="line">------------</span><br></pre></td></tr></table></figure>
 
-<p>解析为SQL时为</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> test2 <span class="keyword">WHERE</span> id<span class="operator">=</span>&quot;1&quot;</span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
-        <category>框架</category>
+        <category>Java</category>
       </categories>
       <tags>
-        <tag>Mybatis</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>死锁DeadLock</title>
-    <url>/2019/09/18/MySQL-DeadLock/</url>
-    <content><![CDATA[<h2 id="死锁问题"><a href="#死锁问题" class="headerlink" title="死锁问题"></a>死锁问题</h2><blockquote>
-<p>Deadlock found when trying to get lock; try restarting transaction</p>
-</blockquote>
-<p>发现在批量update时偶尔报Deadlock found when trying to get lock; try restarting transaction错误</p>
-<h3 id="原因："><a href="#原因：" class="headerlink" title="原因："></a>原因：</h3><p>根本原因是两个事物同时批量操作时，有操作相同的记录，但是两个事物操作相同记录的顺序不一样，导致两个两个事物都获取不到锁，互锁了<br><img src="/images/deadlock.jpg" alt="deadlock"></p>
-<p>正如阿里Java开发手册中说的一样:</p>
-<blockquote>
-<p>【强制】对多个资源、数据库表、对象同时加锁时，需要保持一致的加锁顺序，否则可能会造 成死锁。<br>说明:线程一需要对表 A、B、C 依次全部加锁后才可以进行更新操作，那么线程二的加锁顺序 也必须是 A、B、C，否则可能出现死锁。</p>
-</blockquote>
-<hr>
-<h3 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h3><ul>
-<li>减小事务</li>
-<li>给字段排序，按照排序后顺序执行，让死锁变为锁等待。</li>
-</ul>
-<hr>
-<h4 id="减小事物"><a href="#减小事物" class="headerlink" title="减小事物:"></a>减小事物:</h4><p>减小在一个事物中的语句和执行时间，这样只是减小发生deadlock的概率，推荐给字段排序来解决。</p>
-<h4 id="给字段排序"><a href="#给字段排序" class="headerlink" title="给字段排序:"></a>给字段排序:</h4><p>看到网上有这样解决的：<br>Change</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">DELETE</span> <span class="keyword">FROM</span> onlineusers <span class="keyword">WHERE</span> datetime <span class="operator">&lt;=</span> now() <span class="operator">-</span> <span class="type">INTERVAL</span> <span class="number">900</span> <span class="keyword">SECOND</span></span><br></pre></td></tr></table></figure>
-<p>TO</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">DELETE</span> <span class="keyword">FROM</span> onlineusers <span class="keyword">WHERE</span> id <span class="keyword">IN</span> (<span class="keyword">SELECT</span> id <span class="keyword">FROM</span> onlineusers</span><br><span class="line">    <span class="keyword">WHERE</span> datetime <span class="operator">&lt;=</span> now() <span class="operator">-</span> <span class="type">INTERVAL</span> <span class="number">900</span> <span class="keyword">SECOND</span> <span class="keyword">order</span> <span class="keyword">by</span> id) u;</span><br></pre></td></tr></table></figure>
-<p><strong>需要注意这样写可能会非常慢，因为IN中的子查询可能会不走索引，全表扫描，如果表中的数据很多，那这样就会产生很大的问题</strong></p>
-<ul>
-<li><p>可以修改为join：</p>
-  <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">UPDATE tableName <span class="keyword">AS</span> table1 <span class="keyword">JOIN</span> (<span class="keyword">SELECT</span> id <span class="keyword">FROM</span> tableName <span class="keyword">WHERE</span> <span class="keyword">AND</span> id <span class="keyword">IN</span> (<span class="number">3</span>,<span class="number">1</span>,<span class="number">2</span>) <span class="keyword">ORDER</span> <span class="keyword">BY</span> id) <span class="keyword">AS</span> table2 <span class="keyword">ON</span> table1.id<span class="operator">=</span>table2.id <span class="keyword">SET</span> column1<span class="operator">=</span><span class="number">1</span>;</span><br></pre></td></tr></table></figure></li>
-<li><p>或者可以修改为:</p>
-  <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">UPDATE tableNmae <span class="keyword">SET</span> column1<span class="operator">=</span><span class="number">1</span> <span class="keyword">WHERE</span> <span class="keyword">AND</span> id <span class="keyword">IN</span> (<span class="number">3</span>,<span class="number">1</span>,<span class="number">2</span>)  <span class="keyword">ORDER</span> <span class="keyword">BY</span> id;</span><br></pre></td></tr></table></figure>
-<p>  MySQL支持这种语法</p>
-</li>
-<li><p>或者可以在程序中把需要排序的字段排好序，然后再去执行SQL</p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>DB</category>
-      </categories>
-      <tags>
-        <tag>DB</tag>
-        <tag>MySQL</tag>
+        <tag>Java</tag>
+        <tag>JetBrick</tag>
       </tags>
   </entry>
   <entry>
@@ -897,6 +826,77 @@
       </tags>
   </entry>
   <entry>
+    <title>死锁DeadLock</title>
+    <url>/2019/09/18/MySQL-DeadLock/</url>
+    <content><![CDATA[<h2 id="死锁问题"><a href="#死锁问题" class="headerlink" title="死锁问题"></a>死锁问题</h2><blockquote>
+<p>Deadlock found when trying to get lock; try restarting transaction</p>
+</blockquote>
+<p>发现在批量update时偶尔报Deadlock found when trying to get lock; try restarting transaction错误</p>
+<h3 id="原因："><a href="#原因：" class="headerlink" title="原因："></a>原因：</h3><p>根本原因是两个事物同时批量操作时，有操作相同的记录，但是两个事物操作相同记录的顺序不一样，导致两个两个事物都获取不到锁，互锁了<br><img src="/images/deadlock.jpg" alt="deadlock"></p>
+<p>正如阿里Java开发手册中说的一样:</p>
+<blockquote>
+<p>【强制】对多个资源、数据库表、对象同时加锁时，需要保持一致的加锁顺序，否则可能会造 成死锁。<br>说明:线程一需要对表 A、B、C 依次全部加锁后才可以进行更新操作，那么线程二的加锁顺序 也必须是 A、B、C，否则可能出现死锁。</p>
+</blockquote>
+<hr>
+<h3 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h3><ul>
+<li>减小事务</li>
+<li>给字段排序，按照排序后顺序执行，让死锁变为锁等待。</li>
+</ul>
+<hr>
+<h4 id="减小事物"><a href="#减小事物" class="headerlink" title="减小事物:"></a>减小事物:</h4><p>减小在一个事物中的语句和执行时间，这样只是减小发生deadlock的概率，推荐给字段排序来解决。</p>
+<h4 id="给字段排序"><a href="#给字段排序" class="headerlink" title="给字段排序:"></a>给字段排序:</h4><p>看到网上有这样解决的：<br>Change</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">DELETE</span> <span class="keyword">FROM</span> onlineusers <span class="keyword">WHERE</span> datetime <span class="operator">&lt;=</span> now() <span class="operator">-</span> <span class="type">INTERVAL</span> <span class="number">900</span> <span class="keyword">SECOND</span></span><br></pre></td></tr></table></figure>
+<p>TO</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">DELETE</span> <span class="keyword">FROM</span> onlineusers <span class="keyword">WHERE</span> id <span class="keyword">IN</span> (<span class="keyword">SELECT</span> id <span class="keyword">FROM</span> onlineusers</span><br><span class="line">    <span class="keyword">WHERE</span> datetime <span class="operator">&lt;=</span> now() <span class="operator">-</span> <span class="type">INTERVAL</span> <span class="number">900</span> <span class="keyword">SECOND</span> <span class="keyword">order</span> <span class="keyword">by</span> id) u;</span><br></pre></td></tr></table></figure>
+<p><strong>需要注意这样写可能会非常慢，因为IN中的子查询可能会不走索引，全表扫描，如果表中的数据很多，那这样就会产生很大的问题</strong></p>
+<ul>
+<li><p>可以修改为join：</p>
+  <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">UPDATE tableName <span class="keyword">AS</span> table1 <span class="keyword">JOIN</span> (<span class="keyword">SELECT</span> id <span class="keyword">FROM</span> tableName <span class="keyword">WHERE</span> <span class="keyword">AND</span> id <span class="keyword">IN</span> (<span class="number">3</span>,<span class="number">1</span>,<span class="number">2</span>) <span class="keyword">ORDER</span> <span class="keyword">BY</span> id) <span class="keyword">AS</span> table2 <span class="keyword">ON</span> table1.id<span class="operator">=</span>table2.id <span class="keyword">SET</span> column1<span class="operator">=</span><span class="number">1</span>;</span><br></pre></td></tr></table></figure></li>
+<li><p>或者可以修改为:</p>
+  <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">UPDATE tableNmae <span class="keyword">SET</span> column1<span class="operator">=</span><span class="number">1</span> <span class="keyword">WHERE</span> <span class="keyword">AND</span> id <span class="keyword">IN</span> (<span class="number">3</span>,<span class="number">1</span>,<span class="number">2</span>)  <span class="keyword">ORDER</span> <span class="keyword">BY</span> id;</span><br></pre></td></tr></table></figure>
+<p>  MySQL支持这种语法</p>
+</li>
+<li><p>或者可以在程序中把需要排序的字段排好序，然后再去执行SQL</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>DB</category>
+      </categories>
+      <tags>
+        <tag>DB</tag>
+        <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MyBatis中#和$的区别</title>
+    <url>/2017/11/03/MyBatis%E4%B8%AD-%E5%92%8C-%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[<blockquote>
+<p>#{ }：解析为一个 JDBC 预编译语句（prepared statement）的参数标记符，在SQL中解析为字符串</p>
+</blockquote>
+<p>如:  </p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SELECT * FROM test WHERE id=#&#123;id&#125;</span><br></pre></td></tr></table></figure>
+
+<p>解析为SQL时为</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> test1 <span class="keyword">WHERE</span> id<span class="operator">=</span>&quot;1&quot;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>${}：在SQL中解析为变量，不带引号</p>
+</blockquote>
+<p>如:</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SELECT * FROM $&#123;tableName&#125; WHERE id=&quot;1&quot;</span><br></pre></td></tr></table></figure>
+
+<p>解析为SQL时为</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> test2 <span class="keyword">WHERE</span> id<span class="operator">=</span>&quot;1&quot;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>框架</category>
+      </categories>
+      <tags>
+        <tag>Mybatis</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>SpringBoot自动配置</title>
     <url>/2021/06/04/SpringBoot%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<blockquote>
@@ -965,6 +965,74 @@
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p> SpringBoot的自动装配是由 <code>@EnableAutoConfiguration</code> 注解来实现的，而 <code>@EnableAutoConfiguration</code> 注解又是通过 <code>@AutoConfigurationPackage</code> 和 <code>@Import(AutoConfigurationImportSelector.class)</code> 来实现服务自身的自动配置和第三方依赖的自动配置</p>
 <p>注解关系如图：</p>
 <p> <img src="/images/SpringBoot%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE1.png" alt="image"></p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Spring</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Spring容器</title>
+    <url>/2017/09/14/Spring%E5%AE%B9%E5%99%A8/</url>
+    <content><![CDATA[<p>　　Spring容器是Spring框架当中的一个核心模块，用来管理对象。在基于Spring的应用中，你的对象生存在Spring的容器中，Spring容器负责创建对象，装配对象和配置他们，并且管理对象的整个生命周期。  </p>
+<h3 id="Spring容器类型"><a href="#Spring容器类型" class="headerlink" title="Spring容器类型"></a>Spring容器类型</h3><p>　　Spring容器并不是只有一个，而是有多个，大体上可以归为两种类型。<br>　　1. bean工厂:由org.springframework.beans.factoryeanFactory接口定义，是最简单的容器，提供基本的DI(依赖注入)<br>　　2. 应用上下文:由org.springframework.context.ApplicationContext接口定义，提供应用框架级别的服务，所以比bean工厂更受欢迎  </p>
+<h4 id="应用上下文"><a href="#应用上下文" class="headerlink" title="应用上下文"></a>应用上下文</h4><p>　　Spring自带了多种类型的应用上下文，常用的可能有这么几个:  </p>
+<blockquote>
+<ul>
+<li>AnnotationConfigApplicationContext:从一个或多个基于Java的配置类中加载Spring应用上下文  </li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>AnnotationConfigWebApplicationContext:从一个或多个基于Java的配置类中加载Spring Web应用上下文  </li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>ClassPathXmlApplicationContext:从类路径下的一个或多个XML配置文件中加载上下文定义，把应用上下文的定义文件作为类资源</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>FileSystemXmlapplicationContext:从文件系统下的一个或多个XML配置文件中加载上下文定义  </li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>XmlWebApplicationContext:从Web应用下的一个或多个XML配置文件中加载上下文定义  </li>
+</ul>
+</blockquote>
+<h3 id="启动Spring容器"><a href="#启动Spring容器" class="headerlink" title="启动Spring容器"></a>启动Spring容器</h3><p>　　启动容器常用的几种方式：  </p>
+<h4 id="手动启动Spring容器"><a href="#手动启动Spring容器" class="headerlink" title="手动启动Spring容器:"></a>手动启动Spring容器:</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ApplicationContext ac &#x3D; new ClassPathXmlApplicationContext(config);</span><br><span class="line">   &#x2F;&#x2F;ApplicationContext是接口</span><br><span class="line">   &#x2F;&#x2F;ClassPathXmlApplicationContext是一个具体类，实现了上述接口</span><br><span class="line">   &#x2F;&#x2F;config是配置文件的位置及文件名</span><br></pre></td></tr></table></figure>
+<h4 id="在Web项目中"><a href="#在Web项目中" class="headerlink" title="在Web项目中:"></a>在Web项目中:</h4><ul>
+<li>用监听器的方式来启动Spring容器:<br>在web.xml中<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;context-param&gt;</span><br><span class="line">    &lt;param-name&gt;contextConfigLocation&lt;&#x2F;param-name&gt;</span><br><span class="line">    &lt;param-value&gt;&#x2F;WEB-INF&#x2F;classes&#x2F;applicationContext-*.xml&lt;&#x2F;param-value&gt;</span><br><span class="line">&lt;&#x2F;context-param&gt;</span><br><span class="line">&lt;listener&gt; </span><br><span class="line">    &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener</span><br><span class="line"> &lt;&#x2F;listener-class&gt;</span><br><span class="line">&lt;&#x2F;listener&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;context-param&gt;</span><br><span class="line">    &lt;param-name&gt;contextConfigLocation&lt;&#x2F;param-name&gt;</span><br><span class="line">    &lt;param-value&gt;classpath:applicationContext.xml&lt;&#x2F;param-value&gt;</span><br><span class="line">&lt;&#x2F;context-param&gt;</span><br><span class="line">  &lt;listener&gt;</span><br><span class="line">    &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener</span><br><span class="line">&lt;&#x2F;listener-class&gt;</span><br><span class="line">  &lt;&#x2F;listener&gt;</span><br></pre></td></tr></table></figure></li>
+<li><del>用servlet方式来启动Spring容器：</del><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;servlet&gt; </span><br><span class="line">    &lt;servlet-name&gt;context&lt;&#x2F;servlet-name&gt; </span><br><span class="line">    &lt;servlet-class&gt;org.springframework.web.context.ContextLoaderServlet&lt;&#x2F;servlet-class&gt;</span><br><span class="line">    &lt;load-on-startup&gt;1&lt;&#x2F;load-on-startup&gt;</span><br><span class="line">&lt;&#x2F;servlet&gt; </span><br></pre></td></tr></table></figure>
+这种方式，spring3.0以后不再支持，建议使用监听器方式<h4 id="单元测试时启动Spring容器"><a href="#单元测试时启动Spring容器" class="headerlink" title="单元测试时启动Spring容器:"></a>单元测试时启动Spring容器:</h4>在用Junit进行单元测试时可以用@ContextConfiguration注解来启动Spring容器<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@ContextConfiguration(locations &#x3D; &quot;classpath:applicationContext.xml&quot;)</span><br><span class="line">@ContextConfiguration(locations &#x3D;&#123;&quot;&#x2F;applicationContext.xml&quot;&#125;)</span><br></pre></td></tr></table></figure>
+除了junit4和spring的jar包，还需要spring-test.jar</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Spring</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Spring中的FactoryBean</title>
+    <url>/2019/12/27/Spring%E4%B8%AD%E7%9A%84FactoryBean/</url>
+    <content><![CDATA[<p>Spring 中有两种类型的Bean，一种是普通Bean，另一种是工厂Bean 即 FactoryBean。<br>FactoryBean跟普通Bean不同，其返回的对象不是指定类的一个实例，而是该<code>FactoryBean</code>的<code>getObject</code>方法所返回的对象</p>
+<h3 id="FactoryBean接口定义"><a href="#FactoryBean接口定义" class="headerlink" title="FactoryBean接口定义"></a>FactoryBean接口定义</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> org.springframework.beans.factory;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">FactoryBean</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">//返回的对象实例</span></span><br><span class="line">    <span class="function">T <span class="title">getObject</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//Bean的类型</span></span><br><span class="line">    Class&lt;?&gt; getObjectType();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//true是单例，false是非单例  在Spring5.0中此方法利用了JDK1.8的新特性变成了default方法，返回true</span></span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">isSingleton</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><p>FactoryBean 通常是用来创建比较复杂的bean，一般的bean 直接用xml配置即可，但如果一个bean的创建过程中涉及到很多其他的bean 和复杂的逻辑，用xml配置比较困难，这时可以考虑用FactoryBean。</p>
+<blockquote>
+<p>当使用ApplicationContext的getBean()方法获取FactoryBean实例本身而不是它所产生的bean，则要使用&amp;符号+id。比如，现有FactoryBean，它有id，在容器上调用getBean(“myBean”)将返回FactoryBean所产生的bean，调用getBean(“&amp;myBean”)将返回FactoryBean它本身的实例。</p>
+</blockquote>
 ]]></content>
       <categories>
         <category>Java</category>
@@ -1055,74 +1123,6 @@
 </ol>
 <h4 id="正确的设置-Transactional-的-rollbackFor-属性"><a href="#正确的设置-Transactional-的-rollbackFor-属性" class="headerlink" title="正确的设置@Transactional 的 rollbackFor 属性"></a>正确的设置@Transactional 的 rollbackFor 属性</h4><p>默认情况下，如果在事务中抛出了未检查异常（继承自 RuntimeException 的异常）或者 Error，则 Spring 将回滚事务；除此之外，Spring 不会回滚事务。<br>而可以指定rollbackFor属性来设置回滚的异常等级，若在目标方法中抛出的异常是 rollbackFor 指定的异常的子类，事务同样会回滚。  </p>
 <h4 id="内部调用-Transactional不起作用"><a href="#内部调用-Transactional不起作用" class="headerlink" title="内部调用@Transactional不起作用"></a>内部调用@Transactional不起作用</h4><p>默认情况下，只有来自外部的方法调用才会被AOP代理捕获，也就是，类内部方法调用本类内部的其他方法并不会引起事务行为，即使被调用方法使用@Transactional注解进行修饰。</p>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>Spring</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Spring中的FactoryBean</title>
-    <url>/2019/12/27/Spring%E4%B8%AD%E7%9A%84FactoryBean/</url>
-    <content><![CDATA[<p>Spring 中有两种类型的Bean，一种是普通Bean，另一种是工厂Bean 即 FactoryBean。<br>FactoryBean跟普通Bean不同，其返回的对象不是指定类的一个实例，而是该<code>FactoryBean</code>的<code>getObject</code>方法所返回的对象</p>
-<h3 id="FactoryBean接口定义"><a href="#FactoryBean接口定义" class="headerlink" title="FactoryBean接口定义"></a>FactoryBean接口定义</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> org.springframework.beans.factory;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">FactoryBean</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">//返回的对象实例</span></span><br><span class="line">    <span class="function">T <span class="title">getObject</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//Bean的类型</span></span><br><span class="line">    Class&lt;?&gt; getObjectType();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//true是单例，false是非单例  在Spring5.0中此方法利用了JDK1.8的新特性变成了default方法，返回true</span></span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">isSingleton</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><p>FactoryBean 通常是用来创建比较复杂的bean，一般的bean 直接用xml配置即可，但如果一个bean的创建过程中涉及到很多其他的bean 和复杂的逻辑，用xml配置比较困难，这时可以考虑用FactoryBean。</p>
-<blockquote>
-<p>当使用ApplicationContext的getBean()方法获取FactoryBean实例本身而不是它所产生的bean，则要使用&amp;符号+id。比如，现有FactoryBean，它有id，在容器上调用getBean(“myBean”)将返回FactoryBean所产生的bean，调用getBean(“&amp;myBean”)将返回FactoryBean它本身的实例。</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>Spring</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Spring容器</title>
-    <url>/2017/09/14/Spring%E5%AE%B9%E5%99%A8/</url>
-    <content><![CDATA[<p>　　Spring容器是Spring框架当中的一个核心模块，用来管理对象。在基于Spring的应用中，你的对象生存在Spring的容器中，Spring容器负责创建对象，装配对象和配置他们，并且管理对象的整个生命周期。  </p>
-<h3 id="Spring容器类型"><a href="#Spring容器类型" class="headerlink" title="Spring容器类型"></a>Spring容器类型</h3><p>　　Spring容器并不是只有一个，而是有多个，大体上可以归为两种类型。<br>　　1. bean工厂:由org.springframework.beans.factoryeanFactory接口定义，是最简单的容器，提供基本的DI(依赖注入)<br>　　2. 应用上下文:由org.springframework.context.ApplicationContext接口定义，提供应用框架级别的服务，所以比bean工厂更受欢迎  </p>
-<h4 id="应用上下文"><a href="#应用上下文" class="headerlink" title="应用上下文"></a>应用上下文</h4><p>　　Spring自带了多种类型的应用上下文，常用的可能有这么几个:  </p>
-<blockquote>
-<ul>
-<li>AnnotationConfigApplicationContext:从一个或多个基于Java的配置类中加载Spring应用上下文  </li>
-</ul>
-</blockquote>
-<blockquote>
-<ul>
-<li>AnnotationConfigWebApplicationContext:从一个或多个基于Java的配置类中加载Spring Web应用上下文  </li>
-</ul>
-</blockquote>
-<blockquote>
-<ul>
-<li>ClassPathXmlApplicationContext:从类路径下的一个或多个XML配置文件中加载上下文定义，把应用上下文的定义文件作为类资源</li>
-</ul>
-</blockquote>
-<blockquote>
-<ul>
-<li>FileSystemXmlapplicationContext:从文件系统下的一个或多个XML配置文件中加载上下文定义  </li>
-</ul>
-</blockquote>
-<blockquote>
-<ul>
-<li>XmlWebApplicationContext:从Web应用下的一个或多个XML配置文件中加载上下文定义  </li>
-</ul>
-</blockquote>
-<h3 id="启动Spring容器"><a href="#启动Spring容器" class="headerlink" title="启动Spring容器"></a>启动Spring容器</h3><p>　　启动容器常用的几种方式：  </p>
-<h4 id="手动启动Spring容器"><a href="#手动启动Spring容器" class="headerlink" title="手动启动Spring容器:"></a>手动启动Spring容器:</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ApplicationContext ac &#x3D; new ClassPathXmlApplicationContext(config);</span><br><span class="line">   &#x2F;&#x2F;ApplicationContext是接口</span><br><span class="line">   &#x2F;&#x2F;ClassPathXmlApplicationContext是一个具体类，实现了上述接口</span><br><span class="line">   &#x2F;&#x2F;config是配置文件的位置及文件名</span><br></pre></td></tr></table></figure>
-<h4 id="在Web项目中"><a href="#在Web项目中" class="headerlink" title="在Web项目中:"></a>在Web项目中:</h4><ul>
-<li>用监听器的方式来启动Spring容器:<br>在web.xml中<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;context-param&gt;</span><br><span class="line">    &lt;param-name&gt;contextConfigLocation&lt;&#x2F;param-name&gt;</span><br><span class="line">    &lt;param-value&gt;&#x2F;WEB-INF&#x2F;classes&#x2F;applicationContext-*.xml&lt;&#x2F;param-value&gt;</span><br><span class="line">&lt;&#x2F;context-param&gt;</span><br><span class="line">&lt;listener&gt; </span><br><span class="line">    &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener</span><br><span class="line"> &lt;&#x2F;listener-class&gt;</span><br><span class="line">&lt;&#x2F;listener&gt;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;context-param&gt;</span><br><span class="line">    &lt;param-name&gt;contextConfigLocation&lt;&#x2F;param-name&gt;</span><br><span class="line">    &lt;param-value&gt;classpath:applicationContext.xml&lt;&#x2F;param-value&gt;</span><br><span class="line">&lt;&#x2F;context-param&gt;</span><br><span class="line">  &lt;listener&gt;</span><br><span class="line">    &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener</span><br><span class="line">&lt;&#x2F;listener-class&gt;</span><br><span class="line">  &lt;&#x2F;listener&gt;</span><br></pre></td></tr></table></figure></li>
-<li><del>用servlet方式来启动Spring容器：</del><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;servlet&gt; </span><br><span class="line">    &lt;servlet-name&gt;context&lt;&#x2F;servlet-name&gt; </span><br><span class="line">    &lt;servlet-class&gt;org.springframework.web.context.ContextLoaderServlet&lt;&#x2F;servlet-class&gt;</span><br><span class="line">    &lt;load-on-startup&gt;1&lt;&#x2F;load-on-startup&gt;</span><br><span class="line">&lt;&#x2F;servlet&gt; </span><br></pre></td></tr></table></figure>
-这种方式，spring3.0以后不再支持，建议使用监听器方式<h4 id="单元测试时启动Spring容器"><a href="#单元测试时启动Spring容器" class="headerlink" title="单元测试时启动Spring容器:"></a>单元测试时启动Spring容器:</h4>在用Junit进行单元测试时可以用@ContextConfiguration注解来启动Spring容器<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@ContextConfiguration(locations &#x3D; &quot;classpath:applicationContext.xml&quot;)</span><br><span class="line">@ContextConfiguration(locations &#x3D;&#123;&quot;&#x2F;applicationContext.xml&quot;&#125;)</span><br></pre></td></tr></table></figure>
-除了junit4和spring的jar包，还需要spring-test.jar</li>
-</ul>
 ]]></content>
       <categories>
         <category>Java</category>
@@ -1482,6 +1482,18 @@
       </categories>
   </entry>
   <entry>
+    <title>常用Idea插件</title>
+    <url>/2018/01/17/%E5%B8%B8%E7%94%A8Idea%E6%8F%92%E4%BB%B6/</url>
+    <content><![CDATA[<p><img src="/images/idea-plugins.jpg" alt="idea插件"></p>
+]]></content>
+      <categories>
+        <category>IDE</category>
+      </categories>
+      <tags>
+        <tag>IDEA</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>收藏备用：60 余家免费正版图片网站</title>
     <url>/2017/11/16/%E6%94%B6%E8%97%8F%E5%A4%87%E7%94%A8%EF%BC%9A60-%E4%BD%99%E5%AE%B6%E5%85%8D%E8%B4%B9%E6%AD%A3%E7%89%88%E5%9B%BE%E7%89%87%E7%BD%91%E7%AB%99/</url>
     <content><![CDATA[<blockquote>
@@ -1639,18 +1651,6 @@
       </tags>
   </entry>
   <entry>
-    <title>常用Idea插件</title>
-    <url>/2018/01/17/%E5%B8%B8%E7%94%A8Idea%E6%8F%92%E4%BB%B6/</url>
-    <content><![CDATA[<p><img src="/images/idea-plugins.jpg" alt="idea插件"></p>
-]]></content>
-      <categories>
-        <category>IDE</category>
-      </categories>
-      <tags>
-        <tag>IDEA</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>服务日志优化</title>
     <url>/2021/01/04/%E6%9C%8D%E5%8A%A1%E6%97%A5%E5%BF%97%E4%BC%98%E5%8C%96/</url>
     <content><![CDATA[<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><blockquote>
@@ -1780,60 +1780,6 @@
       </tags>
   </entry>
   <entry>
-    <title>线程安全与锁优化</title>
-    <url>/2020/04/06/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E4%B8%8E%E9%94%81%E4%BC%98%E5%8C%96/</url>
-    <content><![CDATA[<h3 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h3><h4 id="Java中的线程安全"><a href="#Java中的线程安全" class="headerlink" title="Java中的线程安全"></a>Java中的线程安全</h4><p>按照线程安全的“安全程度”分为五大类：不可变、绝对线程安全、相对线程安全、线程兼容和线程对立</p>
-<ol>
-<li><strong>不可变</strong><br>在Java中不可变(Immutable)对象一定是线程安全的，无论是对象的方法实现还是方法的调用者，都不需要再进行任何线程安全保护措施。如<code>final</code>关键字</li>
-<li><strong>绝对线程安全</strong><br>绝对的线程安全是指“不管运行时环境如何，调用者都不需要任何额外的同步策略”，绝对的线程安全是需要付出非常高的代价的，甚至是不切实际的代价。而在Java API中标注是线程安全的类，大多数都不是绝对的线程安全，都是相对的线程安全</li>
-<li><strong>相对线程安全</strong><br>相对线程安全就是我们通常意义上所讲的线程安全。它需要保证<strong>对象单次的操作是安全的,</strong> 如<code>Vector</code>的<code>get()</code>方法，这个方法是同步的。但是对于一些特定顺序的连续调用，则需要调用端使用额外的同步手段来保证正确性，如使用<code>synchronized</code>关键字<br>在Java中，大部分声明线程安全的类都属于这种类型，如<code>Vector</code>、<code>HashTable</code>、<code>ConcurrentHashMap</code>和<code>Collections</code>的<code>synchronizedCollection()</code>方法包装的集合等</li>
-<li><strong>线程兼容</strong><br>线程兼容是值对象本身并不是线程安全的，但是通过调用端正确的使用同步手段来保证对象在并发环境中可以安全的使用。平常我们说一个类不是线程安全的，指的就是这种情况。<br>Java类库中大部分类都是线程兼容的，如<code>ArrayList</code>和<code>HashMap</code>等</li>
-<li><strong>线程对立</strong><br>线程独立是指不管调用端是否采取了同步措施，都无法在多线程环境中并发使用。<br>线程对立这种情况是很少出现的，而且通常都是有害的，应当避免<br>如<code>Thread</code>类的<code>suspend()</code>和<code>resume()</code>方法。</li>
-</ol>
-<h4 id="线程安全的实现方法"><a href="#线程安全的实现方法" class="headerlink" title="线程安全的实现方法"></a>线程安全的实现方法</h4><ol>
-<li><p><strong>互斥同步</strong><br>互斥同步是最常见也是最主要的并发保障手段。同步是指共享数据在同一时刻只能背一个线程使用，而互斥是实现同步的一种手段，<code>临界区(Critical Section)</code>、<code>互斥量(Mutex)</code>和<code>信号量(Semaphore)</code>都是常见的互斥实现方式</p>
-<ul>
-<li>synchronized关键字:<br>在Java中，最基本的互斥同步手段就是<code>synchronized关键字</code>，这是一个块结构的语法。<code>synchronized</code>关键字经过javac编译后，会在同步块前后形成<code>monitorenter</code>和<code>monitorexit</code>两个字节码指令。<br>在执行<code>monitorenter</code>指令时，首先尝试去获取对象锁，如果对象没有被锁定或当前线程已经持有了该对象的锁，就把锁的计数器增加一，而在执行<code>monitorexit</code>指令时将会将锁计数器的值减一。当锁计数器的值为0时，锁则被释放了。如果获取对象锁失败则会一直阻塞等待，直到获取到锁  </li>
-</ul>
-</li>
-</ol>
-<p><strong><code>synchronized</code>对于一个线程来说是可重入的，同时<code>synchronized</code>中的锁是非公平的</strong></p>
-<pre><code>- 重入锁(ReentrantLock):  
-</code></pre>
-<p>重入锁(ReentrantLock)是Lock接口最常见的一种实现，与<code>synchronized</code>相似，但是比<code>synchronized</code>相比多了一些高级功能，主要是：等待可中断、可实现公平锁(默认也是非公平锁)、可以绑定多个条件</p>
-<ol start="2">
-<li><p><strong>非阻塞同步</strong><br>互斥同步也被称为阻塞同步，是一种悲观悲观的并发策略，主要问题是进行线程阻塞和唤醒所带来的性能开销。与之对应的则是乐观的并发策略，最常用的是不断的重试，直接操作共享数据，当出现冲突时，不断的重试，直到没有冲突。<br>最常见的方法是CAS(Compare-and-Swap)，如juc包中的<code>Atomic</code>类则是通过自旋和CAS实现的，同时CAS可能会出现ABA问题，但是大部分情况下ABA问题不会影响程序并发的正确性</p>
-</li>
-<li><p><strong>无同步方案</strong><br>如果让一个方法不涉及多线程共享数据，自然也不需要去保证线程安全，因为他们天生就是线程安全的，如<code>ThreadLocal</code>这个类，每一个<code>Thread</code>对象都有一个<code>ThreadLocalMap</code>对象，用来存储当前线程的变量</p>
-</li>
-</ol>
-<h3 id="锁优化"><a href="#锁优化" class="headerlink" title="锁优化"></a>锁优化</h3><blockquote>
-<p>JDK 5升级到JDK 6后，进行了大量的锁优化</p>
-</blockquote>
-<h4 id="自旋锁和自适应自旋"><a href="#自旋锁和自适应自旋" class="headerlink" title="自旋锁和自适应自旋"></a>自旋锁和自适应自旋</h4><ul>
-<li>自旋锁：当线程尝试获取锁时发现冲突，则让获取锁的线程等一会，但不放弃CPU的执行时间，而让线程等待则让线程执行一个循环(自旋)即可</li>
-<li>自适应自旋：自旋所等待的时间必须有一定的限度，如果超过了限定的次数仍然没有获取到锁，则使用传统的方法挂起该线程，自旋次数默认是10次。而自适应自旋则是自旋的时间不再固定了，而是由前一次在同一个锁上的自旋时间及锁的拥有者的状态来决定</li>
-</ul>
-<h4 id="锁消除"><a href="#锁消除" class="headerlink" title="锁消除"></a>锁消除</h4><p>锁消除是虚拟机即时编译器在运行时，检测到数据不可能被其他线程访问，则会对锁进行消除。锁消除的主要判断依据来源于逃逸分析的数据支持，如果判断一段代码在堆上的所有数据都不会逃逸出去被其他线程访问到，则可以把他们当作栈上的数据对待，认为他们是线程私有的</p>
-<h4 id="锁粗化"><a href="#锁粗化" class="headerlink" title="锁粗化"></a>锁粗化</h4><p>如果虚拟机探测到有一串零碎的操作都对同一个对象加锁，将会把加锁同步的范围扩展(粗化)到整个操作序列的外部。如果<code>StringBuffer.append()</code>方法，连续操作append方法，锁则会扩展到第一个append方法之前和最后一个append方法之后，只需加一次锁就可以</p>
-<h4 id="轻量级锁"><a href="#轻量级锁" class="headerlink" title="轻量级锁"></a>轻量级锁</h4><blockquote>
-<p>轻量级锁是通过CAS来实现的</p>
-</blockquote>
-<p>HotSpot虚拟机的对象头中有一部分用来存储对象自身的运行时数据，如哈希码，GC分代年龄、存储标识位、偏向模式等，官方称它为“Mark Word”。</p>
-<p>在代码即将进入同步块之前，如果同步对象没有被锁定，则在当前线程的栈帧中建立一个锁记录(Lock Record)的空间，用来存储锁对象Mark Word的拷贝。<br>然后虚拟机使用CAS操作尝试把对象的Mark Word更新为Lock Record的指针，如果更新成功，则代表该线程拥有了这个对象的所，如果更新失败了，首先检查是否是当前线程拥有了这个对象的锁，如果是的话直接执行即可，如果不是则说明锁被其他线程抢占了。解锁反之。</p>
-<p>如果出现两个线程争用一个锁的情况，那轻量级锁则不再有效，必须膨胀为重量级锁</p>
-<h4 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h4><p>轻量级锁是在无竞争的情况下使用CAS来消除同步的互斥量，而偏向锁是在无竞争的情况下把整个同步都消除掉，连CAS都不再操作</p>
-<p>具体是这样的，当锁对象第一次被线程获取的时候，虚拟机将会把对象头中的标志位设置为“01”、把偏向模式设置为“1”，标识进入偏向模式。同时使用CAS操作把获取这个锁的线程ID记录在了对象头的Mark Word中，如果CAS操作成功，持有偏向锁的线程以后每次进入这个锁都不需要有任何同步操作。但是如果另外的线程去尝试获取这个锁，偏向模式则马上宣告结束</p>
-<p>偏向锁是一种权衡的优化，如果程序中的大多数锁都总是被多个不同的线程访问，那偏向模式反而是多余的。具体情况具体分析，可以使用参数<code>-CC:-UseBiasedLocking</code>来禁止偏向锁优化</p>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>缓存更新的套路</title>
     <url>/2017/10/23/%E7%BC%93%E5%AD%98%E6%9B%B4%E6%96%B0%E7%9A%84%E5%A5%97%E8%B7%AF/</url>
     <content><![CDATA[<blockquote>
@@ -1893,6 +1839,60 @@
       <tags>
         <tag>Cache</tag>
         <tag>转载</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>线程安全与锁优化</title>
+    <url>/2020/04/06/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E4%B8%8E%E9%94%81%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<h3 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h3><h4 id="Java中的线程安全"><a href="#Java中的线程安全" class="headerlink" title="Java中的线程安全"></a>Java中的线程安全</h4><p>按照线程安全的“安全程度”分为五大类：不可变、绝对线程安全、相对线程安全、线程兼容和线程对立</p>
+<ol>
+<li><strong>不可变</strong><br>在Java中不可变(Immutable)对象一定是线程安全的，无论是对象的方法实现还是方法的调用者，都不需要再进行任何线程安全保护措施。如<code>final</code>关键字</li>
+<li><strong>绝对线程安全</strong><br>绝对的线程安全是指“不管运行时环境如何，调用者都不需要任何额外的同步策略”，绝对的线程安全是需要付出非常高的代价的，甚至是不切实际的代价。而在Java API中标注是线程安全的类，大多数都不是绝对的线程安全，都是相对的线程安全</li>
+<li><strong>相对线程安全</strong><br>相对线程安全就是我们通常意义上所讲的线程安全。它需要保证<strong>对象单次的操作是安全的,</strong> 如<code>Vector</code>的<code>get()</code>方法，这个方法是同步的。但是对于一些特定顺序的连续调用，则需要调用端使用额外的同步手段来保证正确性，如使用<code>synchronized</code>关键字<br>在Java中，大部分声明线程安全的类都属于这种类型，如<code>Vector</code>、<code>HashTable</code>、<code>ConcurrentHashMap</code>和<code>Collections</code>的<code>synchronizedCollection()</code>方法包装的集合等</li>
+<li><strong>线程兼容</strong><br>线程兼容是值对象本身并不是线程安全的，但是通过调用端正确的使用同步手段来保证对象在并发环境中可以安全的使用。平常我们说一个类不是线程安全的，指的就是这种情况。<br>Java类库中大部分类都是线程兼容的，如<code>ArrayList</code>和<code>HashMap</code>等</li>
+<li><strong>线程对立</strong><br>线程独立是指不管调用端是否采取了同步措施，都无法在多线程环境中并发使用。<br>线程对立这种情况是很少出现的，而且通常都是有害的，应当避免<br>如<code>Thread</code>类的<code>suspend()</code>和<code>resume()</code>方法。</li>
+</ol>
+<h4 id="线程安全的实现方法"><a href="#线程安全的实现方法" class="headerlink" title="线程安全的实现方法"></a>线程安全的实现方法</h4><ol>
+<li><p><strong>互斥同步</strong><br>互斥同步是最常见也是最主要的并发保障手段。同步是指共享数据在同一时刻只能背一个线程使用，而互斥是实现同步的一种手段，<code>临界区(Critical Section)</code>、<code>互斥量(Mutex)</code>和<code>信号量(Semaphore)</code>都是常见的互斥实现方式</p>
+<ul>
+<li>synchronized关键字:<br>在Java中，最基本的互斥同步手段就是<code>synchronized关键字</code>，这是一个块结构的语法。<code>synchronized</code>关键字经过javac编译后，会在同步块前后形成<code>monitorenter</code>和<code>monitorexit</code>两个字节码指令。<br>在执行<code>monitorenter</code>指令时，首先尝试去获取对象锁，如果对象没有被锁定或当前线程已经持有了该对象的锁，就把锁的计数器增加一，而在执行<code>monitorexit</code>指令时将会将锁计数器的值减一。当锁计数器的值为0时，锁则被释放了。如果获取对象锁失败则会一直阻塞等待，直到获取到锁  </li>
+</ul>
+</li>
+</ol>
+<p><strong><code>synchronized</code>对于一个线程来说是可重入的，同时<code>synchronized</code>中的锁是非公平的</strong></p>
+<pre><code>- 重入锁(ReentrantLock):  
+</code></pre>
+<p>重入锁(ReentrantLock)是Lock接口最常见的一种实现，与<code>synchronized</code>相似，但是比<code>synchronized</code>相比多了一些高级功能，主要是：等待可中断、可实现公平锁(默认也是非公平锁)、可以绑定多个条件</p>
+<ol start="2">
+<li><p><strong>非阻塞同步</strong><br>互斥同步也被称为阻塞同步，是一种悲观悲观的并发策略，主要问题是进行线程阻塞和唤醒所带来的性能开销。与之对应的则是乐观的并发策略，最常用的是不断的重试，直接操作共享数据，当出现冲突时，不断的重试，直到没有冲突。<br>最常见的方法是CAS(Compare-and-Swap)，如juc包中的<code>Atomic</code>类则是通过自旋和CAS实现的，同时CAS可能会出现ABA问题，但是大部分情况下ABA问题不会影响程序并发的正确性</p>
+</li>
+<li><p><strong>无同步方案</strong><br>如果让一个方法不涉及多线程共享数据，自然也不需要去保证线程安全，因为他们天生就是线程安全的，如<code>ThreadLocal</code>这个类，每一个<code>Thread</code>对象都有一个<code>ThreadLocalMap</code>对象，用来存储当前线程的变量</p>
+</li>
+</ol>
+<h3 id="锁优化"><a href="#锁优化" class="headerlink" title="锁优化"></a>锁优化</h3><blockquote>
+<p>JDK 5升级到JDK 6后，进行了大量的锁优化</p>
+</blockquote>
+<h4 id="自旋锁和自适应自旋"><a href="#自旋锁和自适应自旋" class="headerlink" title="自旋锁和自适应自旋"></a>自旋锁和自适应自旋</h4><ul>
+<li>自旋锁：当线程尝试获取锁时发现冲突，则让获取锁的线程等一会，但不放弃CPU的执行时间，而让线程等待则让线程执行一个循环(自旋)即可</li>
+<li>自适应自旋：自旋所等待的时间必须有一定的限度，如果超过了限定的次数仍然没有获取到锁，则使用传统的方法挂起该线程，自旋次数默认是10次。而自适应自旋则是自旋的时间不再固定了，而是由前一次在同一个锁上的自旋时间及锁的拥有者的状态来决定</li>
+</ul>
+<h4 id="锁消除"><a href="#锁消除" class="headerlink" title="锁消除"></a>锁消除</h4><p>锁消除是虚拟机即时编译器在运行时，检测到数据不可能被其他线程访问，则会对锁进行消除。锁消除的主要判断依据来源于逃逸分析的数据支持，如果判断一段代码在堆上的所有数据都不会逃逸出去被其他线程访问到，则可以把他们当作栈上的数据对待，认为他们是线程私有的</p>
+<h4 id="锁粗化"><a href="#锁粗化" class="headerlink" title="锁粗化"></a>锁粗化</h4><p>如果虚拟机探测到有一串零碎的操作都对同一个对象加锁，将会把加锁同步的范围扩展(粗化)到整个操作序列的外部。如果<code>StringBuffer.append()</code>方法，连续操作append方法，锁则会扩展到第一个append方法之前和最后一个append方法之后，只需加一次锁就可以</p>
+<h4 id="轻量级锁"><a href="#轻量级锁" class="headerlink" title="轻量级锁"></a>轻量级锁</h4><blockquote>
+<p>轻量级锁是通过CAS来实现的</p>
+</blockquote>
+<p>HotSpot虚拟机的对象头中有一部分用来存储对象自身的运行时数据，如哈希码，GC分代年龄、存储标识位、偏向模式等，官方称它为“Mark Word”。</p>
+<p>在代码即将进入同步块之前，如果同步对象没有被锁定，则在当前线程的栈帧中建立一个锁记录(Lock Record)的空间，用来存储锁对象Mark Word的拷贝。<br>然后虚拟机使用CAS操作尝试把对象的Mark Word更新为Lock Record的指针，如果更新成功，则代表该线程拥有了这个对象的所，如果更新失败了，首先检查是否是当前线程拥有了这个对象的锁，如果是的话直接执行即可，如果不是则说明锁被其他线程抢占了。解锁反之。</p>
+<p>如果出现两个线程争用一个锁的情况，那轻量级锁则不再有效，必须膨胀为重量级锁</p>
+<h4 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h4><p>轻量级锁是在无竞争的情况下使用CAS来消除同步的互斥量，而偏向锁是在无竞争的情况下把整个同步都消除掉，连CAS都不再操作</p>
+<p>具体是这样的，当锁对象第一次被线程获取的时候，虚拟机将会把对象头中的标志位设置为“01”、把偏向模式设置为“1”，标识进入偏向模式。同时使用CAS操作把获取这个锁的线程ID记录在了对象头的Mark Word中，如果CAS操作成功，持有偏向锁的线程以后每次进入这个锁都不需要有任何同步操作。但是如果另外的线程去尝试获取这个锁，偏向模式则马上宣告结束</p>
+<p>偏向锁是一种权衡的优化，如果程序中的大多数锁都总是被多个不同的线程访问，那偏向模式反而是多余的。具体情况具体分析，可以使用参数<code>-CC:-UseBiasedLocking</code>来禁止偏向锁优化</p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
