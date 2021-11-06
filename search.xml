@@ -164,66 +164,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Elasticsearch安装启动报错</title>
-    <url>/2018/01/02/Elasticsearch%E5%AE%89%E8%A3%85%E5%90%AF%E5%8A%A8%E6%8A%A5%E9%94%99/</url>
-    <content><![CDATA[<p>Elasticsearch在启动./elasticsearch时报错:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[2018-01-02T10:47:17,157][WARN ][o.e.b.ElasticsearchUncaughtExceptionHandler] [node-1] uncaught exception in thread [main]</span><br><span class="line">org.elasticsearch.bootstrap.StartupException: java.lang.RuntimeException: can not run elasticsearch as root</span><br><span class="line">	at org.elasticsearch.bootstrap.Elasticsearch.init(Elasticsearch.java:125) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.bootstrap.Elasticsearch.execute(Elasticsearch.java:112) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.cli.EnvironmentAwareCommand.execute(EnvironmentAwareCommand.java:86) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.cli.Command.mainWithoutErrorHandling(Command.java:124) ~[elasticsearch-cli-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.cli.Command.main(Command.java:90) ~[elasticsearch-cli-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:92) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:85) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">Caused by: java.lang.RuntimeException: can not run elasticsearch as root</span><br><span class="line">	at org.elasticsearch.bootstrap.Bootstrap.initializeNatives(Bootstrap.java:104) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.bootstrap.Bootstrap.setup(Bootstrap.java:171) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.bootstrap.Bootstrap.init(Bootstrap.java:322) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.bootstrap.Elasticsearch.init(Elasticsearch.java:121) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	... 6 more</span><br></pre></td></tr></table></figure>
-<p>这是因为在Elasticsearch5.0以后不让用root用户直接运行，所以需要创建新用户：<br>1.创建新用户adduser xxx,给新用户添加密码passwd xxx<br>2.root给xxx赋权限，chown -R xxx /elasticsearch安装目录<br>3.切换用户su xxx<br>4.再执行./elasticsearch启动ES</p>
-]]></content>
-      <categories>
-        <category>存储</category>
-      </categories>
-      <tags>
-        <tag>Elasticsearch</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>EventBus事件总线</title>
-    <url>/2017/11/08/EventBus%E4%BA%8B%E4%BB%B6%E6%80%BB%E7%BA%BF/</url>
-    <content><![CDATA[<p>EventBus是Guava的事件处理机制，是设计模式中的观察者模式（生产/消费者编程模型）实现的<br>EventBus类是guava中关注消息的发布和订阅的类，简单的说订阅者通过EventBus注册并订阅事件，发布者将事件发送到EventBus中，EventBus将事件顺序的通知给时间订阅者  </p>
-<h4 id="EventBus概述"><a href="#EventBus概述" class="headerlink" title="EventBus概述"></a>EventBus概述</h4><blockquote>
-<h5 id="EventBus的三要素"><a href="#EventBus的三要素" class="headerlink" title="EventBus的三要素"></a>EventBus的三要素</h5></blockquote>
-<ul>
-<li>Event：事件，可以是任意类型的对象。</li>
-<li>Subscriber：事件订阅者，在EventBus3.0之前消息处理的方法只能限定于onEvent、onEventMainThread、onEventBackgroundThread和onEventAsync，他们分别代表四种线程模型。而在EventBus3.0之后，事件处理的方法可以随便取名，但是需要添加一个注解@Subscribe，并且要指定线程模型（默认为POSTING），四种线程模型下面会讲到。</li>
-<li>Publisher：事件发布者，可以在任意线程任意位置发送事件，直接调用EventBus的post(Object)方法。可以自己实例化EventBus对象，但一般使用EventBus.getDefault()就好了，根据post函数参数的类型，会自动调用订阅相应类型事件的函数。</li>
-</ul>
-<blockquote>
-<h5 id="EventBus的四种ThreadMode（线程模型）"><a href="#EventBus的四种ThreadMode（线程模型）" class="headerlink" title="EventBus的四种ThreadMode（线程模型）"></a>EventBus的四种ThreadMode（线程模型）</h5></blockquote>
-<p>EventBus3.0有以下四种ThreadMode： </p>
-<ul>
-<li>POSTING（默认）：如果使用事件处理函数指定了线程模型为POSTING，那么该事件在哪个线程发布出来的，事件处理函数就会在这个线程中运行，也就是说发布事件和接收事件在同一个线程。在线程模型为POSTING的事件处理函数中尽量避免执行耗时操作，因为它会阻塞事件的传递，甚至有可能会引起ANR。  </li>
-<li>MAIN:<br>事件的处理会在UI线程中执行。事件处理时间不能太长，长了会ANR的。</li>
-<li>BACKGROUND：如果事件是在UI线程中发布出来的，那么该事件处理函数就会在新的线程中运行，如果事件本来就是子线程中发布出来的，那么该事件处理函数直接在发布事件的线程中执行。在此事件处理函数中禁止进行UI更新操作。  </li>
-<li>ASYNC：无论事件在哪个线程发布，该事件处理函数都会在新建的子线程中执行，同样，此事件处理函数中禁止进行UI更新操作。</li>
-</ul>
-<h4 id="创建EventBus实例"><a href="#创建EventBus实例" class="headerlink" title="创建EventBus实例"></a>创建EventBus实例</h4><p>创建一个EventBus实例，只需要简单的调用构造方法:</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">EventBus eventBus = <span class="keyword">new</span> EventBus();</span><br></pre></td></tr></table></figure>
-<p>也提供了一个带参数的构造类,目的只是为了加上一个标识:</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">EventBus eventBus = <span class="keyword">new</span> EventBus(TradeAccountEvent.class.getName());</span><br></pre></td></tr></table></figure>
-<h4 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h4><p>1.自定义一个事件类：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MessageEvent</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>2.注册事件：<br><code>EventBus.register(Object)</code>方法，请保证事件生产者和监听者共享相同的EventBus实例。<br>或静态方法<code>EventBus.getDefault().register(this);</code>(3.0支持)</p>
-<p>3.订阅事件：<br>这个类需要定义一个只接受一个参数的public方法，参数的类型要和订阅的事件类型一致。<br>需要在方法上加上@Subscribe注解  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Subscribe(threadMode = ThreadMode.MAIN)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">XXX</span><span class="params">(MessageEvent messageEvent)</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>threadMode不指定默认为POSTING  </p>
-<p>4.发送事件：<br><code>EventBus.post(Object)</code>方法。异步分发可以直接用EventBus的子类AsyncEventBus<br>或静态方法<code>EventBus.getDefault().post(messageEvent);</code>(3.0支持)  </p>
-<p>5.取消注册：<br><code>EventBus.unregister(Object)</code>方法<br>或静态方法<code>EventBus.getDefault().unregister(this);</code>(3.0支持)</p>
-<h4 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">EventBusObject</span></span>&#123;</span><br><span class="line">    EventBus eventBus = <span class="keyword">new</span> EventBus();</span><br><span class="line">    <span class="comment">//注册</span></span><br><span class="line">    eventBus.register(<span class="keyword">this</span>);</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">changeCustomer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Object event = <span class="keyword">new</span> Object();</span><br><span class="line">        <span class="comment">//发布事件</span></span><br><span class="line">        eventBus.post(event);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//取消注册</span></span><br><span class="line">    eventBus.unregister(<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//订阅事件</span></span><br><span class="line">    <span class="meta">@Subscribe</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">listen</span><span class="params">(Object e)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>Guava</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Code Review</title>
     <url>/2021/06/19/Code%20Review/</url>
     <content><![CDATA[<h2 id="认识-Code-Review"><a href="#认识-Code-Review" class="headerlink" title="认识 Code Review"></a>认识 Code Review</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>Code Review是一种用来确认方案设计和代码实现的质量保证机制，通过这个机制对代码、测试过程和注释进行检查，确保整体代码运行状况随着时间的推移而得到改善。</p>
@@ -348,6 +288,99 @@
       </tags>
   </entry>
   <entry>
+    <title>Elasticsearch安装启动报错</title>
+    <url>/2018/01/02/Elasticsearch%E5%AE%89%E8%A3%85%E5%90%AF%E5%8A%A8%E6%8A%A5%E9%94%99/</url>
+    <content><![CDATA[<p>Elasticsearch在启动./elasticsearch时报错:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[2018-01-02T10:47:17,157][WARN ][o.e.b.ElasticsearchUncaughtExceptionHandler] [node-1] uncaught exception in thread [main]</span><br><span class="line">org.elasticsearch.bootstrap.StartupException: java.lang.RuntimeException: can not run elasticsearch as root</span><br><span class="line">	at org.elasticsearch.bootstrap.Elasticsearch.init(Elasticsearch.java:125) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.bootstrap.Elasticsearch.execute(Elasticsearch.java:112) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.cli.EnvironmentAwareCommand.execute(EnvironmentAwareCommand.java:86) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.cli.Command.mainWithoutErrorHandling(Command.java:124) ~[elasticsearch-cli-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.cli.Command.main(Command.java:90) ~[elasticsearch-cli-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:92) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:85) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">Caused by: java.lang.RuntimeException: can not run elasticsearch as root</span><br><span class="line">	at org.elasticsearch.bootstrap.Bootstrap.initializeNatives(Bootstrap.java:104) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.bootstrap.Bootstrap.setup(Bootstrap.java:171) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.bootstrap.Bootstrap.init(Bootstrap.java:322) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	at org.elasticsearch.bootstrap.Elasticsearch.init(Elasticsearch.java:121) ~[elasticsearch-6.1.1.jar:6.1.1]</span><br><span class="line">	... 6 more</span><br></pre></td></tr></table></figure>
+<p>这是因为在Elasticsearch5.0以后不让用root用户直接运行，所以需要创建新用户：<br>1.创建新用户adduser xxx,给新用户添加密码passwd xxx<br>2.root给xxx赋权限，chown -R xxx /elasticsearch安装目录<br>3.切换用户su xxx<br>4.再执行./elasticsearch启动ES</p>
+]]></content>
+      <categories>
+        <category>Elasticsearch</category>
+      </categories>
+      <tags>
+        <tag>Elasticsearch</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>EventBus事件总线</title>
+    <url>/2017/11/08/EventBus%E4%BA%8B%E4%BB%B6%E6%80%BB%E7%BA%BF/</url>
+    <content><![CDATA[<p>EventBus是Guava的事件处理机制，是设计模式中的观察者模式（生产/消费者编程模型）实现的<br>EventBus类是guava中关注消息的发布和订阅的类，简单的说订阅者通过EventBus注册并订阅事件，发布者将事件发送到EventBus中，EventBus将事件顺序的通知给时间订阅者  </p>
+<h4 id="EventBus概述"><a href="#EventBus概述" class="headerlink" title="EventBus概述"></a>EventBus概述</h4><blockquote>
+<h5 id="EventBus的三要素"><a href="#EventBus的三要素" class="headerlink" title="EventBus的三要素"></a>EventBus的三要素</h5></blockquote>
+<ul>
+<li>Event：事件，可以是任意类型的对象。</li>
+<li>Subscriber：事件订阅者，在EventBus3.0之前消息处理的方法只能限定于onEvent、onEventMainThread、onEventBackgroundThread和onEventAsync，他们分别代表四种线程模型。而在EventBus3.0之后，事件处理的方法可以随便取名，但是需要添加一个注解@Subscribe，并且要指定线程模型（默认为POSTING），四种线程模型下面会讲到。</li>
+<li>Publisher：事件发布者，可以在任意线程任意位置发送事件，直接调用EventBus的post(Object)方法。可以自己实例化EventBus对象，但一般使用EventBus.getDefault()就好了，根据post函数参数的类型，会自动调用订阅相应类型事件的函数。</li>
+</ul>
+<blockquote>
+<h5 id="EventBus的四种ThreadMode（线程模型）"><a href="#EventBus的四种ThreadMode（线程模型）" class="headerlink" title="EventBus的四种ThreadMode（线程模型）"></a>EventBus的四种ThreadMode（线程模型）</h5></blockquote>
+<p>EventBus3.0有以下四种ThreadMode： </p>
+<ul>
+<li>POSTING（默认）：如果使用事件处理函数指定了线程模型为POSTING，那么该事件在哪个线程发布出来的，事件处理函数就会在这个线程中运行，也就是说发布事件和接收事件在同一个线程。在线程模型为POSTING的事件处理函数中尽量避免执行耗时操作，因为它会阻塞事件的传递，甚至有可能会引起ANR。  </li>
+<li>MAIN:<br>事件的处理会在UI线程中执行。事件处理时间不能太长，长了会ANR的。</li>
+<li>BACKGROUND：如果事件是在UI线程中发布出来的，那么该事件处理函数就会在新的线程中运行，如果事件本来就是子线程中发布出来的，那么该事件处理函数直接在发布事件的线程中执行。在此事件处理函数中禁止进行UI更新操作。  </li>
+<li>ASYNC：无论事件在哪个线程发布，该事件处理函数都会在新建的子线程中执行，同样，此事件处理函数中禁止进行UI更新操作。</li>
+</ul>
+<h4 id="创建EventBus实例"><a href="#创建EventBus实例" class="headerlink" title="创建EventBus实例"></a>创建EventBus实例</h4><p>创建一个EventBus实例，只需要简单的调用构造方法:</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">EventBus eventBus = <span class="keyword">new</span> EventBus();</span><br></pre></td></tr></table></figure>
+<p>也提供了一个带参数的构造类,目的只是为了加上一个标识:</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">EventBus eventBus = <span class="keyword">new</span> EventBus(TradeAccountEvent.class.getName());</span><br></pre></td></tr></table></figure>
+<h4 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h4><p>1.自定义一个事件类：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MessageEvent</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2.注册事件：<br><code>EventBus.register(Object)</code>方法，请保证事件生产者和监听者共享相同的EventBus实例。<br>或静态方法<code>EventBus.getDefault().register(this);</code>(3.0支持)</p>
+<p>3.订阅事件：<br>这个类需要定义一个只接受一个参数的public方法，参数的类型要和订阅的事件类型一致。<br>需要在方法上加上@Subscribe注解  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Subscribe(threadMode = ThreadMode.MAIN)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">XXX</span><span class="params">(MessageEvent messageEvent)</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>threadMode不指定默认为POSTING  </p>
+<p>4.发送事件：<br><code>EventBus.post(Object)</code>方法。异步分发可以直接用EventBus的子类AsyncEventBus<br>或静态方法<code>EventBus.getDefault().post(messageEvent);</code>(3.0支持)  </p>
+<p>5.取消注册：<br><code>EventBus.unregister(Object)</code>方法<br>或静态方法<code>EventBus.getDefault().unregister(this);</code>(3.0支持)</p>
+<h4 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">EventBusObject</span></span>&#123;</span><br><span class="line">    EventBus eventBus = <span class="keyword">new</span> EventBus();</span><br><span class="line">    <span class="comment">//注册</span></span><br><span class="line">    eventBus.register(<span class="keyword">this</span>);</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">changeCustomer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Object event = <span class="keyword">new</span> Object();</span><br><span class="line">        <span class="comment">//发布事件</span></span><br><span class="line">        eventBus.post(event);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//取消注册</span></span><br><span class="line">    eventBus.unregister(<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//订阅事件</span></span><br><span class="line">    <span class="meta">@Subscribe</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">listen</span><span class="params">(Object e)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Guava</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Guava CaChe</title>
+    <url>/2017/11/08/Guava-CaChe/</url>
+    <content><![CDATA[<p>Guava CaChe是本地（进程内）缓存</p>
+<blockquote>
+<h4 id="引包"><a href="#引包" class="headerlink" title="引包"></a>引包</h4></blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;  </span><br><span class="line">    &lt;groupId&gt;com.google.guava&lt;&#x2F;groupId&gt;  </span><br><span class="line">    &lt;artifactId&gt;guava&lt;&#x2F;artifactId&gt;  </span><br><span class="line">    &lt;version&gt;19.0&lt;&#x2F;version&gt;  </span><br><span class="line">&lt;&#x2F;dependency&gt;  </span><br></pre></td></tr></table></figure>
+<blockquote>
+<h4 id="Cache接口及其实现"><a href="#Cache接口及其实现" class="headerlink" title="Cache接口及其实现"></a>Cache接口及其实现</h4></blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Cache&lt;k, v&gt; cache &#x3D; CacheBuilder.newBuilder()  </span><br><span class="line">        &#x2F;&#x2F;设置cache的初始大小为10，要合理设置该值  </span><br><span class="line">        .initialCapacity(10)  </span><br><span class="line">        &#x2F;&#x2F;设置并发数为5，即同一时间最多只能有5个线程往cache执行写入操作  </span><br><span class="line">        .concurrencyLevel(5)  </span><br><span class="line">        &#x2F;&#x2F;设置cache中的数据在写入之后的存活时间为10秒  </span><br><span class="line">        .expireAfterWrite(10, TimeUnit.SECONDS)  </span><br><span class="line">        &#x2F;&#x2F;构建cache实例  </span><br><span class="line">        .....</span><br><span class="line">        .build();  </span><br></pre></td></tr></table></figure>
+<p>接口Cache是泛型，很好的支持了不同类型的key和value<br>TimeUnit.SECONDS 存活时间单位为秒<br>TimeUnit.HOURSC 存活时间单位为小时<br>TimeUnit.DAYS 存活时间单位为天</p>
+<p>例如:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">LoadingCache&lt;Key, Object&gt; cache&#x3D; CacheBuilder.newBuilder()</span><br><span class="line">        .expireAfterWrite(10, TimeUnit.MINUTES)</span><br><span class="line">        .build(</span><br><span class="line">            new CacheLoader&lt;Key, Object&gt;() &#123;</span><br><span class="line">                public Object load(Key key) throws AnyException &#123;</span><br><span class="line">                    return getObject(key);</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<h4 id="Cache提供的常用方法"><a href="#Cache提供的常用方法" class="headerlink" title="Cache提供的常用方法"></a>Cache提供的常用方法</h4></blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;** </span><br><span class="line"> * 该接口的实现被认为是线程安全的，即可在多线程中调用 </span><br><span class="line"> * 通过被定义单例使用 </span><br><span class="line"> *&#x2F;  </span><br><span class="line">public interface Cache&lt;K, V&gt; &#123;  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 通过key获取缓存中的value，若不存在直接返回null </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  V getIfPresent(Object key);  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 通过key获取缓存中的value，若不存在就通过valueLoader来加载该value </span><br><span class="line">   * 整个过程为 &quot;if cached, return; otherwise create, cache and return&quot; </span><br><span class="line">   * 注意valueLoader要么返回非null值，要么抛出异常，绝对不能返回null </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  V get(K key, Callable&lt;? extends V&gt; valueLoader) throws ExecutionException;  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 添加缓存，若key存在，就覆盖旧值 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void put(K key, V value);  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 删除该key关联的缓存 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void invalidate(Object key);  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 删除所有缓存 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void invalidateAll();  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 执行一些维护操作，包括清理缓存 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void cleanUp();  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<h4 id="清除缓存"><a href="#清除缓存" class="headerlink" title="清除缓存"></a>清除缓存</h4></blockquote>
+<h5 id="基于存活时间的清除"><a href="#基于存活时间的清除" class="headerlink" title="基于存活时间的清除"></a>基于存活时间的清除</h5><p>这应该是最常用的清除策略，在构建Cache实例的时候，CacheBuilder提供两种基于存活时间的构建方法：<br>（1）expireAfterAccess(long, TimeUnit)：缓存项在创建后，在给定时间内没有被读/写访问，则清除。<br>（2）expireAfterWrite(long, TimeUnit)：缓存项在创建后，在给定时间内没有被写访问（创建或覆盖），则清除。expireAfterWrite()方法有些类似于redis中的expire命令，但显然它只能设置所有缓存都具有相同的存活时间。</p>
+<h5 id="基于容量的清除"><a href="#基于容量的清除" class="headerlink" title="基于容量的清除"></a>基于容量的清除</h5><p>在构建Cache实例的时候，通过CacheBuilder.maximumSize(long)方法可以设置Cache的最大容量数，当缓存数量达到或接近该最大值时，Cache将清除掉那些最近最少使用的缓存。<br>以上是这种方式是以缓存的“数量”作为容量的计算方式，还有另外一种基于“权重”的计算方式。比如每一项缓存所占据的内存空间大小都不一样，可以看作它们有不同的“权重”（weights）。你可以使用CacheBuilder.weigher(Weigher)指定一个权重函数，并且用CacheBuilder.maximumWeight(long)指定最大总重</p>
+<h5 id="显式清除"><a href="#显式清除" class="headerlink" title="显式清除"></a>显式清除</h5><p>任何时候，都可以显式地清除缓存项，而不是等到它被回收，Cache接口提供了如下API：<br>（1）个别清除：Cache.invalidate(key)<br>（2）批量清除：Cache.invalidateAll(keys)<br>（3）清除所有缓存项：Cache.invalidateAll()  </p>
+<h5 id="基于引用的清除"><a href="#基于引用的清除" class="headerlink" title="基于引用的清除"></a>基于引用的清除</h5><p>在构建Cache实例过程中，通过设置使用弱引用的键、或弱引用的值、或软引用的值，从而使JVM在GC时顺带实现缓存的清除，不过一般不轻易使用这个特性。<br>（1）CacheBuilder.weakKeys()：使用弱引用存储键<br>（2）CacheBuilder.weakValues()：使用弱引用存储值<br>（3）CacheBuilder.softValues()：使用软引用存储值  </p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Guava</tag>
+        <tag>Cache</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Java 8 Optional类深度解析</title>
     <url>/2017/12/29/Java-8-Optional%E7%B1%BB%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/</url>
     <content><![CDATA[<blockquote>
@@ -395,58 +428,6 @@
         <tag>Java</tag>
         <tag>Guava</tag>
         <tag>转载</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Guava CaChe</title>
-    <url>/2017/11/08/Guava-CaChe/</url>
-    <content><![CDATA[<p>Guava CaChe是本地（进程内）缓存</p>
-<blockquote>
-<h4 id="引包"><a href="#引包" class="headerlink" title="引包"></a>引包</h4></blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;  </span><br><span class="line">    &lt;groupId&gt;com.google.guava&lt;&#x2F;groupId&gt;  </span><br><span class="line">    &lt;artifactId&gt;guava&lt;&#x2F;artifactId&gt;  </span><br><span class="line">    &lt;version&gt;19.0&lt;&#x2F;version&gt;  </span><br><span class="line">&lt;&#x2F;dependency&gt;  </span><br></pre></td></tr></table></figure>
-<blockquote>
-<h4 id="Cache接口及其实现"><a href="#Cache接口及其实现" class="headerlink" title="Cache接口及其实现"></a>Cache接口及其实现</h4></blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Cache&lt;k, v&gt; cache &#x3D; CacheBuilder.newBuilder()  </span><br><span class="line">        &#x2F;&#x2F;设置cache的初始大小为10，要合理设置该值  </span><br><span class="line">        .initialCapacity(10)  </span><br><span class="line">        &#x2F;&#x2F;设置并发数为5，即同一时间最多只能有5个线程往cache执行写入操作  </span><br><span class="line">        .concurrencyLevel(5)  </span><br><span class="line">        &#x2F;&#x2F;设置cache中的数据在写入之后的存活时间为10秒  </span><br><span class="line">        .expireAfterWrite(10, TimeUnit.SECONDS)  </span><br><span class="line">        &#x2F;&#x2F;构建cache实例  </span><br><span class="line">        .....</span><br><span class="line">        .build();  </span><br></pre></td></tr></table></figure>
-<p>接口Cache是泛型，很好的支持了不同类型的key和value<br>TimeUnit.SECONDS 存活时间单位为秒<br>TimeUnit.HOURSC 存活时间单位为小时<br>TimeUnit.DAYS 存活时间单位为天</p>
-<p>例如:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">LoadingCache&lt;Key, Object&gt; cache&#x3D; CacheBuilder.newBuilder()</span><br><span class="line">        .expireAfterWrite(10, TimeUnit.MINUTES)</span><br><span class="line">        .build(</span><br><span class="line">            new CacheLoader&lt;Key, Object&gt;() &#123;</span><br><span class="line">                public Object load(Key key) throws AnyException &#123;</span><br><span class="line">                    return getObject(key);</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<h4 id="Cache提供的常用方法"><a href="#Cache提供的常用方法" class="headerlink" title="Cache提供的常用方法"></a>Cache提供的常用方法</h4></blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;** </span><br><span class="line"> * 该接口的实现被认为是线程安全的，即可在多线程中调用 </span><br><span class="line"> * 通过被定义单例使用 </span><br><span class="line"> *&#x2F;  </span><br><span class="line">public interface Cache&lt;K, V&gt; &#123;  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 通过key获取缓存中的value，若不存在直接返回null </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  V getIfPresent(Object key);  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 通过key获取缓存中的value，若不存在就通过valueLoader来加载该value </span><br><span class="line">   * 整个过程为 &quot;if cached, return; otherwise create, cache and return&quot; </span><br><span class="line">   * 注意valueLoader要么返回非null值，要么抛出异常，绝对不能返回null </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  V get(K key, Callable&lt;? extends V&gt; valueLoader) throws ExecutionException;  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 添加缓存，若key存在，就覆盖旧值 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void put(K key, V value);  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 删除该key关联的缓存 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void invalidate(Object key);  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 删除所有缓存 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void invalidateAll();  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 执行一些维护操作，包括清理缓存 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void cleanUp();  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<h4 id="清除缓存"><a href="#清除缓存" class="headerlink" title="清除缓存"></a>清除缓存</h4></blockquote>
-<h5 id="基于存活时间的清除"><a href="#基于存活时间的清除" class="headerlink" title="基于存活时间的清除"></a>基于存活时间的清除</h5><p>这应该是最常用的清除策略，在构建Cache实例的时候，CacheBuilder提供两种基于存活时间的构建方法：<br>（1）expireAfterAccess(long, TimeUnit)：缓存项在创建后，在给定时间内没有被读/写访问，则清除。<br>（2）expireAfterWrite(long, TimeUnit)：缓存项在创建后，在给定时间内没有被写访问（创建或覆盖），则清除。expireAfterWrite()方法有些类似于redis中的expire命令，但显然它只能设置所有缓存都具有相同的存活时间。</p>
-<h5 id="基于容量的清除"><a href="#基于容量的清除" class="headerlink" title="基于容量的清除"></a>基于容量的清除</h5><p>在构建Cache实例的时候，通过CacheBuilder.maximumSize(long)方法可以设置Cache的最大容量数，当缓存数量达到或接近该最大值时，Cache将清除掉那些最近最少使用的缓存。<br>以上是这种方式是以缓存的“数量”作为容量的计算方式，还有另外一种基于“权重”的计算方式。比如每一项缓存所占据的内存空间大小都不一样，可以看作它们有不同的“权重”（weights）。你可以使用CacheBuilder.weigher(Weigher)指定一个权重函数，并且用CacheBuilder.maximumWeight(long)指定最大总重</p>
-<h5 id="显式清除"><a href="#显式清除" class="headerlink" title="显式清除"></a>显式清除</h5><p>任何时候，都可以显式地清除缓存项，而不是等到它被回收，Cache接口提供了如下API：<br>（1）个别清除：Cache.invalidate(key)<br>（2）批量清除：Cache.invalidateAll(keys)<br>（3）清除所有缓存项：Cache.invalidateAll()  </p>
-<h5 id="基于引用的清除"><a href="#基于引用的清除" class="headerlink" title="基于引用的清除"></a>基于引用的清除</h5><p>在构建Cache实例过程中，通过设置使用弱引用的键、或弱引用的值、或软引用的值，从而使JVM在GC时顺带实现缓存的清除，不过一般不轻易使用这个特性。<br>（1）CacheBuilder.weakKeys()：使用弱引用存储键<br>（2）CacheBuilder.weakValues()：使用弱引用存储值<br>（3）CacheBuilder.softValues()：使用软引用存储值  </p>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>Guava</tag>
-        <tag>Cache</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java字符串生成对应MD5摘要</title>
-    <url>/2017/10/13/Java%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%94%9F%E6%88%90%E5%AF%B9%E5%BA%94MD5%E6%91%98%E8%A6%81/</url>
-    <content><![CDATA[<p>MD5全名Message-Digest Algorithm 5（信息-摘要算法）是一种不可逆的加密算法  </p>
-<p>MD5可以用来一致性验证、数字签名和安全访问认证</p>
-<p>在Java中有时需要生成给定字符串的MD5摘要：</p>
-<h5 id="1-导包"><a href="#1-导包" class="headerlink" title="1.导包"></a>1.导包</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;commons-codec&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;commons-codec&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.8&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
-<h5 id="2-调用md5Hex方法"><a href="#2-调用md5Hex方法" class="headerlink" title="2.调用md5Hex方法"></a>2.调用md5Hex方法</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">String str &#x3D; &quot;123456&quot;;</span><br><span class="line">String md5 &#x3D; DigestUtils.md5Hex(str);</span><br><span class="line">System.out.println(md5); </span><br><span class="line">&#x2F;&#x2F;e10adc3949ba59abbe56e057f20f883e</span><br></pre></td></tr></table></figure>
-<p>还可以加盐来增加保密性：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">String salt &#x3D; &quot;MD5盐&quot;;</span><br><span class="line">md5 &#x3D; DigestUtils.md5Hex(salt+str);</span><br><span class="line">System.out.println(md5); </span><br><span class="line">&#x2F;&#x2F;196c6ed9e9e3af1a576f5938b35f1b46</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
@@ -537,6 +518,25 @@
       <tags>
         <tag>Java</tag>
         <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java字符串生成对应MD5摘要</title>
+    <url>/2017/10/13/Java%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%94%9F%E6%88%90%E5%AF%B9%E5%BA%94MD5%E6%91%98%E8%A6%81/</url>
+    <content><![CDATA[<p>MD5全名Message-Digest Algorithm 5（信息-摘要算法）是一种不可逆的加密算法  </p>
+<p>MD5可以用来一致性验证、数字签名和安全访问认证</p>
+<p>在Java中有时需要生成给定字符串的MD5摘要：</p>
+<h5 id="1-导包"><a href="#1-导包" class="headerlink" title="1.导包"></a>1.导包</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;commons-codec&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;commons-codec&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.8&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="2-调用md5Hex方法"><a href="#2-调用md5Hex方法" class="headerlink" title="2.调用md5Hex方法"></a>2.调用md5Hex方法</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">String str &#x3D; &quot;123456&quot;;</span><br><span class="line">String md5 &#x3D; DigestUtils.md5Hex(str);</span><br><span class="line">System.out.println(md5); </span><br><span class="line">&#x2F;&#x2F;e10adc3949ba59abbe56e057f20f883e</span><br></pre></td></tr></table></figure>
+<p>还可以加盐来增加保密性：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">String salt &#x3D; &quot;MD5盐&quot;;</span><br><span class="line">md5 &#x3D; DigestUtils.md5Hex(salt+str);</span><br><span class="line">System.out.println(md5); </span><br><span class="line">&#x2F;&#x2F;196c6ed9e9e3af1a576f5938b35f1b46</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
@@ -666,34 +666,6 @@
       </categories>
       <tags>
         <tag>Linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MyBatis中#和$的区别</title>
-    <url>/2017/11/03/MyBatis%E4%B8%AD-%E5%92%8C-%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
-    <content><![CDATA[<blockquote>
-<p>#{ }：解析为一个 JDBC 预编译语句（prepared statement）的参数标记符，在SQL中解析为字符串</p>
-</blockquote>
-<p>如:  </p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SELECT * FROM test WHERE id=#&#123;id&#125;</span><br></pre></td></tr></table></figure>
-
-<p>解析为SQL时为</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> test1 <span class="keyword">WHERE</span> id<span class="operator">=</span>&quot;1&quot;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>${}：在SQL中解析为变量，不带引号</p>
-</blockquote>
-<p>如:</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SELECT * FROM $&#123;tableName&#125; WHERE id=&quot;1&quot;</span><br></pre></td></tr></table></figure>
-
-<p>解析为SQL时为</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> test2 <span class="keyword">WHERE</span> id<span class="operator">=</span>&quot;1&quot;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>框架</category>
-      </categories>
-      <tags>
-        <tag>Mybatis</tag>
       </tags>
   </entry>
   <entry>
@@ -859,6 +831,34 @@
       </categories>
       <tags>
         <tag>Netty</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MyBatis中#和$的区别</title>
+    <url>/2017/11/03/MyBatis%E4%B8%AD-%E5%92%8C-%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[<blockquote>
+<p>#{ }：解析为一个 JDBC 预编译语句（prepared statement）的参数标记符，在SQL中解析为字符串</p>
+</blockquote>
+<p>如:  </p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SELECT * FROM test WHERE id=#&#123;id&#125;</span><br></pre></td></tr></table></figure>
+
+<p>解析为SQL时为</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> test1 <span class="keyword">WHERE</span> id<span class="operator">=</span>&quot;1&quot;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>${}：在SQL中解析为变量，不带引号</p>
+</blockquote>
+<p>如:</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SELECT * FROM $&#123;tableName&#125; WHERE id=&quot;1&quot;</span><br></pre></td></tr></table></figure>
+
+<p>解析为SQL时为</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> test2 <span class="keyword">WHERE</span> id<span class="operator">=</span>&quot;1&quot;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>框架</category>
+      </categories>
+      <tags>
+        <tag>Mybatis</tag>
       </tags>
   </entry>
   <entry>
@@ -1379,42 +1379,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Web fragments</title>
-    <url>/2021/02/19/Web%20fragments/</url>
-    <content><![CDATA[<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p><code>Web fragments</code>是<code>servlet 3.0</code>开始支持的一个特性(可插性支持)，通过插件的方式很方便的扩充已有<code>Web</code>应用的功能，而不需要修改原有的应用</p>
-<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><blockquote>
-<p>Servlet 3.0 的部署描述文件 web.xml 的顶层标签 有一个 metadata-complete 属性，该属性指定当前的部署描述文件是否是完全的。如果设置为 true，则容器在部署时将只依赖部署描述文件，忽略所有的注解（同时也会跳过 web-fragment.xml 的扫描，亦即禁用可插性支持，具体请看后文关于 <a href="https://www.ibm.com/developerworks/cn/java/j-lo-servlet30/#major4">可插性支持</a> 的讲解）；如果不配置该属性，或者将其设置为 false，则表示启用注解支持（和可插性支持）。</p>
-</blockquote>
-<h3 id="Web-fragments语法和规则"><a href="#Web-fragments语法和规则" class="headerlink" title="Web fragments语法和规则"></a>Web fragments语法和规则</h3><ol>
-<li><code>Web fragments</code> 需要有 <code>web-fragment.xml</code> 的部署描述文件，该文件必须存放在 <code>JAR</code> 文件的 <code>META-INF</code> 目录下，该部署描述文件可以包含一切可以在 <code>web.xml</code> 中定义的内容(过滤器、监听器与<code>Servlet</code>)</li>
-<li>包含 <code>web-fragment.xml</code> 的 <code>JAR</code> 应该部署到 <code>Web</code> 应用程序的 <code>WEBINF/lib</code> 目录中</li>
-<li><code>web-fragment.xml</code> 的根元素是 <code>&lt;web-fragment&gt;</code>，它可以包含 <code>DD(web.xml)</code> 中 <code>&lt;web-app&gt;</code> 元素的任何子元素。</li>
-<li>每个 <code>web-fragment.xml</code> 都可以包含一个 <code>name</code> 元素。<code>name</code> 元素在所有 <code>Web</code> 片段中应该是唯一的，并且不应有任何循环引用或循环，否则容器将因有意义的错误中止应用程序部署。该名称将用于 <code>Web</code> 片段的任何排序。</li>
-<li>可以使用元素 <code>&lt;absolute-ordering&gt;</code> 从 <code>web.xml</code> 中指定 <code>Web</code> 片段的顺序。也可以使用元素 <code>&lt;ordering&gt;</code> 从 <code>Web</code> 片段本身内部指定 <code>Web</code> 片段的顺序。在 <code>web.xml</code> 或 <code>Web</code> 片段中，元素按照声明的顺序加载。</li>
-<li>并且如果 <code>web-fragment.xml</code> 和 <code>web.xml</code> 之间存在冲突，则 <code>web.xml</code> 将具有优先权。但是，如果两个片段之间存在冲突，则会引发错误。</li>
-</ol>
-<h3 id="配置内容"><a href="#配置内容" class="headerlink" title="配置内容"></a>配置内容</h3><blockquote>
-<p>servlet、filter、listener三个可以定义任何一个，也可以全部定义</p>
-</blockquote>
-<ul>
-<li><p>web-fragment.xml:</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">web-fragment</span> <span class="attr">id</span>=<span class="string">&quot;WebFragment_ID&quot;</span> <span class="attr">version</span>=<span class="string">&quot;3.1&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns</span>=<span class="string">&quot;http://xmlns.jcp.org/xml/ns/javaee&quot;</span> <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-fragment_3_1.xsd&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>Test<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- servlet --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>servletTest<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>com.xxx.xxx.servlets.ServletTest<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">load-on-startup</span>&gt;</span>1<span class="tag">&lt;/<span class="name">load-on-startup</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>servletTest<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- filter --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>filterTest<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>com.xxx.xxx.FilterTest<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">async-supported</span>&gt;</span>true<span class="tag">&lt;/<span class="name">async-supported</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>filterTest<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- listener --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">listener</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">listener-class</span>&gt;</span>com.xxx.xxx.ListenerTest<span class="tag">&lt;/<span class="name">listener-class</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">listener</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">ordering</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 表示在项目所有之前进行初始化 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">before</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">others</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">before</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 表示在项目所有之后进行初始化 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">after</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">others</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">after</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ordering</span>&gt;</span></span><br><span class="line">    </span><br><span class="line"><span class="tag">&lt;/<span class="name">web-fragment</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
-<li><p>Servlet:</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> javax.servlet.ServletException;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServlet;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServletTest</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">service</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.service(req, resp);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.destroy();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>Filter:</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> javax.servlet.Filter;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.FilterChain;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.FilterConfig;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletException;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletResponse;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FilterTest</span> <span class="keyword">implements</span> <span class="title">Filter</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(FilterConfig filterConfig)</span> <span class="keyword">throws</span> ServletException </span>&#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFilter</span><span class="params">(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>Listener:</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> javax.servlet.ServletRequestEvent;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletRequestListener;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListenerTest</span> <span class="keyword">implements</span> <span class="title">ServletRequestListener</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">requestDestroyed</span><span class="params">(ServletRequestEvent servletRequestEvent)</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">requestInitialized</span><span class="params">(ServletRequestEvent servletRequestEvent)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ThreadPoolExecutor</title>
     <url>/2020/04/02/ThreadPoolExecutor/</url>
     <content><![CDATA[<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>ThreadPoolExecutor是Java中线程池的核心实现类</p>
@@ -1456,6 +1420,42 @@
 <li>submit方便Exception处理：可以通过捕获Future.get抛出的异常</li>
 </ol>
 <h3 id="例子："><a href="#例子：" class="headerlink" title="例子："></a>例子：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ThreadFactory factory &#x3D; new ThreadFactoryBuilder().setDaemon(true).setNameFormat(&quot;test-666-%d&quot;).build();</span><br><span class="line">ExecutorService threadPoolExecutor &#x3D; new ThreadPoolExecutor(5, 5, 0L, TimeUnit.SECONDS, new LinkedBlockingQueue&lt;Runnable&gt;(), factory);</span><br><span class="line">threadPoolExecutor.execute(()-&gt;&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;);</span><br><span class="line">&lt;!--threadPoolExecutor.submit(()-&gt;&#123;--&gt;</span><br><span class="line">&lt;!--    ...--&gt;</span><br><span class="line">&lt;!--&#125;);--&gt;</span><br><span class="line">threadPoolExecutor.shutdown();</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Web fragments</title>
+    <url>/2021/02/19/Web%20fragments/</url>
+    <content><![CDATA[<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p><code>Web fragments</code>是<code>servlet 3.0</code>开始支持的一个特性(可插性支持)，通过插件的方式很方便的扩充已有<code>Web</code>应用的功能，而不需要修改原有的应用</p>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><blockquote>
+<p>Servlet 3.0 的部署描述文件 web.xml 的顶层标签 有一个 metadata-complete 属性，该属性指定当前的部署描述文件是否是完全的。如果设置为 true，则容器在部署时将只依赖部署描述文件，忽略所有的注解（同时也会跳过 web-fragment.xml 的扫描，亦即禁用可插性支持，具体请看后文关于 <a href="https://www.ibm.com/developerworks/cn/java/j-lo-servlet30/#major4">可插性支持</a> 的讲解）；如果不配置该属性，或者将其设置为 false，则表示启用注解支持（和可插性支持）。</p>
+</blockquote>
+<h3 id="Web-fragments语法和规则"><a href="#Web-fragments语法和规则" class="headerlink" title="Web fragments语法和规则"></a>Web fragments语法和规则</h3><ol>
+<li><code>Web fragments</code> 需要有 <code>web-fragment.xml</code> 的部署描述文件，该文件必须存放在 <code>JAR</code> 文件的 <code>META-INF</code> 目录下，该部署描述文件可以包含一切可以在 <code>web.xml</code> 中定义的内容(过滤器、监听器与<code>Servlet</code>)</li>
+<li>包含 <code>web-fragment.xml</code> 的 <code>JAR</code> 应该部署到 <code>Web</code> 应用程序的 <code>WEBINF/lib</code> 目录中</li>
+<li><code>web-fragment.xml</code> 的根元素是 <code>&lt;web-fragment&gt;</code>，它可以包含 <code>DD(web.xml)</code> 中 <code>&lt;web-app&gt;</code> 元素的任何子元素。</li>
+<li>每个 <code>web-fragment.xml</code> 都可以包含一个 <code>name</code> 元素。<code>name</code> 元素在所有 <code>Web</code> 片段中应该是唯一的，并且不应有任何循环引用或循环，否则容器将因有意义的错误中止应用程序部署。该名称将用于 <code>Web</code> 片段的任何排序。</li>
+<li>可以使用元素 <code>&lt;absolute-ordering&gt;</code> 从 <code>web.xml</code> 中指定 <code>Web</code> 片段的顺序。也可以使用元素 <code>&lt;ordering&gt;</code> 从 <code>Web</code> 片段本身内部指定 <code>Web</code> 片段的顺序。在 <code>web.xml</code> 或 <code>Web</code> 片段中，元素按照声明的顺序加载。</li>
+<li>并且如果 <code>web-fragment.xml</code> 和 <code>web.xml</code> 之间存在冲突，则 <code>web.xml</code> 将具有优先权。但是，如果两个片段之间存在冲突，则会引发错误。</li>
+</ol>
+<h3 id="配置内容"><a href="#配置内容" class="headerlink" title="配置内容"></a>配置内容</h3><blockquote>
+<p>servlet、filter、listener三个可以定义任何一个，也可以全部定义</p>
+</blockquote>
+<ul>
+<li><p>web-fragment.xml:</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">web-fragment</span> <span class="attr">id</span>=<span class="string">&quot;WebFragment_ID&quot;</span> <span class="attr">version</span>=<span class="string">&quot;3.1&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns</span>=<span class="string">&quot;http://xmlns.jcp.org/xml/ns/javaee&quot;</span> <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-fragment_3_1.xsd&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>Test<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- servlet --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>servletTest<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>com.xxx.xxx.servlets.ServletTest<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">load-on-startup</span>&gt;</span>1<span class="tag">&lt;/<span class="name">load-on-startup</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>servletTest<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- filter --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>filterTest<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>com.xxx.xxx.FilterTest<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">async-supported</span>&gt;</span>true<span class="tag">&lt;/<span class="name">async-supported</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>filterTest<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- listener --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">listener</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">listener-class</span>&gt;</span>com.xxx.xxx.ListenerTest<span class="tag">&lt;/<span class="name">listener-class</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">listener</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">ordering</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 表示在项目所有之前进行初始化 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">before</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">others</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">before</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 表示在项目所有之后进行初始化 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">after</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">others</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">after</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ordering</span>&gt;</span></span><br><span class="line">    </span><br><span class="line"><span class="tag">&lt;/<span class="name">web-fragment</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>Servlet:</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> javax.servlet.ServletException;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServlet;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServletTest</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">service</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.service(req, resp);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.destroy();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>Filter:</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> javax.servlet.Filter;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.FilterChain;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.FilterConfig;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletException;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletResponse;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FilterTest</span> <span class="keyword">implements</span> <span class="title">Filter</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(FilterConfig filterConfig)</span> <span class="keyword">throws</span> ServletException </span>&#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFilter</span><span class="params">(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>Listener:</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> javax.servlet.ServletRequestEvent;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletRequestListener;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListenerTest</span> <span class="keyword">implements</span> <span class="title">ServletRequestListener</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">requestDestroyed</span><span class="params">(ServletRequestEvent servletRequestEvent)</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">requestInitialized</span><span class="params">(ServletRequestEvent servletRequestEvent)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
       <categories>
         <category>Java</category>
       </categories>
@@ -1525,6 +1525,23 @@
       </categories>
       <tags>
         <tag>前端</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>rest easy注解</title>
+    <url>/2017/11/02/rest-easy%E6%B3%A8%E8%A7%A3/</url>
+    <content><![CDATA[<p>@Path，标注资源类或方法的相对路径,@Path不仅仅接收简单的路径表达式,也可以使用正则表达式</p>
+<p>@GET，@PUT，@POST，@DELETE，标注方法是用的HTTP请求的类型</p>
+<p>@Produces，当服务器端实行完成相关的逻辑需要返回对象的时候，程序会根据@Produces返回相应的对象类型</p>
+<p>@Consumes，我们从页面提交数据到后台的时候,数据的类型可以是text的,xml的,json的,但是我们在请求资源的时候想要请求到同一个资源路径上面去，此时怎么来区分处理呢?使用@Consumes标注</p>
+<p>@PathParam，@QueryParam，@HeaderParam，@CookieParam，@MatrixParam，@FormParam,分别标注方法的参数来自于HTTP请求的不同位置，例如@PathParam来自于URL的路径，@QueryParam来自于URL的查询参数，@HeaderParam来自于HTTP请求的头信息，@CookieParam来自于HTTP请求的Cookie，@FormParam来自Form表单中的参数</p>
+<p>@DefaultValue，有些参数值在没有值的情况下如果需要有默认值,则使用这个标注</p>
+]]></content>
+      <categories>
+        <category>框架</category>
+      </categories>
+      <tags>
+        <tag>Resteasy</tag>
       </tags>
   </entry>
   <entry>
@@ -1676,23 +1693,6 @@
       </categories>
       <tags>
         <tag>DB</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>rest easy注解</title>
-    <url>/2017/11/02/rest-easy%E6%B3%A8%E8%A7%A3/</url>
-    <content><![CDATA[<p>@Path，标注资源类或方法的相对路径,@Path不仅仅接收简单的路径表达式,也可以使用正则表达式</p>
-<p>@GET，@PUT，@POST，@DELETE，标注方法是用的HTTP请求的类型</p>
-<p>@Produces，当服务器端实行完成相关的逻辑需要返回对象的时候，程序会根据@Produces返回相应的对象类型</p>
-<p>@Consumes，我们从页面提交数据到后台的时候,数据的类型可以是text的,xml的,json的,但是我们在请求资源的时候想要请求到同一个资源路径上面去，此时怎么来区分处理呢?使用@Consumes标注</p>
-<p>@PathParam，@QueryParam，@HeaderParam，@CookieParam，@MatrixParam，@FormParam,分别标注方法的参数来自于HTTP请求的不同位置，例如@PathParam来自于URL的路径，@QueryParam来自于URL的查询参数，@HeaderParam来自于HTTP请求的头信息，@CookieParam来自于HTTP请求的Cookie，@FormParam来自Form表单中的参数</p>
-<p>@DefaultValue，有些参数值在没有值的情况下如果需要有默认值,则使用这个标注</p>
-]]></content>
-      <categories>
-        <category>框架</category>
-      </categories>
-      <tags>
-        <tag>Resteasy</tag>
       </tags>
   </entry>
   <entry>
@@ -2137,8 +2137,8 @@
         <category>转载</category>
       </categories>
       <tags>
-        <tag>转载</tag>
         <tag>Cache</tag>
+        <tag>转载</tag>
       </tags>
   </entry>
   <entry>
@@ -2591,8 +2591,8 @@
         <category>转载</category>
       </categories>
       <tags>
-        <tag>转载</tag>
         <tag>Cache</tag>
+        <tag>转载</tag>
         <tag>Spring</tag>
       </tags>
   </entry>
