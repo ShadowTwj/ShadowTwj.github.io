@@ -224,36 +224,127 @@
       </tags>
   </entry>
   <entry>
-    <title>Guava CaChe</title>
-    <url>/2017/11/08/Guava-CaChe/</url>
-    <content><![CDATA[<p>Guava CaChe是本地（进程内）缓存</p>
+    <title>Code Review</title>
+    <url>/2021/06/19/Code%20Review/</url>
+    <content><![CDATA[<h2 id="认识-Code-Review"><a href="#认识-Code-Review" class="headerlink" title="认识 Code Review"></a>认识 Code Review</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>Code Review是一种用来确认方案设计和代码实现的质量保证机制，通过这个机制对代码、测试过程和注释进行检查，确保整体代码运行状况随着时间的推移而得到改善。</p>
+<h3 id="目的和意义"><a href="#目的和意义" class="headerlink" title="目的和意义"></a>目的和意义</h3><ul>
+<li>目的：代码质量、知识共享、团队规范</li>
+<li>意义：<ul>
+<li>查找系统和代码的缺陷，把控风险</li>
+<li>保证代码整体健康度不会随时间的推移而降低</li>
+<li>提高开发者自身水平</li>
+</ul>
+</li>
+</ul>
+<h3 id="方式"><a href="#方式" class="headerlink" title="方式"></a>方式</h3><p>常见的 Code Review 有下面几种方式</p>
 <blockquote>
-<h4 id="引包"><a href="#引包" class="headerlink" title="引包"></a>引包</h4></blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;  </span><br><span class="line">    &lt;groupId&gt;com.google.guava&lt;&#x2F;groupId&gt;  </span><br><span class="line">    &lt;artifactId&gt;guava&lt;&#x2F;artifactId&gt;  </span><br><span class="line">    &lt;version&gt;19.0&lt;&#x2F;version&gt;  </span><br><span class="line">&lt;&#x2F;dependency&gt;  </span><br></pre></td></tr></table></figure>
+<p>结对编程(瞬时评审)</p>
+</blockquote>
+<ul>
+<li>一对一的共同编程</li>
+<li>场景：复杂的业务问题、或紧急问题的修复</li>
+</ul>
 <blockquote>
-<h4 id="Cache接口及其实现"><a href="#Cache接口及其实现" class="headerlink" title="Cache接口及其实现"></a>Cache接口及其实现</h4></blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Cache&lt;k, v&gt; cache &#x3D; CacheBuilder.newBuilder()  </span><br><span class="line">        &#x2F;&#x2F;设置cache的初始大小为10，要合理设置该值  </span><br><span class="line">        .initialCapacity(10)  </span><br><span class="line">        &#x2F;&#x2F;设置并发数为5，即同一时间最多只能有5个线程往cache执行写入操作  </span><br><span class="line">        .concurrencyLevel(5)  </span><br><span class="line">        &#x2F;&#x2F;设置cache中的数据在写入之后的存活时间为10秒  </span><br><span class="line">        .expireAfterWrite(10, TimeUnit.SECONDS)  </span><br><span class="line">        &#x2F;&#x2F;构建cache实例  </span><br><span class="line">        .....</span><br><span class="line">        .build();  </span><br></pre></td></tr></table></figure>
-<p>接口Cache是泛型，很好的支持了不同类型的key和value<br>TimeUnit.SECONDS 存活时间单位为秒<br>TimeUnit.HOURSC 存活时间单位为小时<br>TimeUnit.DAYS 存活时间单位为天</p>
-<p>例如:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">LoadingCache&lt;Key, Object&gt; cache&#x3D; CacheBuilder.newBuilder()</span><br><span class="line">        .expireAfterWrite(10, TimeUnit.MINUTES)</span><br><span class="line">        .build(</span><br><span class="line">            new CacheLoader&lt;Key, Object&gt;() &#123;</span><br><span class="line">                public Object load(Key key) throws AnyException &#123;</span><br><span class="line">                    return getObject(key);</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure>
+<p>即时代码评审(同步评审)</p>
+</blockquote>
+<ul>
+<li>提交人给审核人讲解任务详情、改动等</li>
+<li>场景：不清楚任务目标、或高级指导低级</li>
+</ul>
+<blockquote>
+<p>工具支持的代码评审(异步评审)</p>
+</blockquote>
+<ul>
+<li>和开发流集成，只有 Review 通过才能合并</li>
+<li>默认的方式，也是最常用的</li>
+</ul>
+<blockquote>
+<p>基于会议的代码评审(偶尔评审)</p>
+</blockquote>
+<ul>
+<li>组织会议，团队多人共同评审</li>
+<li>场景：大型、比较复杂的项目；有一定风险的项目；为了提高整体水平</li>
+</ul>
+<h3 id="不做-Code-Review-的典型场景"><a href="#不做-Code-Review-的典型场景" class="headerlink" title="不做 Code Review 的典型场景"></a>不做 Code Review 的典型场景</h3><ul>
+<li>不认同，团队整体意识不到位</li>
+<li>需求多，时间紧，疲于应付需求</li>
+<li>技术水平不足，无法给出有效意见</li>
+</ul>
+<h3 id="Code-Review-常见问题"><a href="#Code-Review-常见问题" class="headerlink" title="Code Review 常见问题"></a>Code Review 常见问题</h3><blockquote>
+<p>提交人</p>
+</blockquote>
+<ul>
+<li>提交大量代码评审</li>
+<li>发起评审前没有进行自测</li>
+<li>不进行评审，直接上线</li>
+<li>没有给评审人留够充裕的时间</li>
+</ul>
+<blockquote>
+<p>评审人</p>
+</blockquote>
+<ul>
+<li>Review 不仔细，产生低级的问题</li>
+<li>对业务不熟悉，无法判断影响面</li>
+<li>反馈时机长，不及时处理提交人提交的 Code Review</li>
+</ul>
+<blockquote>
+<p>全体</p>
+</blockquote>
+<ul>
+<li>没有规范的 Code Review 机制和自测机制</li>
+</ul>
+<h2 id="如何做好-Code-Review"><a href="#如何做好-Code-Review" class="headerlink" title="如何做好 Code Review"></a>如何做好 Code Review</h2><h3 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h3><p>要避免 Code Review 流于形式，而避免流于形式的关键点则是 <strong>大家都有主观意愿，并且客观条件允许</strong></p>
+<p>要有代码规范、Check list、总结优化、激励机制</p>
+<h3 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">+-------+      +---------+      +---------+      +---------+      +-----+      +------------+</span><br><span class="line">| 定标准 | +--&gt; | 全员学习 | +--&gt; | 需求梳理  | +--&gt; | 代码评审 | +--&gt; | 讨论 | +--&gt; | 评审结果落地 |</span><br><span class="line">+-------+      +---------+      +---------+      +---------+      +-----+      +------------+ </span><br></pre></td></tr></table></figure>
 
-<blockquote>
-<h4 id="Cache提供的常用方法"><a href="#Cache提供的常用方法" class="headerlink" title="Cache提供的常用方法"></a>Cache提供的常用方法</h4></blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;** </span><br><span class="line"> * 该接口的实现被认为是线程安全的，即可在多线程中调用 </span><br><span class="line"> * 通过被定义单例使用 </span><br><span class="line"> *&#x2F;  </span><br><span class="line">public interface Cache&lt;K, V&gt; &#123;  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 通过key获取缓存中的value，若不存在直接返回null </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  V getIfPresent(Object key);  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 通过key获取缓存中的value，若不存在就通过valueLoader来加载该value </span><br><span class="line">   * 整个过程为 &quot;if cached, return; otherwise create, cache and return&quot; </span><br><span class="line">   * 注意valueLoader要么返回非null值，要么抛出异常，绝对不能返回null </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  V get(K key, Callable&lt;? extends V&gt; valueLoader) throws ExecutionException;  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 添加缓存，若key存在，就覆盖旧值 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void put(K key, V value);  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 删除该key关联的缓存 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void invalidate(Object key);  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 删除所有缓存 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void invalidateAll();  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 执行一些维护操作，包括清理缓存 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void cleanUp();  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<h4 id="清除缓存"><a href="#清除缓存" class="headerlink" title="清除缓存"></a>清除缓存</h4></blockquote>
-<h5 id="基于存活时间的清除"><a href="#基于存活时间的清除" class="headerlink" title="基于存活时间的清除"></a>基于存活时间的清除</h5><p>这应该是最常用的清除策略，在构建Cache实例的时候，CacheBuilder提供两种基于存活时间的构建方法：<br>（1）expireAfterAccess(long, TimeUnit)：缓存项在创建后，在给定时间内没有被读/写访问，则清除。<br>（2）expireAfterWrite(long, TimeUnit)：缓存项在创建后，在给定时间内没有被写访问（创建或覆盖），则清除。expireAfterWrite()方法有些类似于redis中的expire命令，但显然它只能设置所有缓存都具有相同的存活时间。</p>
-<h5 id="基于容量的清除"><a href="#基于容量的清除" class="headerlink" title="基于容量的清除"></a>基于容量的清除</h5><p>在构建Cache实例的时候，通过CacheBuilder.maximumSize(long)方法可以设置Cache的最大容量数，当缓存数量达到或接近该最大值时，Cache将清除掉那些最近最少使用的缓存。<br>以上是这种方式是以缓存的“数量”作为容量的计算方式，还有另外一种基于“权重”的计算方式。比如每一项缓存所占据的内存空间大小都不一样，可以看作它们有不同的“权重”（weights）。你可以使用CacheBuilder.weigher(Weigher)指定一个权重函数，并且用CacheBuilder.maximumWeight(long)指定最大总重</p>
-<h5 id="显式清除"><a href="#显式清除" class="headerlink" title="显式清除"></a>显式清除</h5><p>任何时候，都可以显式地清除缓存项，而不是等到它被回收，Cache接口提供了如下API：<br>（1）个别清除：Cache.invalidate(key)<br>（2）批量清除：Cache.invalidateAll(keys)<br>（3）清除所有缓存项：Cache.invalidateAll()  </p>
-<h5 id="基于引用的清除"><a href="#基于引用的清除" class="headerlink" title="基于引用的清除"></a>基于引用的清除</h5><p>在构建Cache实例过程中，通过设置使用弱引用的键、或弱引用的值、或软引用的值，从而使JVM在GC时顺带实现缓存的清除，不过一般不轻易使用这个特性。<br>（1）CacheBuilder.weakKeys()：使用弱引用存储键<br>（2）CacheBuilder.weakValues()：使用弱引用存储值<br>（3）CacheBuilder.softValues()：使用软引用存储值  </p>
+<ol>
+<li>定标准<ul>
+<li>目的：有法可依、团队一致</li>
+<li>内容：<ul>
+<li>共识标准：权利责任标准、冲突处理标准、特例紧急case处理标准、检查单标准</li>
+<li>提交人标准：发起时机标准、选择评审人标准、Commit 标准、代码标准、合并分支标准、处理评论标准</li>
+<li>评审人标准：检查内容标准、可通过标准、评论标准、反馈周期标准</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>全员学习<ul>
+<li>目的：统一思想、确认标准可落地</li>
+</ul>
+</li>
+<li>需求梳理<ul>
+<li>统一对需求理解，设计评审有理可依</li>
+<li>内容：<ul>
+<li>提交人要有基于需求的代码改动设计方案</li>
+<li>评审人要有基于需求理解之下的代码改造意见</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>代码评审<ul>
+<li>目的：实现正确的业务需求，代码长期的可维护性</li>
+<li>内容：参照检查单（功能拆解；架构设计；代码逻辑；库表设计；编码风格；性能；等等）</li>
+<li>工具：<a href="http://www.sonar.org.cn/">Sonar</a>、<a href="https://www.gerritcodereview.com/">Gerrit</a> 等工具</li>
+</ul>
+</li>
+<li>讨论<ul>
+<li>目的：达成共识，求同存异</li>
+</ul>
+</li>
+<li>评审结果落地<ul>
+<li>总结归纳，持续优化标准</li>
+</ul>
+</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Code Review 是提高代码质量、把控项目风险的一剂良药，同时也是提高个人水平的一个重要渠道。而长期维持良好的 Code Review 并不容易，但是良好的 Code Review 是个人和团队成功不可或缺的一环。</p>
+<h2 id="资料"><a href="#资料" class="headerlink" title="资料"></a>资料</h2><p>GoogleCR机制（原文）：<a href="https://google.github.io/eng-practices/review/reviewer/">https://google.github.io/eng-practices/review/reviewer/</a></p>
+<p>GoogleCR机制（翻译版）：<a href="https://cloud.tencent.com/developer/article/1514271">https://cloud.tencent.com/developer/article/1514271</a></p>
 ]]></content>
       <categories>
-        <category>Java</category>
+        <category>规范</category>
       </categories>
       <tags>
-        <tag>Java</tag>
-        <tag>Guava</tag>
-        <tag>Cache</tag>
+        <tag>规范</tag>
       </tags>
   </entry>
   <entry>
@@ -304,6 +395,39 @@
         <tag>Java</tag>
         <tag>Guava</tag>
         <tag>转载</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Guava CaChe</title>
+    <url>/2017/11/08/Guava-CaChe/</url>
+    <content><![CDATA[<p>Guava CaChe是本地（进程内）缓存</p>
+<blockquote>
+<h4 id="引包"><a href="#引包" class="headerlink" title="引包"></a>引包</h4></blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;  </span><br><span class="line">    &lt;groupId&gt;com.google.guava&lt;&#x2F;groupId&gt;  </span><br><span class="line">    &lt;artifactId&gt;guava&lt;&#x2F;artifactId&gt;  </span><br><span class="line">    &lt;version&gt;19.0&lt;&#x2F;version&gt;  </span><br><span class="line">&lt;&#x2F;dependency&gt;  </span><br></pre></td></tr></table></figure>
+<blockquote>
+<h4 id="Cache接口及其实现"><a href="#Cache接口及其实现" class="headerlink" title="Cache接口及其实现"></a>Cache接口及其实现</h4></blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Cache&lt;k, v&gt; cache &#x3D; CacheBuilder.newBuilder()  </span><br><span class="line">        &#x2F;&#x2F;设置cache的初始大小为10，要合理设置该值  </span><br><span class="line">        .initialCapacity(10)  </span><br><span class="line">        &#x2F;&#x2F;设置并发数为5，即同一时间最多只能有5个线程往cache执行写入操作  </span><br><span class="line">        .concurrencyLevel(5)  </span><br><span class="line">        &#x2F;&#x2F;设置cache中的数据在写入之后的存活时间为10秒  </span><br><span class="line">        .expireAfterWrite(10, TimeUnit.SECONDS)  </span><br><span class="line">        &#x2F;&#x2F;构建cache实例  </span><br><span class="line">        .....</span><br><span class="line">        .build();  </span><br></pre></td></tr></table></figure>
+<p>接口Cache是泛型，很好的支持了不同类型的key和value<br>TimeUnit.SECONDS 存活时间单位为秒<br>TimeUnit.HOURSC 存活时间单位为小时<br>TimeUnit.DAYS 存活时间单位为天</p>
+<p>例如:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">LoadingCache&lt;Key, Object&gt; cache&#x3D; CacheBuilder.newBuilder()</span><br><span class="line">        .expireAfterWrite(10, TimeUnit.MINUTES)</span><br><span class="line">        .build(</span><br><span class="line">            new CacheLoader&lt;Key, Object&gt;() &#123;</span><br><span class="line">                public Object load(Key key) throws AnyException &#123;</span><br><span class="line">                    return getObject(key);</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<h4 id="Cache提供的常用方法"><a href="#Cache提供的常用方法" class="headerlink" title="Cache提供的常用方法"></a>Cache提供的常用方法</h4></blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;** </span><br><span class="line"> * 该接口的实现被认为是线程安全的，即可在多线程中调用 </span><br><span class="line"> * 通过被定义单例使用 </span><br><span class="line"> *&#x2F;  </span><br><span class="line">public interface Cache&lt;K, V&gt; &#123;  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 通过key获取缓存中的value，若不存在直接返回null </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  V getIfPresent(Object key);  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 通过key获取缓存中的value，若不存在就通过valueLoader来加载该value </span><br><span class="line">   * 整个过程为 &quot;if cached, return; otherwise create, cache and return&quot; </span><br><span class="line">   * 注意valueLoader要么返回非null值，要么抛出异常，绝对不能返回null </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  V get(K key, Callable&lt;? extends V&gt; valueLoader) throws ExecutionException;  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 添加缓存，若key存在，就覆盖旧值 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void put(K key, V value);  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 删除该key关联的缓存 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void invalidate(Object key);  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 删除所有缓存 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void invalidateAll();  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 执行一些维护操作，包括清理缓存 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void cleanUp();  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<h4 id="清除缓存"><a href="#清除缓存" class="headerlink" title="清除缓存"></a>清除缓存</h4></blockquote>
+<h5 id="基于存活时间的清除"><a href="#基于存活时间的清除" class="headerlink" title="基于存活时间的清除"></a>基于存活时间的清除</h5><p>这应该是最常用的清除策略，在构建Cache实例的时候，CacheBuilder提供两种基于存活时间的构建方法：<br>（1）expireAfterAccess(long, TimeUnit)：缓存项在创建后，在给定时间内没有被读/写访问，则清除。<br>（2）expireAfterWrite(long, TimeUnit)：缓存项在创建后，在给定时间内没有被写访问（创建或覆盖），则清除。expireAfterWrite()方法有些类似于redis中的expire命令，但显然它只能设置所有缓存都具有相同的存活时间。</p>
+<h5 id="基于容量的清除"><a href="#基于容量的清除" class="headerlink" title="基于容量的清除"></a>基于容量的清除</h5><p>在构建Cache实例的时候，通过CacheBuilder.maximumSize(long)方法可以设置Cache的最大容量数，当缓存数量达到或接近该最大值时，Cache将清除掉那些最近最少使用的缓存。<br>以上是这种方式是以缓存的“数量”作为容量的计算方式，还有另外一种基于“权重”的计算方式。比如每一项缓存所占据的内存空间大小都不一样，可以看作它们有不同的“权重”（weights）。你可以使用CacheBuilder.weigher(Weigher)指定一个权重函数，并且用CacheBuilder.maximumWeight(long)指定最大总重</p>
+<h5 id="显式清除"><a href="#显式清除" class="headerlink" title="显式清除"></a>显式清除</h5><p>任何时候，都可以显式地清除缓存项，而不是等到它被回收，Cache接口提供了如下API：<br>（1）个别清除：Cache.invalidate(key)<br>（2）批量清除：Cache.invalidateAll(keys)<br>（3）清除所有缓存项：Cache.invalidateAll()  </p>
+<h5 id="基于引用的清除"><a href="#基于引用的清除" class="headerlink" title="基于引用的清除"></a>基于引用的清除</h5><p>在构建Cache实例过程中，通过设置使用弱引用的键、或弱引用的值、或软引用的值，从而使JVM在GC时顺带实现缓存的清除，不过一般不轻易使用这个特性。<br>（1）CacheBuilder.weakKeys()：使用弱引用存储键<br>（2）CacheBuilder.weakValues()：使用弱引用存储值<br>（3）CacheBuilder.softValues()：使用软引用存储值  </p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Guava</tag>
+        <tag>Cache</tag>
       </tags>
   </entry>
   <entry>
@@ -416,6 +540,30 @@
       </tags>
   </entry>
   <entry>
+    <title>JetBrick-template模板转换字符串</title>
+    <url>/2018/01/11/JetBrick-template%E6%A8%A1%E6%9D%BF%E8%BD%AC%E6%8D%A2%E5%AD%97%E7%AC%A6%E4%B8%B2/</url>
+    <content><![CDATA[<h4 id="一、概述"><a href="#一、概述" class="headerlink" title="一、概述"></a>一、概述</h4><p>jetbrick-template 是一个新一代 Java 模板引擎，具有高性能和高扩展性。 适合于动态 HTML 页面输出或者代码生成，可替代 JSP 页面或者 Velocity 等模板。 指令和 Velocity 相似，表达式和 Java 保持一致，易学易用。  </p>
+<p>这里只是简单的利用jetbrick-template模板来转换字符串。  </p>
+<h4 id="二、用法"><a href="#二、用法" class="headerlink" title="二、用法"></a>二、用法</h4><p>Maven包:  </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;com.github.subchen&lt;&#x2F;groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;jetbrick-template&lt;&#x2F;artifactId&gt;</span><br><span class="line">  &lt;version&gt;2.1.2&lt;&#x2F;version&gt;</span><br><span class="line">  &lt;classifier&gt;sources&lt;&#x2F;classifier&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<p>例子:  </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Test</span><br><span class="line">public void jetxTest() &#123;</span><br><span class="line">  &#x2F;&#x2F;创建引擎</span><br><span class="line">  JetEngine jetEngine &#x3D; JetEngine.create();</span><br><span class="line"></span><br><span class="line">  String template &#x3D; &quot;Hello, $&#123;username&#125;&quot;;</span><br><span class="line">  &#x2F;&#x2F;得到JetBrick模板，可以是string也可以是文件</span><br><span class="line">  &#x2F;&#x2F;.getTemplate()传入模板jetx文件路径, .createTemplate()传入模板字符串</span><br><span class="line">  JetTemplate jetTemplate &#x3D; jetEngine.createTemplate(template);</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F;设置需要替换的变量值</span><br><span class="line">  Map&lt;String, Object&gt; context &#x3D; Maps.newHashMap();</span><br><span class="line">  context.put(&quot;username&quot;, &quot;张三&quot;);</span><br><span class="line"></span><br><span class="line">  StringWriter writer &#x3D; new StringWriter();</span><br><span class="line">  &#x2F;&#x2F;转换模板</span><br><span class="line">  jetTemplate.render(context, writer);</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F;输出结果</span><br><span class="line">  System.out.println(&quot;------------&quot;);</span><br><span class="line">  System.out.println(writer.toString());</span><br><span class="line">  System.out.println(&quot;------------&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果:  </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">------------</span><br><span class="line">Hello, 张三</span><br><span class="line">------------</span><br></pre></td></tr></table></figure>
+
+
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>JetBrick</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Java线程：Atomic</title>
     <url>/2018/01/09/Java%E7%BA%BF%E7%A8%8B%EF%BC%9AAtomic/</url>
     <content><![CDATA[<blockquote>
@@ -473,30 +621,6 @@
         <tag>Java</tag>
         <tag>转载</tag>
         <tag>并发</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>JetBrick-template模板转换字符串</title>
-    <url>/2018/01/11/JetBrick-template%E6%A8%A1%E6%9D%BF%E8%BD%AC%E6%8D%A2%E5%AD%97%E7%AC%A6%E4%B8%B2/</url>
-    <content><![CDATA[<h4 id="一、概述"><a href="#一、概述" class="headerlink" title="一、概述"></a>一、概述</h4><p>jetbrick-template 是一个新一代 Java 模板引擎，具有高性能和高扩展性。 适合于动态 HTML 页面输出或者代码生成，可替代 JSP 页面或者 Velocity 等模板。 指令和 Velocity 相似，表达式和 Java 保持一致，易学易用。  </p>
-<p>这里只是简单的利用jetbrick-template模板来转换字符串。  </p>
-<h4 id="二、用法"><a href="#二、用法" class="headerlink" title="二、用法"></a>二、用法</h4><p>Maven包:  </p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;com.github.subchen&lt;&#x2F;groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;jetbrick-template&lt;&#x2F;artifactId&gt;</span><br><span class="line">  &lt;version&gt;2.1.2&lt;&#x2F;version&gt;</span><br><span class="line">  &lt;classifier&gt;sources&lt;&#x2F;classifier&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
-
-<p>例子:  </p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Test</span><br><span class="line">public void jetxTest() &#123;</span><br><span class="line">  &#x2F;&#x2F;创建引擎</span><br><span class="line">  JetEngine jetEngine &#x3D; JetEngine.create();</span><br><span class="line"></span><br><span class="line">  String template &#x3D; &quot;Hello, $&#123;username&#125;&quot;;</span><br><span class="line">  &#x2F;&#x2F;得到JetBrick模板，可以是string也可以是文件</span><br><span class="line">  &#x2F;&#x2F;.getTemplate()传入模板jetx文件路径, .createTemplate()传入模板字符串</span><br><span class="line">  JetTemplate jetTemplate &#x3D; jetEngine.createTemplate(template);</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F;设置需要替换的变量值</span><br><span class="line">  Map&lt;String, Object&gt; context &#x3D; Maps.newHashMap();</span><br><span class="line">  context.put(&quot;username&quot;, &quot;张三&quot;);</span><br><span class="line"></span><br><span class="line">  StringWriter writer &#x3D; new StringWriter();</span><br><span class="line">  &#x2F;&#x2F;转换模板</span><br><span class="line">  jetTemplate.render(context, writer);</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F;输出结果</span><br><span class="line">  System.out.println(&quot;------------&quot;);</span><br><span class="line">  System.out.println(writer.toString());</span><br><span class="line">  System.out.println(&quot;------------&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>结果:  </p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">------------</span><br><span class="line">Hello, 张三</span><br><span class="line">------------</span><br></pre></td></tr></table></figure>
-
-
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>JetBrick</tag>
       </tags>
   </entry>
   <entry>
@@ -613,6 +737,128 @@
       <tags>
         <tag>DB</tag>
         <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Netty-BetyBuf</title>
+    <url>/2021/06/11/Netty-BetyBuf/</url>
+    <content><![CDATA[<blockquote>
+<p>ByteBuf 是 Netty 中的数据交互单位，本质是一个 Byte 数组的缓冲区，有不同实现机制，首先看 ByteBuf 的数据结构</p>
+</blockquote>
+<h3 id="ByteBuf结构"><a href="#ByteBuf结构" class="headerlink" title="ByteBuf结构"></a>ByteBuf结构</h3><pre><code>+-------------------+------------------+------------------+
+| discardable bytes |  readable bytes  |  writable bytes  |
+|                   |     (CONTENT)    |                  |
++-------------------+------------------+------------------+
+|                   |                  |                  |
+0      &lt;=      readerIndex   &lt;=   writerIndex    &lt;=    capacity
+</code></pre>
+<p>ByteBuf 包括三部分，丢弃字节、可读字节、可写字节</p>
+<p>通过两个指针，读指针（readerIndex）和写指针（writerIndex）来分成三部分，当 readerIndex = writerIndex 时不可读，当 writerIndex = capacity 时不可写。还有个参数 maxCapacity，当写入数据容量不足时会自动扩容，扩容的最大容量为 maxCapacity 值</p>
+<h3 id="常用API"><a href="#常用API" class="headerlink" title="常用API"></a>常用API</h3><h4 id="容量API"><a href="#容量API" class="headerlink" title="容量API"></a>容量API</h4><ul>
+<li><p><code>capacity()</code></p>
+<p>表示 ByteBuf 的占用字节内存，包括丢弃字节、可读字节、可写字节，不同的底层实现机制有不同的计算方式</p>
+</li>
+<li><p><code>maxCapacity()</code>  </p>
+<p>表示 ByteBuf 最大能够占用多少字节的内存</p>
+</li>
+<li><p><code>readableBytes()</code></p>
+<p>ByteBuf 当前可读的字节数，它的值等于 writerIndex-readerIndex</p>
+</li>
+<li><p><code>isReadable()</code></p>
+<p>返回是否可读，writerIndex = readerIndex 则不可读，返回 <code>false</code></p>
+</li>
+<li><p><code>writableBytes()</code></p>
+<p>ByteBuf 当前可写的字节数，它的值等于 capacity-writerIndex</p>
+</li>
+<li><p><code>isWritable()</code></p>
+<p>返回是否可写，capacity = writerIndex 则不可写</p>
+</li>
+<li><p><code>maxWritableBytes()</code></p>
+<p>ByteBuf 可写的最大字节数，它的值等于 maxCapacity-writerIndex</p>
+</li>
+</ul>
+<h4 id="指针相关API"><a href="#指针相关API" class="headerlink" title="指针相关API"></a>指针相关API</h4><ul>
+<li><p><code>readerIndex()</code></p>
+<p>返回当前读指针的 readerIndex</p>
+</li>
+<li><p><code>readerIndex(int)</code></p>
+<p>设置读指针</p>
+</li>
+<li><p><code>writeIndex()</code></p>
+<p>返回当前写指针的 writerIndex</p>
+</li>
+<li><p><code>writeIndex(int)</code></p>
+<p>设置读指针</p>
+</li>
+<li><p><code>markReaderIndex()</code>、<code>markWriterIndex()</code></p>
+<p>把当前的读、写指针保存起来</p>
+</li>
+<li><p><code>resetReaderIndex()</code>、<code>resetWriterIndex()</code></p>
+<p>把当前的读、写指针恢复到之前保存的值</p>
+</li>
+</ul>
+<h4 id="读写API"><a href="#读写API" class="headerlink" title="读写API"></a>读写API</h4><ul>
+<li><p><code>writeBytes(byte[] src)</code></p>
+<p>把字节数组 src 里面的数据全部写到 ByteBuf，src 字节数组大小的长度通常小于等于 <code>writableBytes()</code></p>
+</li>
+<li><p><code>readBytes(byte[] dst)</code></p>
+<p>把 ByteBuf 里面的数据全部读取到 dst，这里 dst 字节数组的大小通常等于 <code>readableBytes()</code></p>
+</li>
+<li><p><code>writeByte(byte b)</code></p>
+<p>表示往 ByteBuf 中写一个字节，类似还有 <code>writeBoolean()</code>、<code>writeChar()</code>、<code>writeShort()</code>、<code>writeInt()</code>、<code>writeLong()</code>、<code>writeFloat()</code>、<code>writeDouble()</code> </p>
+</li>
+<li><p><code>readByte()</code></p>
+<p>表示从 ByteBuf 中读取一个字节，类似还有  <code>readBoolean()</code>、<code>readChar()</code>、<code>readShort()</code>、<code>readInt()</code>、<code>readLong()</code>、<code>readFloat()</code>、<code>readDouble()</code></p>
+</li>
+<li><p><code>setBytes()</code>、<code>setByte()</code></p>
+<p>和 <code>writeBytes()</code> 等方法类似，但是 set 不会改变读写指针，而 write 会改变写指针</p>
+</li>
+<li><p><code>getBytes</code>、<code>getByte()</code></p>
+<p>和 <code>readBytes()</code> 等方法类似，同样 get 不会改变读写指针，而 read 会改变读指针</p>
+</li>
+<li><p><code>retain()</code></p>
+<p>将 BetyBuf 的引用计数加一</p>
+</li>
+<li><p><code>release()</code></p>
+<p>将 ByteBuf 的引用计数减一，减完之后如果发现引用计数为0，则直接回收 ByteBuf 底层的内存</p>
+</li>
+</ul>
+<blockquote>
+<p>由于 Netty 使用了堆外内存，而堆外内存是不被 jvm 直接管理的，也就是说申请到的内存无法被垃圾回收器直接回收，所以需要我们手动回收。有点类似于c语言里面，申请到的内存必须手工释放，否则会造成内存泄漏。</p>
+<p>Netty 的 ByteBuf 是通过引用计数的方式管理的，如果一个 ByteBuf 没有地方被引用到，需要回收底层内存。默认情况下，当创建完一个 ByteBuf，它的引用为1</p>
+</blockquote>
+<ul>
+<li><p><code>slice()</code></p>
+<p>从原始 ByteBuf 中截取一段，这段数据是从 readerIndex 到 writeIndex，同时，返回的新的 ByteBuf 的最大容量 maxCapacity 为原始 ByteBuf 的 <code>readableBytes()</code>；底层内存以及引用计数与原始的 ByteBuf 共享</p>
+</li>
+<li><p><code>duplicate()</code></p>
+<p>把整个 ByteBuf 都截取出来，包括所有的指针信息。底层内存以及引用计数与原始的 ByteBuf 共享</p>
+</li>
+<li><p><code>copy()</code></p>
+<p>从原始的 ByteBuf 中拷贝所有的信息，包括读写指针以及底层对应的数据，底层内存以及引用计数都独立，操作 ByteBuf 中的数据不会影响到原始的 ByteBuf </p>
+</li>
+</ul>
+<blockquote>
+<p>三个方法都会返回新的 ByteBuf 对象</p>
+<p><code>slice()</code> 与 <code>duplicate()</code> 的相同点是：<strong>底层内存以及引用计数与原始的 ByteBuf 共享</strong>，也就是说经过 <code>slice()</code> 或者 <code>duplicate()</code> 返回的 ByteBuf 调用 write 系列方法都会影响到原始的 ByteBuf，但是它们都维持着与原始 ByteBuf 相同的内存引用计数和不同的读写指针 </p>
+<p><code>slice()</code> 与 <code>duplicate()</code> 的不同点是：<code>slice()</code> 只截取从 readerIndex 到 writerIndex 之间的数据，它返回的 ByteBuf 的最大容量被限制到 原始 ByteBuf 的 <code>readableBytes()</code>, 而 <code>duplicate()</code> 是把整个 ByteBuf 都与原始的 ByteBuf 共享 </p>
+<p><code>slice()</code> 和 <code>duplicate()</code> 不会改变 ByteBuf 的引用计数，所以原始的 ByteBuf 调用 <code>release()</code> 之后发现引用计数为零，就开始释放内存，调用这两个方法返回的 ByteBuf 也会被释放，这个时候如果再对它们进行读写，就会报错。因此，我们可以通过调用一次 <code>retain()</code> 方法 来增加引用，表示它们对应的底层的内存多了一次引用，引用计数为2，在释放内存的时候，需要调用两次 <code>release()</code> 方法，将引用计数降到零，才会释放内存</p>
+<p><code>slice()</code> 、<code>duplicate()</code>、<code>copy()</code> 三个方法均维护着自己的读写指针，与原始的 ByteBuf 的读写指针无关，相互之间不受影响</p>
+</blockquote>
+<ul>
+<li><p><code>retainedSlice()</code></p>
+<p>截取内存片段的同时，增加内存的引用计数，等价于 <code>slice().retain()</code></p>
+</li>
+<li><p><code>retainedDuplicate()</code></p>
+<p>也是截取内存片段的同时，增加内存的引用计数，等价于 <code>duplicate().retain()</code></p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Netty</category>
+      </categories>
+      <tags>
+        <tag>Netty</tag>
       </tags>
   </entry>
   <entry>
@@ -1133,6 +1379,42 @@
       </tags>
   </entry>
   <entry>
+    <title>Web fragments</title>
+    <url>/2021/02/19/Web%20fragments/</url>
+    <content><![CDATA[<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p><code>Web fragments</code>是<code>servlet 3.0</code>开始支持的一个特性(可插性支持)，通过插件的方式很方便的扩充已有<code>Web</code>应用的功能，而不需要修改原有的应用</p>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><blockquote>
+<p>Servlet 3.0 的部署描述文件 web.xml 的顶层标签 有一个 metadata-complete 属性，该属性指定当前的部署描述文件是否是完全的。如果设置为 true，则容器在部署时将只依赖部署描述文件，忽略所有的注解（同时也会跳过 web-fragment.xml 的扫描，亦即禁用可插性支持，具体请看后文关于 <a href="https://www.ibm.com/developerworks/cn/java/j-lo-servlet30/#major4">可插性支持</a> 的讲解）；如果不配置该属性，或者将其设置为 false，则表示启用注解支持（和可插性支持）。</p>
+</blockquote>
+<h3 id="Web-fragments语法和规则"><a href="#Web-fragments语法和规则" class="headerlink" title="Web fragments语法和规则"></a>Web fragments语法和规则</h3><ol>
+<li><code>Web fragments</code> 需要有 <code>web-fragment.xml</code> 的部署描述文件，该文件必须存放在 <code>JAR</code> 文件的 <code>META-INF</code> 目录下，该部署描述文件可以包含一切可以在 <code>web.xml</code> 中定义的内容(过滤器、监听器与<code>Servlet</code>)</li>
+<li>包含 <code>web-fragment.xml</code> 的 <code>JAR</code> 应该部署到 <code>Web</code> 应用程序的 <code>WEBINF/lib</code> 目录中</li>
+<li><code>web-fragment.xml</code> 的根元素是 <code>&lt;web-fragment&gt;</code>，它可以包含 <code>DD(web.xml)</code> 中 <code>&lt;web-app&gt;</code> 元素的任何子元素。</li>
+<li>每个 <code>web-fragment.xml</code> 都可以包含一个 <code>name</code> 元素。<code>name</code> 元素在所有 <code>Web</code> 片段中应该是唯一的，并且不应有任何循环引用或循环，否则容器将因有意义的错误中止应用程序部署。该名称将用于 <code>Web</code> 片段的任何排序。</li>
+<li>可以使用元素 <code>&lt;absolute-ordering&gt;</code> 从 <code>web.xml</code> 中指定 <code>Web</code> 片段的顺序。也可以使用元素 <code>&lt;ordering&gt;</code> 从 <code>Web</code> 片段本身内部指定 <code>Web</code> 片段的顺序。在 <code>web.xml</code> 或 <code>Web</code> 片段中，元素按照声明的顺序加载。</li>
+<li>并且如果 <code>web-fragment.xml</code> 和 <code>web.xml</code> 之间存在冲突，则 <code>web.xml</code> 将具有优先权。但是，如果两个片段之间存在冲突，则会引发错误。</li>
+</ol>
+<h3 id="配置内容"><a href="#配置内容" class="headerlink" title="配置内容"></a>配置内容</h3><blockquote>
+<p>servlet、filter、listener三个可以定义任何一个，也可以全部定义</p>
+</blockquote>
+<ul>
+<li><p>web-fragment.xml:</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">web-fragment</span> <span class="attr">id</span>=<span class="string">&quot;WebFragment_ID&quot;</span> <span class="attr">version</span>=<span class="string">&quot;3.1&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns</span>=<span class="string">&quot;http://xmlns.jcp.org/xml/ns/javaee&quot;</span> <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-fragment_3_1.xsd&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>Test<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- servlet --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>servletTest<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>com.xxx.xxx.servlets.ServletTest<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">load-on-startup</span>&gt;</span>1<span class="tag">&lt;/<span class="name">load-on-startup</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>servletTest<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- filter --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>filterTest<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>com.xxx.xxx.FilterTest<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">async-supported</span>&gt;</span>true<span class="tag">&lt;/<span class="name">async-supported</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>filterTest<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- listener --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">listener</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">listener-class</span>&gt;</span>com.xxx.xxx.ListenerTest<span class="tag">&lt;/<span class="name">listener-class</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">listener</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">ordering</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 表示在项目所有之前进行初始化 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">before</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">others</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">before</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 表示在项目所有之后进行初始化 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">after</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">others</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">after</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ordering</span>&gt;</span></span><br><span class="line">    </span><br><span class="line"><span class="tag">&lt;/<span class="name">web-fragment</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>Servlet:</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> javax.servlet.ServletException;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServlet;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServletTest</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">service</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.service(req, resp);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.destroy();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>Filter:</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> javax.servlet.Filter;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.FilterChain;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.FilterConfig;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletException;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletResponse;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FilterTest</span> <span class="keyword">implements</span> <span class="title">Filter</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(FilterConfig filterConfig)</span> <span class="keyword">throws</span> ServletException </span>&#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFilter</span><span class="params">(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>Listener:</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> javax.servlet.ServletRequestEvent;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletRequestListener;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListenerTest</span> <span class="keyword">implements</span> <span class="title">ServletRequestListener</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">requestDestroyed</span><span class="params">(ServletRequestEvent servletRequestEvent)</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">requestInitialized</span><span class="params">(ServletRequestEvent servletRequestEvent)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ThreadPoolExecutor</title>
     <url>/2020/04/02/ThreadPoolExecutor/</url>
     <content><![CDATA[<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>ThreadPoolExecutor是Java中线程池的核心实现类</p>
@@ -1174,42 +1456,6 @@
 <li>submit方便Exception处理：可以通过捕获Future.get抛出的异常</li>
 </ol>
 <h3 id="例子："><a href="#例子：" class="headerlink" title="例子："></a>例子：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ThreadFactory factory &#x3D; new ThreadFactoryBuilder().setDaemon(true).setNameFormat(&quot;test-666-%d&quot;).build();</span><br><span class="line">ExecutorService threadPoolExecutor &#x3D; new ThreadPoolExecutor(5, 5, 0L, TimeUnit.SECONDS, new LinkedBlockingQueue&lt;Runnable&gt;(), factory);</span><br><span class="line">threadPoolExecutor.execute(()-&gt;&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;);</span><br><span class="line">&lt;!--threadPoolExecutor.submit(()-&gt;&#123;--&gt;</span><br><span class="line">&lt;!--    ...--&gt;</span><br><span class="line">&lt;!--&#125;);--&gt;</span><br><span class="line">threadPoolExecutor.shutdown();</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Web fragments</title>
-    <url>/2021/02/19/Web%20fragments/</url>
-    <content><![CDATA[<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p><code>Web fragments</code>是<code>servlet 3.0</code>开始支持的一个特性(可插性支持)，通过插件的方式很方便的扩充已有<code>Web</code>应用的功能，而不需要修改原有的应用</p>
-<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><blockquote>
-<p>Servlet 3.0 的部署描述文件 web.xml 的顶层标签 有一个 metadata-complete 属性，该属性指定当前的部署描述文件是否是完全的。如果设置为 true，则容器在部署时将只依赖部署描述文件，忽略所有的注解（同时也会跳过 web-fragment.xml 的扫描，亦即禁用可插性支持，具体请看后文关于 <a href="https://www.ibm.com/developerworks/cn/java/j-lo-servlet30/#major4">可插性支持</a> 的讲解）；如果不配置该属性，或者将其设置为 false，则表示启用注解支持（和可插性支持）。</p>
-</blockquote>
-<h3 id="Web-fragments语法和规则"><a href="#Web-fragments语法和规则" class="headerlink" title="Web fragments语法和规则"></a>Web fragments语法和规则</h3><ol>
-<li><code>Web fragments</code> 需要有 <code>web-fragment.xml</code> 的部署描述文件，该文件必须存放在 <code>JAR</code> 文件的 <code>META-INF</code> 目录下，该部署描述文件可以包含一切可以在 <code>web.xml</code> 中定义的内容(过滤器、监听器与<code>Servlet</code>)</li>
-<li>包含 <code>web-fragment.xml</code> 的 <code>JAR</code> 应该部署到 <code>Web</code> 应用程序的 <code>WEBINF/lib</code> 目录中</li>
-<li><code>web-fragment.xml</code> 的根元素是 <code>&lt;web-fragment&gt;</code>，它可以包含 <code>DD(web.xml)</code> 中 <code>&lt;web-app&gt;</code> 元素的任何子元素。</li>
-<li>每个 <code>web-fragment.xml</code> 都可以包含一个 <code>name</code> 元素。<code>name</code> 元素在所有 <code>Web</code> 片段中应该是唯一的，并且不应有任何循环引用或循环，否则容器将因有意义的错误中止应用程序部署。该名称将用于 <code>Web</code> 片段的任何排序。</li>
-<li>可以使用元素 <code>&lt;absolute-ordering&gt;</code> 从 <code>web.xml</code> 中指定 <code>Web</code> 片段的顺序。也可以使用元素 <code>&lt;ordering&gt;</code> 从 <code>Web</code> 片段本身内部指定 <code>Web</code> 片段的顺序。在 <code>web.xml</code> 或 <code>Web</code> 片段中，元素按照声明的顺序加载。</li>
-<li>并且如果 <code>web-fragment.xml</code> 和 <code>web.xml</code> 之间存在冲突，则 <code>web.xml</code> 将具有优先权。但是，如果两个片段之间存在冲突，则会引发错误。</li>
-</ol>
-<h3 id="配置内容"><a href="#配置内容" class="headerlink" title="配置内容"></a>配置内容</h3><blockquote>
-<p>servlet、filter、listener三个可以定义任何一个，也可以全部定义</p>
-</blockquote>
-<ul>
-<li><p>web-fragment.xml:</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">web-fragment</span> <span class="attr">id</span>=<span class="string">&quot;WebFragment_ID&quot;</span> <span class="attr">version</span>=<span class="string">&quot;3.1&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns</span>=<span class="string">&quot;http://xmlns.jcp.org/xml/ns/javaee&quot;</span> <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-fragment_3_1.xsd&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>Test<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- servlet --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>servletTest<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>com.xxx.xxx.servlets.ServletTest<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">load-on-startup</span>&gt;</span>1<span class="tag">&lt;/<span class="name">load-on-startup</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>servletTest<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- filter --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>filterTest<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>com.xxx.xxx.FilterTest<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">async-supported</span>&gt;</span>true<span class="tag">&lt;/<span class="name">async-supported</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>filterTest<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- listener --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">listener</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">listener-class</span>&gt;</span>com.xxx.xxx.ListenerTest<span class="tag">&lt;/<span class="name">listener-class</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">listener</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">ordering</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 表示在项目所有之前进行初始化 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">before</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">others</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">before</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 表示在项目所有之后进行初始化 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">after</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">others</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">after</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ordering</span>&gt;</span></span><br><span class="line">    </span><br><span class="line"><span class="tag">&lt;/<span class="name">web-fragment</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
-<li><p>Servlet:</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> javax.servlet.ServletException;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServlet;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServletTest</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">service</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.service(req, resp);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.destroy();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>Filter:</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> javax.servlet.Filter;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.FilterChain;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.FilterConfig;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletException;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletResponse;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FilterTest</span> <span class="keyword">implements</span> <span class="title">Filter</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(FilterConfig filterConfig)</span> <span class="keyword">throws</span> ServletException </span>&#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFilter</span><span class="params">(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>Listener:</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> javax.servlet.ServletRequestEvent;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletRequestListener;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListenerTest</span> <span class="keyword">implements</span> <span class="title">ServletRequestListener</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">requestDestroyed</span><span class="params">(ServletRequestEvent servletRequestEvent)</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">requestInitialized</span><span class="params">(ServletRequestEvent servletRequestEvent)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-]]></content>
       <categories>
         <category>Java</category>
       </categories>
@@ -1279,23 +1525,6 @@
       </categories>
       <tags>
         <tag>前端</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>rest easy注解</title>
-    <url>/2017/11/02/rest-easy%E6%B3%A8%E8%A7%A3/</url>
-    <content><![CDATA[<p>@Path，标注资源类或方法的相对路径,@Path不仅仅接收简单的路径表达式,也可以使用正则表达式</p>
-<p>@GET，@PUT，@POST，@DELETE，标注方法是用的HTTP请求的类型</p>
-<p>@Produces，当服务器端实行完成相关的逻辑需要返回对象的时候，程序会根据@Produces返回相应的对象类型</p>
-<p>@Consumes，我们从页面提交数据到后台的时候,数据的类型可以是text的,xml的,json的,但是我们在请求资源的时候想要请求到同一个资源路径上面去，此时怎么来区分处理呢?使用@Consumes标注</p>
-<p>@PathParam，@QueryParam，@HeaderParam，@CookieParam，@MatrixParam，@FormParam,分别标注方法的参数来自于HTTP请求的不同位置，例如@PathParam来自于URL的路径，@QueryParam来自于URL的查询参数，@HeaderParam来自于HTTP请求的头信息，@CookieParam来自于HTTP请求的Cookie，@FormParam来自Form表单中的参数</p>
-<p>@DefaultValue，有些参数值在没有值的情况下如果需要有默认值,则使用这个标注</p>
-]]></content>
-      <categories>
-        <category>框架</category>
-      </categories>
-      <tags>
-        <tag>Resteasy</tag>
       </tags>
   </entry>
   <entry>
@@ -1447,6 +1676,23 @@
       </categories>
       <tags>
         <tag>DB</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>rest easy注解</title>
+    <url>/2017/11/02/rest-easy%E6%B3%A8%E8%A7%A3/</url>
+    <content><![CDATA[<p>@Path，标注资源类或方法的相对路径,@Path不仅仅接收简单的路径表达式,也可以使用正则表达式</p>
+<p>@GET，@PUT，@POST，@DELETE，标注方法是用的HTTP请求的类型</p>
+<p>@Produces，当服务器端实行完成相关的逻辑需要返回对象的时候，程序会根据@Produces返回相应的对象类型</p>
+<p>@Consumes，我们从页面提交数据到后台的时候,数据的类型可以是text的,xml的,json的,但是我们在请求资源的时候想要请求到同一个资源路径上面去，此时怎么来区分处理呢?使用@Consumes标注</p>
+<p>@PathParam，@QueryParam，@HeaderParam，@CookieParam，@MatrixParam，@FormParam,分别标注方法的参数来自于HTTP请求的不同位置，例如@PathParam来自于URL的路径，@QueryParam来自于URL的查询参数，@HeaderParam来自于HTTP请求的头信息，@CookieParam来自于HTTP请求的Cookie，@FormParam来自Form表单中的参数</p>
+<p>@DefaultValue，有些参数值在没有值的情况下如果需要有默认值,则使用这个标注</p>
+]]></content>
+      <categories>
+        <category>框架</category>
+      </categories>
+      <tags>
+        <tag>Resteasy</tag>
       </tags>
   </entry>
   <entry>
@@ -1891,8 +2137,8 @@
         <category>转载</category>
       </categories>
       <tags>
-        <tag>Cache</tag>
         <tag>转载</tag>
+        <tag>Cache</tag>
       </tags>
   </entry>
   <entry>
@@ -1927,6 +2173,129 @@
       <tags>
         <tag>Java</tag>
         <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>金字塔原理</title>
+    <url>/2021/09/24/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<h2 id="结构思考力三层次模型"><a href="#结构思考力三层次模型" class="headerlink" title="结构思考力三层次模型"></a>结构思考力三层次模型</h2><h3 id="三层模型"><a href="#三层模型" class="headerlink" title="三层模型"></a>三层模型</h3><p>理解 -&gt; 重构 -&gt; 呈现</p>
+<p><img src="/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%860.png"></p>
+<h3 id="模型目标"><a href="#模型目标" class="headerlink" title="模型目标"></a>模型目标</h3><p>隐形思维显性化 -&gt; 显性思维结构化 -&gt; 结构思维形象化</p>
+<ul>
+<li>隐形思维显性化：要提高自己的思考，首先要看到它</li>
+<li>显性思维结构化：看到之后发现不清晰，需要结构化</li>
+<li>结构思维形象化：结构化之后还需要把它传递出去，需要形象化的表达</li>
+</ul>
+<h3 id="金字塔结构"><a href="#金字塔结构" class="headerlink" title="金字塔结构"></a>金字塔结构</h3><p><img src="/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%861.png"></p>
+<blockquote>
+<p>结构化思维是一种“从无序到有序”的思考过程</p>
+<p>需要建立一个“先总后分”的思维方式。先找到解决问题的关键要点，然后再深入分析</p>
+</blockquote>
+<h2 id="理解：隐形思维显性化"><a href="#理解：隐形思维显性化" class="headerlink" title="理解：隐形思维显性化"></a>理解：隐形思维显性化</h2><h3 id="概况全文的“万能公式”"><a href="#概况全文的“万能公式”" class="headerlink" title="概况全文的“万能公式”"></a>概况全文的“万能公式”</h3><blockquote>
+<p><code>在___的基础上，</code></p>
+<p><code>从__，__，__N个方面，</code></p>
+<p><code>说明了_____________。</code></p>
+</blockquote>
+<h3 id="结构思考力识别概况技术"><a href="#结构思考力识别概况技术" class="headerlink" title="结构思考力识别概况技术"></a>结构思考力识别概况技术</h3><blockquote>
+<p>识别 -&gt; 判断 -&gt; 概况</p>
+</blockquote>
+<p><img src="/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%862.png"></p>
+<h3 id="隐形思维显性化前提"><a href="#隐形思维显性化前提" class="headerlink" title="隐形思维显性化前提"></a>隐形思维显性化前提</h3><p>隐形思维显性化的前提———有审视问题的坐标系</p>
+<p><img src="/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%863.png"></p>
+<ul>
+<li>审视问题的坐标系：<blockquote>
+<p>这个事情有没有证据和理由支撑？</p>
+<p>这个理由/逻辑是否能够推出结论？</p>
+<p>其中的证据/事实是否能有效支撑理由？</p>
+<p>是否存在隐藏或模糊不利的证据/事实？</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="重构：显性思维结构化"><a href="#重构：显性思维结构化" class="headerlink" title="重构：显性思维结构化"></a>重构：显性思维结构化</h2><h3 id="重构四原则"><a href="#重构四原则" class="headerlink" title="重构四原则"></a>重构四原则</h3><ul>
+<li><p>论-结论先行</p>
+<blockquote>
+<p>一段表达有一个核心观点，最好放在开头</p>
+</blockquote>
+</li>
+<li><p>证-以上统下</p>
+<blockquote>
+<p>任何一层的论点，是下一层思想的概括</p>
+</blockquote>
+</li>
+<li><p>类-归类分组</p>
+<blockquote>
+<p>每一组思想属于同一个范畴</p>
+</blockquote>
+</li>
+<li><p>比-逻辑递进</p>
+<blockquote>
+<p>每一组思想按照一定的逻辑顺序排列</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="论-结论先行"><a href="#论-结论先行" class="headerlink" title="论-结论先行"></a>论-结论先行</h3><p>结论先行可以提升我们的表达效率，让人快速理解你的核心意思。结论先行的难点不是先行，而是如何得出结论，需要反复联系</p>
+<p><img src="/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%864.png"></p>
+<h3 id="证-以上统下"><a href="#证-以上统下" class="headerlink" title="证-以上统下"></a>证-以上统下</h3><p>上有结论，下有理由，结论概括理由，理由支撑结论，上下对应</p>
+<p><img src="/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%865.png"></p>
+<h3 id="类-归类分组"><a href="#类-归类分组" class="headerlink" title="类-归类分组"></a>类-归类分组</h3><blockquote>
+<p>人类大脑一次性接收的信息量是有范围的，这个范围有两个说法：5+-2 和 7+-2，不管是哪个说法，7都是一个临界值，当超过7时都会对记忆造成负担，所以在写方案时最好不要超过7条</p>
+</blockquote>
+<blockquote>
+<p>而很多领导讲话都喜欢讲3点，理由有</p>
+<ol>
+<li>好记</li>
+<li>对方更容易倾听</li>
+<li>具有说服力；同时在物理结构中，3是稳定结构</li>
+</ol>
+<p>但是3点要能把事情说轻，说全，而这依赖 归类分组</p>
+</blockquote>
+<h4 id="MECE原则"><a href="#MECE原则" class="headerlink" title="MECE原则"></a>MECE原则</h4><blockquote>
+<p>归类分组标准采用 MECE原则</p>
+</blockquote>
+<p>相互独立、完全穷尽</p>
+<p>分类时不能有交叉、更不能有遗漏，不重不漏</p>
+<p><img src="/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%866.png"></p>
+<h3 id="比-逻辑递进"><a href="#比-逻辑递进" class="headerlink" title="比-逻辑递进"></a>比-逻辑递进</h3><p>三种顺序</p>
+<ul>
+<li>时间顺序</li>
+<li>结构顺序</li>
+<li>重要性顺序</li>
+</ul>
+<p><strong>在同一个层级、同一个分支，必须使用同一种逻辑顺序</strong></p>
+<p><img src="/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%867.png"></p>
+<h2 id="呈现：结构思维形象化"><a href="#呈现：结构思维形象化" class="headerlink" title="呈现：结构思维形象化"></a>呈现：结构思维形象化</h2><blockquote>
+<p>形象化表达是结构化思考最有力的输出方式，结构化思考是形象化表达的基础</p>
+</blockquote>
+<h3 id="结构罗盘"><a href="#结构罗盘" class="headerlink" title="结构罗盘"></a>结构罗盘</h3><blockquote>
+<p>形象化表达工具——结构罗盘</p>
+</blockquote>
+<blockquote>
+<p>“配”关系 -&gt; “得”图示 -&gt; “上”包装</p>
+</blockquote>
+<p><img src="/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%868.png"></p>
+<ul>
+<li>配关系：确定关系结构图下的一个分支的要素之间是什么关系</li>
+<li>得图示：根据关系选择不同图示</li>
+<li>上包装：对观点进行高度浓缩提炼，变得更加简洁、明了、容易记忆，及所谓“卖点包装”</li>
+</ul>
+<h3 id="配关系"><a href="#配关系" class="headerlink" title="配关系"></a>配关系</h3><p>四种模式，十六种关系</p>
+<p>根据关系分支下的要素判断属于哪一种模式中的哪一种关系</p>
+<p><img src="/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%869.png"></p>
+<h3 id="得图示"><a href="#得图示" class="headerlink" title="得图示"></a>得图示</h3><h3 id="上包装"><a href="#上包装" class="headerlink" title="上包装"></a>上包装</h3><p>可以把观点凝练成一句口诀，既好记，又有高度，这种方法为“卖点包装”</p>
+<p>可以根据四种包装方法来进行包装</p>
+<ul>
+<li>简化</li>
+<li>类比</li>
+<li>整合</li>
+<li>引用</li>
+</ul>
+<p><img src="/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%8610.png"></p>
+]]></content>
+      <categories>
+        <category>通用能力</category>
+      </categories>
+      <tags>
+        <tag>通用能力</tag>
       </tags>
   </entry>
   <entry>
@@ -2222,9 +2591,333 @@
         <category>转载</category>
       </categories>
       <tags>
-        <tag>Cache</tag>
         <tag>转载</tag>
+        <tag>Cache</tag>
         <tag>Spring</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>单元测试-Spock</title>
+    <url>/2021/08/25/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock/</url>
+    <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>单元测试的重要性不言而喻，但在实际开发中单元测试往往都是缺失的，原因有很多，其中比较重要的一点是工期短、写单测耗时长</p>
+<p>针对这种问题，为了提高写单测的效率，推荐 Spock 测试框架，改善单测体验、解放生产力~</p>
+<h1 id="Spock是什么"><a href="#Spock是什么" class="headerlink" title="Spock是什么"></a>Spock是什么</h1><p>官网：<a href="https://spockframework.org/">https://spockframework.org/</a></p>
+<h2 id="Spock简介"><a href="#Spock简介" class="headerlink" title="Spock简介"></a>Spock简介</h2><p>官方介绍：</p>
+<blockquote>
+<p>Spock is a testing and specification framework for Java and Groovy applications. What makes it stand out from the crowd is its beautiful and highly expressive specification language. Thanks to its JUnit runner, Spock is compatible with most IDEs, build tools, and continuous integration servers. Spock is inspired from JUnit, jMock, RSpec, Groovy, Scala, Vulcans, and other fascinating life forms.</p>
+</blockquote>
+<p>简单来说，<code>Spock</code> 是一个测试框架，有以下几个核心特点：</p>
+<ul>
+<li>可以应用于 <code>java</code> 或 <code>groovy</code> 应用的单元测试框架。</li>
+<li>测试代码使用基于 <code>groovy</code> 语言扩展而成的规范说明语言（<code>specification language</code>）。</li>
+<li>遵从 BDD（行为驱动开发）模式，有助于提升代码的质量。</li>
+<li>通过 <code>junit runner</code> 调用测试，兼容绝大部分 <code>junit</code> 的运行场景（ide，构建工具，持续集成等）。</li>
+<li>框架的设计思路参考了 <code>JUnit</code>，<code>jMock</code>，<code>RSpec</code>，<code>Groovy</code>，<code>Scala</code>，<code>Vulcans</code>……</li>
+</ul>
+<h2 id="与其他框架对比"><a href="#与其他框架对比" class="headerlink" title="与其他框架对比"></a>与其他框架对比</h2><p><img src="/images/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock0.jpeg"></p>
+<p><code>Spock</code> = 传统测试框架 + <code>Mock</code>+ <code>BDD</code> + 文档化</p>
+<blockquote>
+<p>代码规范化，结构层次清晰</p>
+<p>简单易读、可维护性强</p>
+<p>基于 <code>Groovy</code> 更快的写单侧</p>
+<p>漂亮的参数化测试和异常测试<br><img src="/images/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock1.png"></p>
+</blockquote>
+<p>缺点：</p>
+<blockquote>
+<p>偶尔有坑（版本不兼容等）</p>
+<p>需要了解 <code>Groovy</code> 语言</p>
+<p>与其它 java 测试框架风格相差比较大，需要适应</p>
+</blockquote>
+<p>而这些理由比起 <code>Spock</code> 提供的易于开发和维护的单元测试代码来说，是可以忽略的。。。</p>
+<h1 id="Groovy"><a href="#Groovy" class="headerlink" title="Groovy"></a>Groovy</h1><p>使用 <code>Spock</code> 前先了解下 <code>Groovy</code></p>
+<p>维基百科介绍：</p>
+<blockquote>
+<p>Groovy是Java平台上设计的面向对象编程语言。这门动态语言拥有类似Python、Ruby和Smalltalk中的一些特性，可以作为Java平台的脚本语言使用。</p>
+</blockquote>
+<p><code>Groovy</code> 的语法与 <code>Java</code> 非常相似，以至于多数的 <code>Java</code> 代码也是正确的 <code>Groovy</code> 代码。<code>Groovy</code> 代码动态的被编译器转换成 <code>Java</code> 字节码。由于其运行在JVM上的特性，<code>Groovy</code> 可以使用其他 <code>Java</code> 语言编写的库。</p>
+<p>虽然需要了解 <code>Groovy</code>，但不用担心，<code>Groovy</code> 是一门比较轻量，学习门槛也比较低的语言，而且最重要的是 <code>Groovy</code> 支持 <code>Java</code> 语法，所以理论上使用纯 <code>Java</code> 写 <code>Groovy</code> 也是可以的~</p>
+<p>而且熟悉使用 <code>Spock</code> 后，不仅提升了写单测的速度，还多学了一门脚本语言，两全其美~~</p>
+<h2 id="Groovy-语法糖"><a href="#Groovy-语法糖" class="headerlink" title="Groovy 语法糖"></a>Groovy 语法糖</h2><p><img src="/images/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock2.png"><br><img src="/images/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock3.png"><br><img src="/images/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock4.png"></p>
+<blockquote>
+<p>不用分号</p>
+<p>可选择性使用 <code>return</code></p>
+<p>默认采用 <code>public</code> 修饰符</p>
+<p><code>==</code> 与 <code>equals</code></p>
+</blockquote>
+<p>更多语法参考推荐文档。。。</p>
+<h2 id="Groovy-推荐文档"><a href="#Groovy-推荐文档" class="headerlink" title="Groovy 推荐文档"></a>Groovy 推荐文档</h2><p><a href="https://groovy-lang.org/documentation.html">https://groovy-lang.org/documentation.html</a></p>
+<p><a href="https://sysgears.com/articles/groovy-differences-java/">https://sysgears.com/articles/groovy-differences-java/</a></p>
+<p><a href="https://wiki.jikexueyuan.com/project/groovy-introduction/differences-with-java.html">https://wiki.jikexueyuan.com/project/groovy-introduction/differences-with-java.html</a></p>
+<h1 id="使用Spock"><a href="#使用Spock" class="headerlink" title="使用Spock"></a>使用Spock</h1><blockquote>
+<p>Spock Web Console</p>
+<p><a href="https://meetspock.appspot.com/">https://meetspock.appspot.com/</a></p>
+</blockquote>
+<h2 id="使用姿势"><a href="#使用姿势" class="headerlink" title="使用姿势"></a>使用姿势</h2><ul>
+<li><p>安装 IDE 插件</p>
+<p><img src="/images/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock5.png"></p>
+</li>
+<li><p>maven 引用</p>
+<blockquote>
+<p>建议使用 1.3-groovy-2.4 版本，其他版本可能与其他包有兼容问题</p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.spockframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spock-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.3-groovy-2.4<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.spockframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spock-spring<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.3-groovy-2.4<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>创建 Groovy 测试目录</p>
+<p><img src="/images/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock6.png"></p>
+</li>
+<li><p>编写测试代码</p>
+<p><img src="/images/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock7.png"></p>
+</li>
+</ul>
+<p>创建测试类时可以这俩个，<code>Spock Specification</code> 会自动继承 <code>Specification</code>，<code>Groovy Class</code> 需要自己继承</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> spock.lang.Specification</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SpockDemo</span> <span class="keyword">extends</span> <span class="title">Specification</span> </span>&#123; </span><br><span class="line">    def <span class="string">&quot;test&quot;</span>() &#123;</span><br><span class="line">        given: <span class="string">&quot;数据准备&quot;</span></span><br><span class="line">	      def list = []</span><br><span class="line">        </span><br><span class="line">        when: <span class="string">&quot;执行需要测试的代码&quot;</span></span><br><span class="line">        list.add(<span class="string">&quot;test&quot;</span>)</span><br><span class="line"></span><br><span class="line">        then: <span class="string">&quot;验证执行结果&quot;</span></span><br><span class="line">        !list.empty </span><br><span class="line">        stack.size() == <span class="number">1</span>   </span><br><span class="line">    &#125;   </span><br><span class="line">    </span><br><span class="line">    def <span class="string">&quot;测试&quot;</span>() &#123;</span><br><span class="line">        expect:</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="集成-Spring"><a href="#集成-Spring" class="headerlink" title="集成 Spring"></a>集成 Spring</h2><p>和 Junit 集成的方式一样</p>
+<ul>
+<li><p>Spring</p>
+<p><code>@ContextConfiguration(locations = &quot;classpath:spring-context.xml&quot;)</code></p>
+</li>
+<li><p>SpringBoot</p>
+<p><code>@SpringBootTest</code></p>
+</li>
+</ul>
+<h2 id="Spock中的概念"><a href="#Spock中的概念" class="headerlink" title="Spock中的概念"></a>Spock中的概念</h2><ul>
+<li><p>Specification</p>
+<p>在 <code>Spock</code> 中，待测系统的行为是由规格(specification) 所定义的。在使用 <code>Spock</code> 框架编写测试时，测试类需要继承自 <code>Specification</code> 类。</p>
+</li>
+<li><p>模板方法</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">def setup() &#123;&#125;          &#x2F;&#x2F; run before every feature method</span><br><span class="line">def cleanup() &#123;&#125;        &#x2F;&#x2F; run after every feature method</span><br><span class="line">def setupSpec() &#123;&#125;     &#x2F;&#x2F; run before the first feature method</span><br><span class="line">def cleanupSpec() &#123;&#125;   &#x2F;&#x2F; run after the last feature method</span><br></pre></td></tr></table></figure>
+
+<p>和 Junit 对比：</p>
+<table>
+<thead>
+<tr>
+<th>Spock</th>
+<th>Junit</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>setup()</td>
+<td>@Before</td>
+</tr>
+<tr>
+<td>cleanup()</td>
+<td>@After</td>
+</tr>
+<tr>
+<td>setupSpec()</td>
+<td>@BeforeClass</td>
+</tr>
+<tr>
+<td>cleanupSpec()</td>
+<td>@AfterClass</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>Feature methods</p>
+<p>就是测试类中的测试方法，方法名可以是中文</p>
+</li>
+<li><p>blocks</p>
+<p>每个测试方法又被划分为不同的 <code>block</code>，不同的 <code>block</code> 处于测试执行的不同阶段，在测试运行时，各个 <code>block</code> 按照不同的顺序和规则被执行，如下图：</p>
+<p><img src="/images/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock8.png"></p>
+<blockquote>
+<p><code>Spock</code> 定义了多种标签，去描述代码“应该做什么”，“输入条件是什么”，“输出是否符合预期”，从语义层面规范了代码的编写</p>
+</blockquote>
+<p><strong>setup</strong>：也可以写成 <code>given</code>，在这个 <code>block</code> 中会放置与这个测试方法相关的初始化程序，可选</p>
+<p><strong>given</strong>：输入条件（前置参数），一般会在这个 <code>block</code> 中定义局部变量，<code>mock</code> 等，可选</p>
+<p><strong>when</strong>、<code>then</code>：<code>when</code> 与 <code>then</code> 需要搭配使用，一起出现，在 <code>when</code> 中执行待测试的函数，在 <code>then</code> 中判断是否符合预期</p>
+<p><strong>expect</strong>：可以看做精简版的 when+then</p>
+<p><strong>and</strong>：衔接上个标签，补充的作用</p>
+<p><strong>cleanup</strong>：退出前做一些清理工作，如关闭资源等</p>
+<p><strong>where</strong>：做测试时最复杂的事情之一就是准备测试数据，尤其是要测试边界条件、测试异常分支等，这些都需要在测试之前规划好数据。但是传统的测试框架很难轻松的制造数据，要么依赖反复调用，要么使用其他丑陋的方式；在 <code>Spock</code> 中 <code>where</code> 完美解决了这个问题，<code>where</code> 可以说是 <code>Spock</code> 的核心，如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* where 有两种写法</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SpockDemo</span> <span class="keyword">extends</span> <span class="title">Specification</span> </span>&#123;</span><br><span class="line">    def <span class="string">&quot;max&quot;</span>() &#123;</span><br><span class="line">        expect:</span><br><span class="line">        Math.max(a, b) == c</span><br><span class="line"></span><br><span class="line">        where: <span class="string">&quot;多个列使用 | 单竖线隔开，|| 双竖线区分输入和输出变量，即左边是输入值，右边是输出值&quot;</span></span><br><span class="line">        a | b || c</span><br><span class="line">        <span class="number">3</span> | <span class="number">5</span> || <span class="number">5</span></span><br><span class="line">        <span class="number">7</span> | <span class="number">0</span> || <span class="number">7</span></span><br><span class="line">        <span class="number">0</span> | <span class="number">0</span> || <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SpockDemo</span> <span class="keyword">extends</span> <span class="title">Specification</span> </span>&#123;</span><br><span class="line">    def <span class="string">&quot;max&quot;</span>() &#123;</span><br><span class="line">        expect:</span><br><span class="line">        Math.max(a, b) == c</span><br><span class="line"></span><br><span class="line">        where:</span><br><span class="line">        a &lt;&lt; [<span class="number">3</span>, <span class="number">7</span>, <span class="number">0</span>]</span><br><span class="line">        b &lt;&lt; [<span class="number">5</span>, <span class="number">0</span>, <span class="number">0</span>]</span><br><span class="line">        c &lt;&lt; [<span class="number">5</span>, <span class="number">7</span>, <span class="number">0</span>]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="断言"><a href="#断言" class="headerlink" title="断言"></a>断言</h2><p>在 <code>then</code> 或 <code>expect</code> 中会默认 <code>assert</code> 所有返回值是 <code>boolean</code> 型的语句，所以在 <code>then</code> 和 <code>expect</code> 语句块中不需要写 <code>assert</code></p>
+<p>如果要在其它地方增加断言，需要显式增加 <code>assert</code> 关键字，如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function">def <span class="title">setup</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  stack = <span class="keyword">new</span> Stack()</span><br><span class="line">  <span class="keyword">assert</span> stack.empty</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="with"><a href="#with" class="headerlink" title="with"></a>with</h3><p><code>with</code> 语句可以验证对象内部的多个属性是否符合预期值</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">expect:</span><br><span class="line">with(response) &#123;</span><br><span class="line">  code == <span class="number">0</span></span><br><span class="line">  message == <span class="string">&quot;成功&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="异常断言"><a href="#异常断言" class="headerlink" title="异常断言"></a>异常断言</h3><p>验证有没有抛出异常，可以用 <code>thrown()</code></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">def <span class="string">&quot;test&quot;</span>() &#123;</span><br><span class="line">  given:</span><br><span class="line">  def str = <span class="keyword">null</span></span><br><span class="line"></span><br><span class="line">  when:</span><br><span class="line">  str.add(<span class="string">&quot;test&quot;</span>)</span><br><span class="line"></span><br><span class="line">  then:</span><br><span class="line">  thrown(NullPointerException)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>要验证没有抛出某种异常，可以用 <code>notThrown()</code></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">def <span class="string">&quot;test&quot;</span>() &#123;</span><br><span class="line">  given:</span><br><span class="line">  def str = []</span><br><span class="line"></span><br><span class="line">  when:</span><br><span class="line">  str.add(<span class="string">&quot;test&quot;</span>)</span><br><span class="line"></span><br><span class="line">  then:</span><br><span class="line">  notThrown(NullPointerException)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Annotation"><a href="#Annotation" class="headerlink" title="Annotation"></a>Annotation</h2><table>
+<thead>
+<tr>
+<th>注解</th>
+<th>用途</th>
+<th>样例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Shared</td>
+<td>在多个测试间共享变量</td>
+<td>@Shared def h2 = new H2Database()</td>
+</tr>
+<tr>
+<td>AutoCleanUp</td>
+<td>测试结束后回收资源，不管是否发生异常等</td>
+<td>@AutoCleanup(“shutdown”) def executor = new Executor()</td>
+</tr>
+<tr>
+<td>Ignore</td>
+<td>忽略这个测试</td>
+<td></td>
+</tr>
+<tr>
+<td>IgnoreIf</td>
+<td>忽略满足条件的测试</td>
+<td>@IgnoreIf(os.isWindows())</td>
+</tr>
+<tr>
+<td>IgnoreRest</td>
+<td>只运行这个测试</td>
+<td></td>
+</tr>
+<tr>
+<td>Requries</td>
+<td>满足设定的条件才运行这个测试</td>
+<td>@Requires({env.containsKey(“HASH_KEY_TO_AUTHENTICATE”)})</td>
+</tr>
+<tr>
+<td>Unroll</td>
+<td>配合数据表的时候，每行运行一个测试</td>
+<td></td>
+</tr>
+<tr>
+<td>FailsWith</td>
+<td>运行测试必然抛出某个异常</td>
+<td></td>
+</tr>
+<tr>
+<td>Issue</td>
+<td>指明这个测试对应某个issue</td>
+<td>@Issue(“<a href="http://redmine.example.com/issues/2554&quot;">http://redmine.example.com/issues/2554&quot;</a>)</td>
+</tr>
+<tr>
+<td>Timeout</td>
+<td>如果运行时间超过某个阈值，则判定为失败</td>
+<td>@Timeout(value = 5000, unit = TimeUnit.MILLISECONDS)</td>
+</tr>
+<tr>
+<td>Title</td>
+<td>设定一个更容易理解的标题名</td>
+<td>@Title(”测试在》繁忙情况下》发红包”)</td>
+</tr>
+</tbody></table>
+<h1 id="Mock"><a href="#Mock" class="headerlink" title="Mock"></a>Mock</h1><blockquote>
+<p><code>Spock</code> 自带 <code>Mock</code> 功能，使用简单方便，同时也支持扩展第三方 <code>Mock</code> 框架，比如 <code>PowerMock</code></p>
+</blockquote>
+<h2 id="SpockMock"><a href="#SpockMock" class="headerlink" title="SpockMock"></a>SpockMock</h2><h3 id="Mock-1"><a href="#Mock-1" class="headerlink" title="Mock"></a>Mock</h3><p>创建一个假对象，验证是否执行了某些操作(在 <code>then</code> 或 <code>expect</code> 语句块中)</p>
+<ul>
+<li><p>创建一个 <code>Mock</code> 对象</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PublisherSpec</span> <span class="keyword">extends</span> <span class="title">Specification</span> </span>&#123;</span><br><span class="line">    Publisher publisher = <span class="keyword">new</span> Publisher()</span><br><span class="line">    <span class="comment">// def subscriber = Mock(Subscriber)</span></span><br><span class="line">    Subscriber subscriber = Mock()</span><br><span class="line">    <span class="comment">// def subscriber2 = Mock(Subscriber)</span></span><br><span class="line">    Subscriber subscriber2 = Mock()</span><br><span class="line"></span><br><span class="line">    <span class="function">def <span class="title">setup</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        publisher.subscribers.add(subscriber)</span><br><span class="line">        publisher.subscribers.add(subscriber2)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>交互验证</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">def <span class="string">&quot;should send messages to all subscribers&quot;</span>() &#123;</span><br><span class="line">    when:</span><br><span class="line">    publisher.send(<span class="string">&quot;hello&quot;</span>)</span><br><span class="line"></span><br><span class="line">    then:</span><br><span class="line">    <span class="number">1</span> * subscriber.receive(<span class="string">&quot;hello&quot;</span>)</span><br><span class="line">    <span class="number">1</span> * subscriber2.receive(<span class="string">&quot;hello&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 publisher 调用 send 时，两个 subscriber 都应该被调用一次 receive(“hello”)</p>
+</li>
+<li><p>示例</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span> * subscriber.receive(<span class="string">&quot;hello&quot;</span>)      <span class="comment">// exactly one call</span></span><br><span class="line"><span class="number">0</span> * subscriber.receive(<span class="string">&quot;hello&quot;</span>)      <span class="comment">// zero calls</span></span><br><span class="line">(<span class="number">1.</span><span class="number">.3</span>) * subscriber.receive(<span class="string">&quot;hello&quot;</span>) <span class="comment">// between one and three calls (inclusive)</span></span><br><span class="line">(<span class="number">1.</span>._) * subscriber.receive(<span class="string">&quot;hello&quot;</span>) <span class="comment">// at least one call</span></span><br><span class="line">(_.<span class="number">.3</span>) * subscriber.receive(<span class="string">&quot;hello&quot;</span>) <span class="comment">// at most three calls</span></span><br><span class="line">_ * subscriber.receive(<span class="string">&quot;hello&quot;</span>)      <span class="comment">// any number of calls, including zero</span></span><br><span class="line"><span class="number">1</span> * subscriber.receive(<span class="string">&quot;hello&quot;</span>)     <span class="comment">// an argument that is equal to the String &quot;hello&quot;</span></span><br><span class="line"><span class="number">1</span> * subscriber.receive(!<span class="string">&quot;hello&quot;</span>)    <span class="comment">// an argument that is unequal to the String &quot;hello&quot;</span></span><br><span class="line"><span class="number">1</span> * subscriber.receive()            <span class="comment">// the empty argument list (would never match in our example)</span></span><br><span class="line"><span class="number">1</span> * subscriber.receive(_)           <span class="comment">// any single argument (including null)</span></span><br><span class="line"><span class="number">1</span> * subscriber.receive(*_)          <span class="comment">// any argument list (including the empty argument list)</span></span><br><span class="line"><span class="number">1</span> * subscriber.receive(!<span class="keyword">null</span>)       <span class="comment">// any non-null argument</span></span><br><span class="line"><span class="number">1</span> * subscriber.receive(_ as String) <span class="comment">// any non-null argument that is-a String</span></span><br><span class="line"><span class="number">1</span> * subscriber.receive(&#123; it.size() &gt; <span class="number">3</span> &#125;) <span class="comment">// an argument that satisfies the given predicate</span></span><br><span class="line">                                          <span class="comment">// (here: message length is greater than 3)</span></span><br><span class="line"><span class="number">1</span> * subscriber._(*_)     <span class="comment">// any method on subscriber, with any argument list</span></span><br><span class="line"><span class="number">1</span> * subscriber._         <span class="comment">// shortcut for and preferred over the above</span></span><br><span class="line"><span class="number">1</span> * _._                  <span class="comment">// any method call on any mock object</span></span><br><span class="line"><span class="number">1</span> * _                    <span class="comment">// shortcut for and preferred over the above</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="Stubbing"><a href="#Stubbing" class="headerlink" title="Stubbing"></a>Stubbing</h3><p>调用 <code>Mock</code> 对象的某个方法时返回特定的值</p>
+<ul>
+<li><p>调用返回指定值</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">subscriber.receive(_) &gt;&gt; <span class="string">&quot;ok&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>调用多次返回不同的值</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">subscriber.receive(_) &gt;&gt;&gt; [<span class="string">&quot;ok&quot;</span>, <span class="string">&quot;error&quot;</span>, <span class="string">&quot;error&quot;</span>, <span class="string">&quot;ok&quot;</span>]</span><br><span class="line">subscriber.receive(_) &gt;&gt; <span class="string">&quot;ok&quot;</span> &gt;&gt; <span class="string">&quot;error&quot;</span> &gt;&gt; <span class="string">&quot;error&quot;</span> &gt;&gt; <span class="string">&quot;ok&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>希望抛出异常</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">subscriber.receive(_) &gt;&gt; &#123; <span class="keyword">throw</span> <span class="keyword">new</span> InternalError(<span class="string">&quot;ouch&quot;</span>) &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="Mock、Stubbing结合"><a href="#Mock、Stubbing结合" class="headerlink" title="Mock、Stubbing结合"></a>Mock、Stubbing结合</h3><p>如果既要判断某个 <code>mock</code> 对象的交互，又希望它返回值的话，可以结合 <code>mock</code> 和 <code>stub</code>，可以这样：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">then:</span><br><span class="line"><span class="number">1</span> * subscriber.receive(<span class="string">&quot;message1&quot;</span>) &gt;&gt; <span class="string">&quot;ok&quot;</span></span><br><span class="line"><span class="number">1</span> * subscriber.receive(<span class="string">&quot;message2&quot;</span>) &gt;&gt; <span class="string">&quot;fail&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>一般使用 <code>Spock</code> 自带的 <code>Mock</code> 就够了，但是 <code>Spock</code> 的 <code>Mock</code> 也有着常见缺陷，既不能 <code>Mock</code> 私有方法和静态方法</p>
+<p>针对这种情况，业界之前常见的是使用 <code>PowerMock</code> 来 <code>Mock</code>，但是 <code>PowerMock</code> 上手难度较高、且使用复杂</p>
+<p>相比 <code>Spock</code> + <code>PowerMock</code>，推荐 <code>Spock</code> + <code>TestableMock</code> 来 <code>Mock</code>，快速上手、使用简单</p>
+<h2 id="TestableMock"><a href="#TestableMock" class="headerlink" title="TestableMock"></a>TestableMock</h2><p><code>TestableMock</code>，阿里新一代测试工具，一款特立独行的轻量Mock工具。</p>
+<p>官网：<a href="https://alibaba.github.io/testable-mock/#/">https://alibaba.github.io/testable-mock/#/</a></p>
+<p>常见 Mock 工具对比：</p>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>原理</th>
+<th>最小Mock单元</th>
+<th>对被Mock方法的限制</th>
+<th>上手难度</th>
+<th>IDE支持</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Mockito</td>
+<td>动态代理</td>
+<td>类</td>
+<td>不能Mock私有/静态和构造方法</td>
+<td>较容易</td>
+<td>很好</td>
+</tr>
+<tr>
+<td>Spock</td>
+<td>动态代理</td>
+<td>类</td>
+<td>不能Mock私有/静态和构造方法</td>
+<td>较复杂</td>
+<td>一般</td>
+</tr>
+<tr>
+<td>PowerMock</td>
+<td>自定义类加载器</td>
+<td>类</td>
+<td>任何方法皆可</td>
+<td>较复杂</td>
+<td>较好</td>
+</tr>
+<tr>
+<td>JMockit</td>
+<td>运行时字节码修改</td>
+<td>类</td>
+<td>不能Mock构造方法(new操作符)</td>
+<td>较复杂</td>
+<td>一般</td>
+</tr>
+<tr>
+<td>TestableMock</td>
+<td>运行时字节码修改</td>
+<td>方法</td>
+<td>任何方法皆可</td>
+<td>很容易</td>
+<td>一般</td>
+</tr>
+</tbody></table>
+<p>TestableMock 功能：</p>
+<ul>
+<li><a href="https://alibaba.github.io/testable-mock/#/zh-cn/doc/use-mock">快速Mock任意调用</a>：使被测类的任意方法调用快速替换为Mock方法，实现”指哪换哪”，解决传统Mock工具使用繁琐的问题</li>
+<li><a href="https://alibaba.github.io/testable-mock/#/zh-cn/doc/private-accessor">访问被测类私有成员</a>：使单元测试能直接调用和访问被测类的私有成员，解决私有成员初始化和私有方法测试的问题</li>
+<li><a href="https://alibaba.github.io/testable-mock/#/zh-cn/doc/omni-constructor">快速构造参数对象</a>：生成任意复杂嵌套的对象实例，并简化其内部成员赋值方式，解决被测方法参数初始化代码冗长的问题</li>
+<li><a href="https://alibaba.github.io/testable-mock/#/zh-cn/doc/test-void-method">辅助测试void方法</a>：利用Mock校验器对方法的内部逻辑进行检查，解决无返回值方法难以实施单元测试的问题</li>
+</ul>
+<p>不足：</p>
+<p>当前 <code>TestableMock</code> 的主要不足在于，编写 <code>Mock</code> 方法时 IDE 无法即时提示方法参数是否正确匹配。若发现匹配效果不符合预期，需要通过<a href="https://alibaba.github.io/testable-mock/#/zh-cn/doc/troubleshooting">自助问题排查</a>文档提供的方法在运行期进行校验</p>
+<h1 id="推荐文档"><a href="#推荐文档" class="headerlink" title="推荐文档"></a>推荐文档</h1><ul>
+<li><p>官方文档<br><a href="https://spockframework.org/spock/docs/2.0/all_in_one.html">https://spockframework.org/spock/docs/2.0/all_in_one.html</a></p>
+</li>
+<li><p>美团技术博客<br><a href="https://tech.meituan.com/2021/08/06/spock-practice-in-meituan.html">https://tech.meituan.com/2021/08/06/spock-practice-in-meituan.html</a></p>
+</li>
+<li><p>其他技术博客<br><a href="https://javakk.com/category/spock">https://javakk.com/category/spock</a></p>
+</li>
+<li><p>Java Testing with Spock<br><a href="https://github.com/kkapelon/java-testing-with-spock">https://github.com/kkapelon/java-testing-with-spock</a></p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
       </tags>
   </entry>
 </search>

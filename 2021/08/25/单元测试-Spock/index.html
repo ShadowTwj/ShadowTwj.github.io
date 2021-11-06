@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="https://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.loli.net/css?family=Sigmar One:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" type="text/css" />
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/social-share.js/1.0.9/css/share.min.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.0.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=0.0.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=0.0.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=0.0.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Tianwj's blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="背景单元测试的重要性不言而喻，但在实际开发中单元测试往往都是缺失的，原因有很多，其中比较重要的一点是工期短、写单测耗时长 针对这种问题，为了提高写单测的效率，推荐 Spock 测试框架，改善单测体验、解放生产力~ Spock是什么官网：https:&#x2F;&#x2F;spockframework.org&#x2F; Spock简介官方介绍：  Spock is a testing and specification fra">
+<meta property="og:type" content="article">
+<meta property="og:title" content="单元测试-Spock">
+<meta property="og:url" content="http://yoursite.com/2021/08/25/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock/index.html">
+<meta property="og:site_name" content="Tianwj&#39;s blog">
+<meta property="og:description" content="背景单元测试的重要性不言而喻，但在实际开发中单元测试往往都是缺失的，原因有很多，其中比较重要的一点是工期短、写单测耗时长 针对这种问题，为了提高写单测的效率，推荐 Spock 测试框架，改善单测体验、解放生产力~ Spock是什么官网：https:&#x2F;&#x2F;spockframework.org&#x2F; Spock简介官方介绍：  Spock is a testing and specification fra">
+<meta property="og:locale">
+<meta property="og:image" content="http://yoursite.com/images/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock0.jpeg">
+<meta property="og:image" content="http://yoursite.com/images/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock1.png">
+<meta property="og:image" content="http://yoursite.com/images/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock2.png">
+<meta property="og:image" content="http://yoursite.com/images/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock3.png">
+<meta property="og:image" content="http://yoursite.com/images/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock4.png">
+<meta property="og:image" content="http://yoursite.com/images/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock5.png">
+<meta property="og:image" content="http://yoursite.com/images/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock6.png">
+<meta property="og:image" content="http://yoursite.com/images/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock7.png">
+<meta property="og:image" content="http://yoursite.com/images/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock8.png">
+<meta property="article:published_time" content="2021-08-25T03:22:37.000Z">
+<meta property="article:modified_time" content="2021-11-06T06:04:57.001Z">
+<meta property="article:author" content="tianwj">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock0.jpeg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Pisces',
+    version: '0.0.4',
+    sidebar: {"position":"right","display":"always","offset":52,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    since: '2/9/2014 11:30:00',
+    onlineAPI: '',
+    site: {
+      title: "",
+      subtitle: '',
+      author: ''
+    },
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    leancloud: {
+      enable: false,
+      appID: '',
+      appKey: ''
+    },
+    favicon: {
+      visibilitychange: true,
+      narmal: '/images/favicon.ico',
+      hidden: '/images/failure.ico',
+      show_text: '(/≧▽≦/)咦！又好了！',
+      hide_text: '(●—●)喔哟，崩溃啦！'
+    }
+  };
+</script>
+
+
+
+  
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.1.3/jquery.min.js"></script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2021/08/25/单元测试-Spock/"/>
+
+
+
+
+
+  <title>单元测试-Spock | Tianwj's blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-48084758-7', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-留言板">
+          <a href="/message/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-pencil"></i> <br />
+            
+            留言板
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+      <li class="menu-item search">
+          <form class="search-form">
+            <input name="keyword" type="text" class="search-input" placeholder="站内搜索">
+            <button type="submit" class="search-submit"><i class="fa fa-search"></i></button>
+          </form>
+      </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+<div class="site-brand-wrapper" style="background-image: url(/images/header3.jpg)">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <div class="brand">
+        <span class="logo-line-before"><i></i></span>
+        <div class="site-title">
+          <div id="animate" class="animate">
+            <span>T</span><span>i</span><span>a</span><span>n</span><span>w</span><span>j</span><span>'</span><span>s</span><span> </span><span>b</span><span>l</span><span>o</span><span>g</span>
+          </div>
+          <div id="guide" class="guide">
+            <span>T</span><span>i</span><span>a</span><span>n</span><span>w</span><span>j</span><span>'</span><span>s</span><span> </span><span>b</span><span>l</span><span>o</span><span>g</span>
+          </div>
+        </div>
+        <span class="logo-line-after"><i></i></span>
+      </div>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+<div class="site-master" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-master-avatar" itemprop="image" src="/images/WechatIMG48.jpeg" alt="" />
+    <h2 class="site-master-description" itemprop="description">
+        
+    </h2>
+</div>
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-date">
+			<div class="post-month">08月</div>
+			<div class="post-day">25</div>
+	</div>
+  
+  <div class="post-badge">
+    
+      <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+        <a href="/categories/Java/" itemprop="url" rel="index">
+          <span itemprop="name">Java</span>
+        </a>
+      </span>
+    
+  </div>
+  
+
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/08/25/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/WechatIMG48.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tianwj's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">单元测试-Spock</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-08-25T11:22:37+08:00">
+                2021-08-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <span class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">•</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>单元测试的重要性不言而喻，但在实际开发中单元测试往往都是缺失的，原因有很多，其中比较重要的一点是工期短、写单测耗时长</p>
+<p>针对这种问题，为了提高写单测的效率，推荐 Spock 测试框架，改善单测体验、解放生产力~</p>
+<h1 id="Spock是什么"><a href="#Spock是什么" class="headerlink" title="Spock是什么"></a>Spock是什么</h1><p>官网：<a target="_blank" rel="noopener" href="https://spockframework.org/">https://spockframework.org/</a></p>
+<h2 id="Spock简介"><a href="#Spock简介" class="headerlink" title="Spock简介"></a>Spock简介</h2><p>官方介绍：</p>
+<blockquote>
+<p>Spock is a testing and specification framework for Java and Groovy applications. What makes it stand out from the crowd is its beautiful and highly expressive specification language. Thanks to its JUnit runner, Spock is compatible with most IDEs, build tools, and continuous integration servers. Spock is inspired from JUnit, jMock, RSpec, Groovy, Scala, Vulcans, and other fascinating life forms.</p>
+</blockquote>
+<p>简单来说，<code>Spock</code> 是一个测试框架，有以下几个核心特点：</p>
+<ul>
+<li>可以应用于 <code>java</code> 或 <code>groovy</code> 应用的单元测试框架。</li>
+<li>测试代码使用基于 <code>groovy</code> 语言扩展而成的规范说明语言（<code>specification language</code>）。</li>
+<li>遵从 BDD（行为驱动开发）模式，有助于提升代码的质量。</li>
+<li>通过 <code>junit runner</code> 调用测试，兼容绝大部分 <code>junit</code> 的运行场景（ide，构建工具，持续集成等）。</li>
+<li>框架的设计思路参考了 <code>JUnit</code>，<code>jMock</code>，<code>RSpec</code>，<code>Groovy</code>，<code>Scala</code>，<code>Vulcans</code>……</li>
+</ul>
+<h2 id="与其他框架对比"><a href="#与其他框架对比" class="headerlink" title="与其他框架对比"></a>与其他框架对比</h2><p><img src="/images/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock0.jpeg"></p>
+<p><code>Spock</code> = 传统测试框架 + <code>Mock</code>+ <code>BDD</code> + 文档化</p>
+<blockquote>
+<p>代码规范化，结构层次清晰</p>
+<p>简单易读、可维护性强</p>
+<p>基于 <code>Groovy</code> 更快的写单侧</p>
+<p>漂亮的参数化测试和异常测试<br><img src="/images/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock1.png"></p>
+</blockquote>
+<p>缺点：</p>
+<blockquote>
+<p>偶尔有坑（版本不兼容等）</p>
+<p>需要了解 <code>Groovy</code> 语言</p>
+<p>与其它 java 测试框架风格相差比较大，需要适应</p>
+</blockquote>
+<p>而这些理由比起 <code>Spock</code> 提供的易于开发和维护的单元测试代码来说，是可以忽略的。。。</p>
+<h1 id="Groovy"><a href="#Groovy" class="headerlink" title="Groovy"></a>Groovy</h1><p>使用 <code>Spock</code> 前先了解下 <code>Groovy</code></p>
+<p>维基百科介绍：</p>
+<blockquote>
+<p>Groovy是Java平台上设计的面向对象编程语言。这门动态语言拥有类似Python、Ruby和Smalltalk中的一些特性，可以作为Java平台的脚本语言使用。</p>
+</blockquote>
+<p><code>Groovy</code> 的语法与 <code>Java</code> 非常相似，以至于多数的 <code>Java</code> 代码也是正确的 <code>Groovy</code> 代码。<code>Groovy</code> 代码动态的被编译器转换成 <code>Java</code> 字节码。由于其运行在JVM上的特性，<code>Groovy</code> 可以使用其他 <code>Java</code> 语言编写的库。</p>
+<p>虽然需要了解 <code>Groovy</code>，但不用担心，<code>Groovy</code> 是一门比较轻量，学习门槛也比较低的语言，而且最重要的是 <code>Groovy</code> 支持 <code>Java</code> 语法，所以理论上使用纯 <code>Java</code> 写 <code>Groovy</code> 也是可以的~</p>
+<p>而且熟悉使用 <code>Spock</code> 后，不仅提升了写单测的速度，还多学了一门脚本语言，两全其美~~</p>
+<h2 id="Groovy-语法糖"><a href="#Groovy-语法糖" class="headerlink" title="Groovy 语法糖"></a>Groovy 语法糖</h2><p><img src="/images/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock2.png"><br><img src="/images/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock3.png"><br><img src="/images/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock4.png"></p>
+<blockquote>
+<p>不用分号</p>
+<p>可选择性使用 <code>return</code></p>
+<p>默认采用 <code>public</code> 修饰符</p>
+<p><code>==</code> 与 <code>equals</code></p>
+</blockquote>
+<p>更多语法参考推荐文档。。。</p>
+<h2 id="Groovy-推荐文档"><a href="#Groovy-推荐文档" class="headerlink" title="Groovy 推荐文档"></a>Groovy 推荐文档</h2><p><a target="_blank" rel="noopener" href="https://groovy-lang.org/documentation.html">https://groovy-lang.org/documentation.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://sysgears.com/articles/groovy-differences-java/">https://sysgears.com/articles/groovy-differences-java/</a></p>
+<p><a target="_blank" rel="noopener" href="https://wiki.jikexueyuan.com/project/groovy-introduction/differences-with-java.html">https://wiki.jikexueyuan.com/project/groovy-introduction/differences-with-java.html</a></p>
+<h1 id="使用Spock"><a href="#使用Spock" class="headerlink" title="使用Spock"></a>使用Spock</h1><blockquote>
+<p>Spock Web Console</p>
+<p><a target="_blank" rel="noopener" href="https://meetspock.appspot.com/">https://meetspock.appspot.com/</a></p>
+</blockquote>
+<h2 id="使用姿势"><a href="#使用姿势" class="headerlink" title="使用姿势"></a>使用姿势</h2><ul>
+<li><p>安装 IDE 插件</p>
+<p><img src="/images/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock5.png"></p>
+</li>
+<li><p>maven 引用</p>
+<blockquote>
+<p>建议使用 1.3-groovy-2.4 版本，其他版本可能与其他包有兼容问题</p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.spockframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spock-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.3-groovy-2.4<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.spockframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spock-spring<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.3-groovy-2.4<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>创建 Groovy 测试目录</p>
+<p><img src="/images/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock6.png"></p>
+</li>
+<li><p>编写测试代码</p>
+<p><img src="/images/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock7.png"></p>
+</li>
+</ul>
+<p>创建测试类时可以这俩个，<code>Spock Specification</code> 会自动继承 <code>Specification</code>，<code>Groovy Class</code> 需要自己继承</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> spock.lang.Specification</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SpockDemo</span> <span class="keyword">extends</span> <span class="title">Specification</span> </span>&#123; </span><br><span class="line">    def <span class="string">&quot;test&quot;</span>() &#123;</span><br><span class="line">        given: <span class="string">&quot;数据准备&quot;</span></span><br><span class="line">	      def list = []</span><br><span class="line">        </span><br><span class="line">        when: <span class="string">&quot;执行需要测试的代码&quot;</span></span><br><span class="line">        list.add(<span class="string">&quot;test&quot;</span>)</span><br><span class="line"></span><br><span class="line">        then: <span class="string">&quot;验证执行结果&quot;</span></span><br><span class="line">        !list.empty </span><br><span class="line">        stack.size() == <span class="number">1</span>   </span><br><span class="line">    &#125;   </span><br><span class="line">    </span><br><span class="line">    def <span class="string">&quot;测试&quot;</span>() &#123;</span><br><span class="line">        expect:</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="集成-Spring"><a href="#集成-Spring" class="headerlink" title="集成 Spring"></a>集成 Spring</h2><p>和 Junit 集成的方式一样</p>
+<ul>
+<li><p>Spring</p>
+<p><code>@ContextConfiguration(locations = &quot;classpath:spring-context.xml&quot;)</code></p>
+</li>
+<li><p>SpringBoot</p>
+<p><code>@SpringBootTest</code></p>
+</li>
+</ul>
+<h2 id="Spock中的概念"><a href="#Spock中的概念" class="headerlink" title="Spock中的概念"></a>Spock中的概念</h2><ul>
+<li><p>Specification</p>
+<p>在 <code>Spock</code> 中，待测系统的行为是由规格(specification) 所定义的。在使用 <code>Spock</code> 框架编写测试时，测试类需要继承自 <code>Specification</code> 类。</p>
+</li>
+<li><p>模板方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def setup() &#123;&#125;          &#x2F;&#x2F; run before every feature method</span><br><span class="line">def cleanup() &#123;&#125;        &#x2F;&#x2F; run after every feature method</span><br><span class="line">def setupSpec() &#123;&#125;     &#x2F;&#x2F; run before the first feature method</span><br><span class="line">def cleanupSpec() &#123;&#125;   &#x2F;&#x2F; run after the last feature method</span><br></pre></td></tr></table></figure>
+
+<p>和 Junit 对比：</p>
+<table>
+<thead>
+<tr>
+<th>Spock</th>
+<th>Junit</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>setup()</td>
+<td>@Before</td>
+</tr>
+<tr>
+<td>cleanup()</td>
+<td>@After</td>
+</tr>
+<tr>
+<td>setupSpec()</td>
+<td>@BeforeClass</td>
+</tr>
+<tr>
+<td>cleanupSpec()</td>
+<td>@AfterClass</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>Feature methods</p>
+<p>就是测试类中的测试方法，方法名可以是中文</p>
+</li>
+<li><p>blocks</p>
+<p>每个测试方法又被划分为不同的 <code>block</code>，不同的 <code>block</code> 处于测试执行的不同阶段，在测试运行时，各个 <code>block</code> 按照不同的顺序和规则被执行，如下图：</p>
+<p><img src="/images/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock8.png"></p>
+<blockquote>
+<p><code>Spock</code> 定义了多种标签，去描述代码“应该做什么”，“输入条件是什么”，“输出是否符合预期”，从语义层面规范了代码的编写</p>
+</blockquote>
+<p><strong>setup</strong>：也可以写成 <code>given</code>，在这个 <code>block</code> 中会放置与这个测试方法相关的初始化程序，可选</p>
+<p><strong>given</strong>：输入条件（前置参数），一般会在这个 <code>block</code> 中定义局部变量，<code>mock</code> 等，可选</p>
+<p><strong>when</strong>、<code>then</code>：<code>when</code> 与 <code>then</code> 需要搭配使用，一起出现，在 <code>when</code> 中执行待测试的函数，在 <code>then</code> 中判断是否符合预期</p>
+<p><strong>expect</strong>：可以看做精简版的 when+then</p>
+<p><strong>and</strong>：衔接上个标签，补充的作用</p>
+<p><strong>cleanup</strong>：退出前做一些清理工作，如关闭资源等</p>
+<p><strong>where</strong>：做测试时最复杂的事情之一就是准备测试数据，尤其是要测试边界条件、测试异常分支等，这些都需要在测试之前规划好数据。但是传统的测试框架很难轻松的制造数据，要么依赖反复调用，要么使用其他丑陋的方式；在 <code>Spock</code> 中 <code>where</code> 完美解决了这个问题，<code>where</code> 可以说是 <code>Spock</code> 的核心，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* where 有两种写法</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SpockDemo</span> <span class="keyword">extends</span> <span class="title">Specification</span> </span>&#123;</span><br><span class="line">    def <span class="string">&quot;max&quot;</span>() &#123;</span><br><span class="line">        expect:</span><br><span class="line">        Math.max(a, b) == c</span><br><span class="line"></span><br><span class="line">        where: <span class="string">&quot;多个列使用 | 单竖线隔开，|| 双竖线区分输入和输出变量，即左边是输入值，右边是输出值&quot;</span></span><br><span class="line">        a | b || c</span><br><span class="line">        <span class="number">3</span> | <span class="number">5</span> || <span class="number">5</span></span><br><span class="line">        <span class="number">7</span> | <span class="number">0</span> || <span class="number">7</span></span><br><span class="line">        <span class="number">0</span> | <span class="number">0</span> || <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SpockDemo</span> <span class="keyword">extends</span> <span class="title">Specification</span> </span>&#123;</span><br><span class="line">    def <span class="string">&quot;max&quot;</span>() &#123;</span><br><span class="line">        expect:</span><br><span class="line">        Math.max(a, b) == c</span><br><span class="line"></span><br><span class="line">        where:</span><br><span class="line">        a &lt;&lt; [<span class="number">3</span>, <span class="number">7</span>, <span class="number">0</span>]</span><br><span class="line">        b &lt;&lt; [<span class="number">5</span>, <span class="number">0</span>, <span class="number">0</span>]</span><br><span class="line">        c &lt;&lt; [<span class="number">5</span>, <span class="number">7</span>, <span class="number">0</span>]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="断言"><a href="#断言" class="headerlink" title="断言"></a>断言</h2><p>在 <code>then</code> 或 <code>expect</code> 中会默认 <code>assert</code> 所有返回值是 <code>boolean</code> 型的语句，所以在 <code>then</code> 和 <code>expect</code> 语句块中不需要写 <code>assert</code></p>
+<p>如果要在其它地方增加断言，需要显式增加 <code>assert</code> 关键字，如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">def <span class="title">setup</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  stack = <span class="keyword">new</span> Stack()</span><br><span class="line">  <span class="keyword">assert</span> stack.empty</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="with"><a href="#with" class="headerlink" title="with"></a>with</h3><p><code>with</code> 语句可以验证对象内部的多个属性是否符合预期值</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">expect:</span><br><span class="line">with(response) &#123;</span><br><span class="line">  code == <span class="number">0</span></span><br><span class="line">  message == <span class="string">&quot;成功&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="异常断言"><a href="#异常断言" class="headerlink" title="异常断言"></a>异常断言</h3><p>验证有没有抛出异常，可以用 <code>thrown()</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">def <span class="string">&quot;test&quot;</span>() &#123;</span><br><span class="line">  given:</span><br><span class="line">  def str = <span class="keyword">null</span></span><br><span class="line"></span><br><span class="line">  when:</span><br><span class="line">  str.add(<span class="string">&quot;test&quot;</span>)</span><br><span class="line"></span><br><span class="line">  then:</span><br><span class="line">  thrown(NullPointerException)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>要验证没有抛出某种异常，可以用 <code>notThrown()</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">def <span class="string">&quot;test&quot;</span>() &#123;</span><br><span class="line">  given:</span><br><span class="line">  def str = []</span><br><span class="line"></span><br><span class="line">  when:</span><br><span class="line">  str.add(<span class="string">&quot;test&quot;</span>)</span><br><span class="line"></span><br><span class="line">  then:</span><br><span class="line">  notThrown(NullPointerException)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Annotation"><a href="#Annotation" class="headerlink" title="Annotation"></a>Annotation</h2><table>
+<thead>
+<tr>
+<th>注解</th>
+<th>用途</th>
+<th>样例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Shared</td>
+<td>在多个测试间共享变量</td>
+<td>@Shared def h2 = new H2Database()</td>
+</tr>
+<tr>
+<td>AutoCleanUp</td>
+<td>测试结束后回收资源，不管是否发生异常等</td>
+<td>@AutoCleanup(“shutdown”) def executor = new Executor()</td>
+</tr>
+<tr>
+<td>Ignore</td>
+<td>忽略这个测试</td>
+<td></td>
+</tr>
+<tr>
+<td>IgnoreIf</td>
+<td>忽略满足条件的测试</td>
+<td>@IgnoreIf(os.isWindows())</td>
+</tr>
+<tr>
+<td>IgnoreRest</td>
+<td>只运行这个测试</td>
+<td></td>
+</tr>
+<tr>
+<td>Requries</td>
+<td>满足设定的条件才运行这个测试</td>
+<td>@Requires({env.containsKey(“HASH_KEY_TO_AUTHENTICATE”)})</td>
+</tr>
+<tr>
+<td>Unroll</td>
+<td>配合数据表的时候，每行运行一个测试</td>
+<td></td>
+</tr>
+<tr>
+<td>FailsWith</td>
+<td>运行测试必然抛出某个异常</td>
+<td></td>
+</tr>
+<tr>
+<td>Issue</td>
+<td>指明这个测试对应某个issue</td>
+<td>@Issue(“<a target="_blank" rel="noopener" href="http://redmine.example.com/issues/2554&quot;">http://redmine.example.com/issues/2554&quot;</a>)</td>
+</tr>
+<tr>
+<td>Timeout</td>
+<td>如果运行时间超过某个阈值，则判定为失败</td>
+<td>@Timeout(value = 5000, unit = TimeUnit.MILLISECONDS)</td>
+</tr>
+<tr>
+<td>Title</td>
+<td>设定一个更容易理解的标题名</td>
+<td>@Title(”测试在》繁忙情况下》发红包”)</td>
+</tr>
+</tbody></table>
+<h1 id="Mock"><a href="#Mock" class="headerlink" title="Mock"></a>Mock</h1><blockquote>
+<p><code>Spock</code> 自带 <code>Mock</code> 功能，使用简单方便，同时也支持扩展第三方 <code>Mock</code> 框架，比如 <code>PowerMock</code></p>
+</blockquote>
+<h2 id="SpockMock"><a href="#SpockMock" class="headerlink" title="SpockMock"></a>SpockMock</h2><h3 id="Mock-1"><a href="#Mock-1" class="headerlink" title="Mock"></a>Mock</h3><p>创建一个假对象，验证是否执行了某些操作(在 <code>then</code> 或 <code>expect</code> 语句块中)</p>
+<ul>
+<li><p>创建一个 <code>Mock</code> 对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PublisherSpec</span> <span class="keyword">extends</span> <span class="title">Specification</span> </span>&#123;</span><br><span class="line">    Publisher publisher = <span class="keyword">new</span> Publisher()</span><br><span class="line">    <span class="comment">// def subscriber = Mock(Subscriber)</span></span><br><span class="line">    Subscriber subscriber = Mock()</span><br><span class="line">    <span class="comment">// def subscriber2 = Mock(Subscriber)</span></span><br><span class="line">    Subscriber subscriber2 = Mock()</span><br><span class="line"></span><br><span class="line">    <span class="function">def <span class="title">setup</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        publisher.subscribers.add(subscriber)</span><br><span class="line">        publisher.subscribers.add(subscriber2)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>交互验证</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def <span class="string">&quot;should send messages to all subscribers&quot;</span>() &#123;</span><br><span class="line">    when:</span><br><span class="line">    publisher.send(<span class="string">&quot;hello&quot;</span>)</span><br><span class="line"></span><br><span class="line">    then:</span><br><span class="line">    <span class="number">1</span> * subscriber.receive(<span class="string">&quot;hello&quot;</span>)</span><br><span class="line">    <span class="number">1</span> * subscriber2.receive(<span class="string">&quot;hello&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 publisher 调用 send 时，两个 subscriber 都应该被调用一次 receive(“hello”)</p>
+</li>
+<li><p>示例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span> * subscriber.receive(<span class="string">&quot;hello&quot;</span>)      <span class="comment">// exactly one call</span></span><br><span class="line"><span class="number">0</span> * subscriber.receive(<span class="string">&quot;hello&quot;</span>)      <span class="comment">// zero calls</span></span><br><span class="line">(<span class="number">1.</span><span class="number">.3</span>) * subscriber.receive(<span class="string">&quot;hello&quot;</span>) <span class="comment">// between one and three calls (inclusive)</span></span><br><span class="line">(<span class="number">1.</span>._) * subscriber.receive(<span class="string">&quot;hello&quot;</span>) <span class="comment">// at least one call</span></span><br><span class="line">(_.<span class="number">.3</span>) * subscriber.receive(<span class="string">&quot;hello&quot;</span>) <span class="comment">// at most three calls</span></span><br><span class="line">_ * subscriber.receive(<span class="string">&quot;hello&quot;</span>)      <span class="comment">// any number of calls, including zero</span></span><br><span class="line"><span class="number">1</span> * subscriber.receive(<span class="string">&quot;hello&quot;</span>)     <span class="comment">// an argument that is equal to the String &quot;hello&quot;</span></span><br><span class="line"><span class="number">1</span> * subscriber.receive(!<span class="string">&quot;hello&quot;</span>)    <span class="comment">// an argument that is unequal to the String &quot;hello&quot;</span></span><br><span class="line"><span class="number">1</span> * subscriber.receive()            <span class="comment">// the empty argument list (would never match in our example)</span></span><br><span class="line"><span class="number">1</span> * subscriber.receive(_)           <span class="comment">// any single argument (including null)</span></span><br><span class="line"><span class="number">1</span> * subscriber.receive(*_)          <span class="comment">// any argument list (including the empty argument list)</span></span><br><span class="line"><span class="number">1</span> * subscriber.receive(!<span class="keyword">null</span>)       <span class="comment">// any non-null argument</span></span><br><span class="line"><span class="number">1</span> * subscriber.receive(_ as String) <span class="comment">// any non-null argument that is-a String</span></span><br><span class="line"><span class="number">1</span> * subscriber.receive(&#123; it.size() &gt; <span class="number">3</span> &#125;) <span class="comment">// an argument that satisfies the given predicate</span></span><br><span class="line">                                          <span class="comment">// (here: message length is greater than 3)</span></span><br><span class="line"><span class="number">1</span> * subscriber._(*_)     <span class="comment">// any method on subscriber, with any argument list</span></span><br><span class="line"><span class="number">1</span> * subscriber._         <span class="comment">// shortcut for and preferred over the above</span></span><br><span class="line"><span class="number">1</span> * _._                  <span class="comment">// any method call on any mock object</span></span><br><span class="line"><span class="number">1</span> * _                    <span class="comment">// shortcut for and preferred over the above</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="Stubbing"><a href="#Stubbing" class="headerlink" title="Stubbing"></a>Stubbing</h3><p>调用 <code>Mock</code> 对象的某个方法时返回特定的值</p>
+<ul>
+<li><p>调用返回指定值</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">subscriber.receive(_) &gt;&gt; <span class="string">&quot;ok&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>调用多次返回不同的值</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">subscriber.receive(_) &gt;&gt;&gt; [<span class="string">&quot;ok&quot;</span>, <span class="string">&quot;error&quot;</span>, <span class="string">&quot;error&quot;</span>, <span class="string">&quot;ok&quot;</span>]</span><br><span class="line">subscriber.receive(_) &gt;&gt; <span class="string">&quot;ok&quot;</span> &gt;&gt; <span class="string">&quot;error&quot;</span> &gt;&gt; <span class="string">&quot;error&quot;</span> &gt;&gt; <span class="string">&quot;ok&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>希望抛出异常</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">subscriber.receive(_) &gt;&gt; &#123; <span class="keyword">throw</span> <span class="keyword">new</span> InternalError(<span class="string">&quot;ouch&quot;</span>) &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="Mock、Stubbing结合"><a href="#Mock、Stubbing结合" class="headerlink" title="Mock、Stubbing结合"></a>Mock、Stubbing结合</h3><p>如果既要判断某个 <code>mock</code> 对象的交互，又希望它返回值的话，可以结合 <code>mock</code> 和 <code>stub</code>，可以这样：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">then:</span><br><span class="line"><span class="number">1</span> * subscriber.receive(<span class="string">&quot;message1&quot;</span>) &gt;&gt; <span class="string">&quot;ok&quot;</span></span><br><span class="line"><span class="number">1</span> * subscriber.receive(<span class="string">&quot;message2&quot;</span>) &gt;&gt; <span class="string">&quot;fail&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>一般使用 <code>Spock</code> 自带的 <code>Mock</code> 就够了，但是 <code>Spock</code> 的 <code>Mock</code> 也有着常见缺陷，既不能 <code>Mock</code> 私有方法和静态方法</p>
+<p>针对这种情况，业界之前常见的是使用 <code>PowerMock</code> 来 <code>Mock</code>，但是 <code>PowerMock</code> 上手难度较高、且使用复杂</p>
+<p>相比 <code>Spock</code> + <code>PowerMock</code>，推荐 <code>Spock</code> + <code>TestableMock</code> 来 <code>Mock</code>，快速上手、使用简单</p>
+<h2 id="TestableMock"><a href="#TestableMock" class="headerlink" title="TestableMock"></a>TestableMock</h2><p><code>TestableMock</code>，阿里新一代测试工具，一款特立独行的轻量Mock工具。</p>
+<p>官网：<a target="_blank" rel="noopener" href="https://alibaba.github.io/testable-mock/#/">https://alibaba.github.io/testable-mock/#/</a></p>
+<p>常见 Mock 工具对比：</p>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>原理</th>
+<th>最小Mock单元</th>
+<th>对被Mock方法的限制</th>
+<th>上手难度</th>
+<th>IDE支持</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Mockito</td>
+<td>动态代理</td>
+<td>类</td>
+<td>不能Mock私有/静态和构造方法</td>
+<td>较容易</td>
+<td>很好</td>
+</tr>
+<tr>
+<td>Spock</td>
+<td>动态代理</td>
+<td>类</td>
+<td>不能Mock私有/静态和构造方法</td>
+<td>较复杂</td>
+<td>一般</td>
+</tr>
+<tr>
+<td>PowerMock</td>
+<td>自定义类加载器</td>
+<td>类</td>
+<td>任何方法皆可</td>
+<td>较复杂</td>
+<td>较好</td>
+</tr>
+<tr>
+<td>JMockit</td>
+<td>运行时字节码修改</td>
+<td>类</td>
+<td>不能Mock构造方法(new操作符)</td>
+<td>较复杂</td>
+<td>一般</td>
+</tr>
+<tr>
+<td>TestableMock</td>
+<td>运行时字节码修改</td>
+<td>方法</td>
+<td>任何方法皆可</td>
+<td>很容易</td>
+<td>一般</td>
+</tr>
+</tbody></table>
+<p>TestableMock 功能：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://alibaba.github.io/testable-mock/#/zh-cn/doc/use-mock">快速Mock任意调用</a>：使被测类的任意方法调用快速替换为Mock方法，实现”指哪换哪”，解决传统Mock工具使用繁琐的问题</li>
+<li><a target="_blank" rel="noopener" href="https://alibaba.github.io/testable-mock/#/zh-cn/doc/private-accessor">访问被测类私有成员</a>：使单元测试能直接调用和访问被测类的私有成员，解决私有成员初始化和私有方法测试的问题</li>
+<li><a target="_blank" rel="noopener" href="https://alibaba.github.io/testable-mock/#/zh-cn/doc/omni-constructor">快速构造参数对象</a>：生成任意复杂嵌套的对象实例，并简化其内部成员赋值方式，解决被测方法参数初始化代码冗长的问题</li>
+<li><a target="_blank" rel="noopener" href="https://alibaba.github.io/testable-mock/#/zh-cn/doc/test-void-method">辅助测试void方法</a>：利用Mock校验器对方法的内部逻辑进行检查，解决无返回值方法难以实施单元测试的问题</li>
+</ul>
+<p>不足：</p>
+<p>当前 <code>TestableMock</code> 的主要不足在于，编写 <code>Mock</code> 方法时 IDE 无法即时提示方法参数是否正确匹配。若发现匹配效果不符合预期，需要通过<a target="_blank" rel="noopener" href="https://alibaba.github.io/testable-mock/#/zh-cn/doc/troubleshooting">自助问题排查</a>文档提供的方法在运行期进行校验</p>
+<h1 id="推荐文档"><a href="#推荐文档" class="headerlink" title="推荐文档"></a>推荐文档</h1><ul>
+<li><p>官方文档<br><a target="_blank" rel="noopener" href="https://spockframework.org/spock/docs/2.0/all_in_one.html">https://spockframework.org/spock/docs/2.0/all_in_one.html</a></p>
+</li>
+<li><p>美团技术博客<br><a target="_blank" rel="noopener" href="https://tech.meituan.com/2021/08/06/spock-practice-in-meituan.html">https://tech.meituan.com/2021/08/06/spock-practice-in-meituan.html</a></p>
+</li>
+<li><p>其他技术博客<br><a target="_blank" rel="noopener" href="https://javakk.com/category/spock">https://javakk.com/category/spock</a></p>
+</li>
+<li><p>Java Testing with Spock<br><a target="_blank" rel="noopener" href="https://github.com/kkapelon/java-testing-with-spock">https://github.com/kkapelon/java-testing-with-spock</a></p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div class="post-share">分享到：</div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>赞赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt=" 微信扫一扫，向我赞赏"/>
+        <p>微信扫一扫，向我赞赏</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt=" 支付宝扫一扫，向我赞赏"/>
+        <p>支付宝扫一扫，向我赞赏</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/06/19/Code%20Review/" rel="next" title="Code Review">
+                <i class="fa fa-chevron-left"></i> Code Review
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/09/24/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%86/" rel="prev" title="金字塔原理">
+                金字塔原理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80NjMwOC8yMjgxOQ=="></div>
+    </div>
+
+  
+
+
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+   (function(d, s) {
+       var j, e = d.getElementsByTagName(s)[0];
+
+       if (typeof LivereTower === 'function') { return; }
+
+       j = d.createElement(s);
+       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+       j.async = true;
+
+       e.parentNode.insertBefore(j, e);
+   })(document, 'script');
+</script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/card3.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"><span style="opacity:.2;">咦咦</span>Tianwj</p>
+              <p class="site-description motion-element" itemprop="description">咿呀呀!</p>
+          </div>
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/ShadowTwj" target="_blank" title="GitHub" data-balloon="GitHub" data-balloon-pos="up">
+                    
+                      <i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://weibo.com/u/5545918663" target="_blank" title="微博" data-balloon="微博" data-balloon-pos="up">
+                    
+                      <i class="fa fa-fw fa-weibo"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://music.163.com/#/user/home?id=386702646" target="_blank" title="网易云音乐" data-balloon="网易云音乐" data-balloon-pos="up">
+                    
+                      <i class="fa fa-fw fa-music"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:646371601@qq.com" target="_blank" title="E-Mail" data-balloon="E-Mail" data-balloon-pos="up">
+                    
+                      <i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+            
+          </div>
+
+          
+            <div class="feed-link motion-element">
+              <a class="feed-rss" href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+            
+
+          </nav>
+
+          
+          
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.png" alt="Creative Commons" />
+              </a>
+            </div>
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spock%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">2.</span> <span class="nav-text">Spock是什么</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Spock%E7%AE%80%E4%BB%8B"><span class="nav-number">2.1.</span> <span class="nav-text">Spock简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8E%E5%85%B6%E4%BB%96%E6%A1%86%E6%9E%B6%E5%AF%B9%E6%AF%94"><span class="nav-number">2.2.</span> <span class="nav-text">与其他框架对比</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Groovy"><span class="nav-number">3.</span> <span class="nav-text">Groovy</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Groovy-%E8%AF%AD%E6%B3%95%E7%B3%96"><span class="nav-number">3.1.</span> <span class="nav-text">Groovy 语法糖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Groovy-%E6%8E%A8%E8%8D%90%E6%96%87%E6%A1%A3"><span class="nav-number">3.2.</span> <span class="nav-text">Groovy 推荐文档</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Spock"><span class="nav-number">4.</span> <span class="nav-text">使用Spock</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%A7%BF%E5%8A%BF"><span class="nav-number">4.1.</span> <span class="nav-text">使用姿势</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%86%E6%88%90-Spring"><span class="nav-number">4.2.</span> <span class="nav-text">集成 Spring</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spock%E4%B8%AD%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">4.3.</span> <span class="nav-text">Spock中的概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%AD%E8%A8%80"><span class="nav-number">4.4.</span> <span class="nav-text">断言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#with"><span class="nav-number">4.4.1.</span> <span class="nav-text">with</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E6%96%AD%E8%A8%80"><span class="nav-number">4.4.2.</span> <span class="nav-text">异常断言</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Annotation"><span class="nav-number">4.5.</span> <span class="nav-text">Annotation</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Mock"><span class="nav-number">5.</span> <span class="nav-text">Mock</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SpockMock"><span class="nav-number">5.1.</span> <span class="nav-text">SpockMock</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Mock-1"><span class="nav-number">5.1.1.</span> <span class="nav-text">Mock</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Stubbing"><span class="nav-number">5.1.2.</span> <span class="nav-text">Stubbing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mock%E3%80%81Stubbing%E7%BB%93%E5%90%88"><span class="nav-number">5.1.3.</span> <span class="nav-text">Mock、Stubbing结合</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TestableMock"><span class="nav-number">5.2.</span> <span class="nav-text">TestableMock</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%A8%E8%8D%90%E6%96%87%E6%A1%A3"><span class="nav-number">6.</span> <span class="nav-text">推荐文档</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-image"></div>
+      <div class="footer-inner">
+        <p>博客已萌萌哒运行<span id="since"></span><span class="my-face">(●'◡'●)ﾉ♥</span></p>
+<p>custom text</p>
+
+<p>© <span itemprop="copyrightYear">2021</span> Tianwj's blog.
+    由 <a href="https://hexo.io/" target="_blank" class="external" rel="nofollow">Hexo</a> 强力驱动.
+    Theme By <a href="https://github.com/DIYgod/hexo-theme-sagiri" target="_blank" class="external" rel="nofollow">Sagiri</a> v0.0.4.
+    <a href="/sitemap.xml" target="_blank">站点地图</a>.
+    冀ICP备17030424号.
+</p>
+<p>Made with <i class="fa fa-heart throb" style="color: #d43f57;"></i> by <span class="author" itemprop="copyrightHolder">tianwj</span>. </p>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    <canvas id="evanyou"></canvas>
+    
+
+    
+
+  </div>
+
+  <script type="text/javascript" src="/js/sagiri.min.js?v=0.0.4"></script>
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'manual') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

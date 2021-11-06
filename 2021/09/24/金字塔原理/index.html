@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="https://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.loli.net/css?family=Sigmar One:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" type="text/css" />
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/social-share.js/1.0.9/css/share.min.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.0.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=0.0.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=0.0.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=0.0.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="通用能力," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Tianwj's blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="结构思考力三层次模型三层模型理解 -&gt; 重构 -&gt; 呈现  模型目标隐形思维显性化 -&gt; 显性思维结构化 -&gt; 结构思维形象化  隐形思维显性化：要提高自己的思考，首先要看到它 显性思维结构化：看到之后发现不清晰，需要结构化 结构思维形象化：结构化之后还需要把它传递出去，需要形象化的表达  金字塔结构  结构化思维是一种“从无序到有序”的思考过程 需要建立一个“先总后分”的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="金字塔原理">
+<meta property="og:url" content="http://yoursite.com/2021/09/24/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="Tianwj&#39;s blog">
+<meta property="og:description" content="结构思考力三层次模型三层模型理解 -&gt; 重构 -&gt; 呈现  模型目标隐形思维显性化 -&gt; 显性思维结构化 -&gt; 结构思维形象化  隐形思维显性化：要提高自己的思考，首先要看到它 显性思维结构化：看到之后发现不清晰，需要结构化 结构思维形象化：结构化之后还需要把它传递出去，需要形象化的表达  金字塔结构  结构化思维是一种“从无序到有序”的思考过程 需要建立一个“先总后分”的">
+<meta property="og:locale">
+<meta property="og:image" content="http://yoursite.com/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%860.png">
+<meta property="og:image" content="http://yoursite.com/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%861.png">
+<meta property="og:image" content="http://yoursite.com/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%862.png">
+<meta property="og:image" content="http://yoursite.com/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%863.png">
+<meta property="og:image" content="http://yoursite.com/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%864.png">
+<meta property="og:image" content="http://yoursite.com/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%865.png">
+<meta property="og:image" content="http://yoursite.com/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%866.png">
+<meta property="og:image" content="http://yoursite.com/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%867.png">
+<meta property="og:image" content="http://yoursite.com/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%868.png">
+<meta property="og:image" content="http://yoursite.com/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%869.png">
+<meta property="og:image" content="http://yoursite.com/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%8610.png">
+<meta property="article:published_time" content="2021-09-24T08:22:37.000Z">
+<meta property="article:modified_time" content="2021-11-06T05:32:56.327Z">
+<meta property="article:author" content="tianwj">
+<meta property="article:tag" content="通用能力">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%860.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Pisces',
+    version: '0.0.4',
+    sidebar: {"position":"right","display":"always","offset":52,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    since: '2/9/2014 11:30:00',
+    onlineAPI: '',
+    site: {
+      title: "",
+      subtitle: '',
+      author: ''
+    },
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    leancloud: {
+      enable: false,
+      appID: '',
+      appKey: ''
+    },
+    favicon: {
+      visibilitychange: true,
+      narmal: '/images/favicon.ico',
+      hidden: '/images/failure.ico',
+      show_text: '(/≧▽≦/)咦！又好了！',
+      hide_text: '(●—●)喔哟，崩溃啦！'
+    }
+  };
+</script>
+
+
+
+  
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.1.3/jquery.min.js"></script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2021/09/24/金字塔原理/"/>
+
+
+
+
+
+  <title>金字塔原理 | Tianwj's blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-48084758-7', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-留言板">
+          <a href="/message/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-pencil"></i> <br />
+            
+            留言板
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+      <li class="menu-item search">
+          <form class="search-form">
+            <input name="keyword" type="text" class="search-input" placeholder="站内搜索">
+            <button type="submit" class="search-submit"><i class="fa fa-search"></i></button>
+          </form>
+      </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+<div class="site-brand-wrapper" style="background-image: url(/images/header3.jpg)">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <div class="brand">
+        <span class="logo-line-before"><i></i></span>
+        <div class="site-title">
+          <div id="animate" class="animate">
+            <span>T</span><span>i</span><span>a</span><span>n</span><span>w</span><span>j</span><span>'</span><span>s</span><span> </span><span>b</span><span>l</span><span>o</span><span>g</span>
+          </div>
+          <div id="guide" class="guide">
+            <span>T</span><span>i</span><span>a</span><span>n</span><span>w</span><span>j</span><span>'</span><span>s</span><span> </span><span>b</span><span>l</span><span>o</span><span>g</span>
+          </div>
+        </div>
+        <span class="logo-line-after"><i></i></span>
+      </div>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+<div class="site-master" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-master-avatar" itemprop="image" src="/images/WechatIMG48.jpeg" alt="" />
+    <h2 class="site-master-description" itemprop="description">
+        
+    </h2>
+</div>
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-date">
+			<div class="post-month">09月</div>
+			<div class="post-day">24</div>
+	</div>
+  
+  <div class="post-badge">
+    
+      <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+        <a href="/categories/%E9%80%9A%E7%94%A8%E8%83%BD%E5%8A%9B/" itemprop="url" rel="index">
+          <span itemprop="name">通用能力</span>
+        </a>
+      </span>
+    
+  </div>
+  
+
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/09/24/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/WechatIMG48.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tianwj's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">金字塔原理</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-09-24T16:22:37+08:00">
+                2021-09-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <span class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">•</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="结构思考力三层次模型"><a href="#结构思考力三层次模型" class="headerlink" title="结构思考力三层次模型"></a>结构思考力三层次模型</h2><h3 id="三层模型"><a href="#三层模型" class="headerlink" title="三层模型"></a>三层模型</h3><p>理解 -&gt; 重构 -&gt; 呈现</p>
+<p><img src="/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%860.png"></p>
+<h3 id="模型目标"><a href="#模型目标" class="headerlink" title="模型目标"></a>模型目标</h3><p>隐形思维显性化 -&gt; 显性思维结构化 -&gt; 结构思维形象化</p>
+<ul>
+<li>隐形思维显性化：要提高自己的思考，首先要看到它</li>
+<li>显性思维结构化：看到之后发现不清晰，需要结构化</li>
+<li>结构思维形象化：结构化之后还需要把它传递出去，需要形象化的表达</li>
+</ul>
+<h3 id="金字塔结构"><a href="#金字塔结构" class="headerlink" title="金字塔结构"></a>金字塔结构</h3><p><img src="/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%861.png"></p>
+<blockquote>
+<p>结构化思维是一种“从无序到有序”的思考过程</p>
+<p>需要建立一个“先总后分”的思维方式。先找到解决问题的关键要点，然后再深入分析</p>
+</blockquote>
+<h2 id="理解：隐形思维显性化"><a href="#理解：隐形思维显性化" class="headerlink" title="理解：隐形思维显性化"></a>理解：隐形思维显性化</h2><h3 id="概况全文的“万能公式”"><a href="#概况全文的“万能公式”" class="headerlink" title="概况全文的“万能公式”"></a>概况全文的“万能公式”</h3><blockquote>
+<p><code>在___的基础上，</code></p>
+<p><code>从__，__，__N个方面，</code></p>
+<p><code>说明了_____________。</code></p>
+</blockquote>
+<h3 id="结构思考力识别概况技术"><a href="#结构思考力识别概况技术" class="headerlink" title="结构思考力识别概况技术"></a>结构思考力识别概况技术</h3><blockquote>
+<p>识别 -&gt; 判断 -&gt; 概况</p>
+</blockquote>
+<p><img src="/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%862.png"></p>
+<h3 id="隐形思维显性化前提"><a href="#隐形思维显性化前提" class="headerlink" title="隐形思维显性化前提"></a>隐形思维显性化前提</h3><p>隐形思维显性化的前提———有审视问题的坐标系</p>
+<p><img src="/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%863.png"></p>
+<ul>
+<li>审视问题的坐标系：<blockquote>
+<p>这个事情有没有证据和理由支撑？</p>
+<p>这个理由/逻辑是否能够推出结论？</p>
+<p>其中的证据/事实是否能有效支撑理由？</p>
+<p>是否存在隐藏或模糊不利的证据/事实？</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="重构：显性思维结构化"><a href="#重构：显性思维结构化" class="headerlink" title="重构：显性思维结构化"></a>重构：显性思维结构化</h2><h3 id="重构四原则"><a href="#重构四原则" class="headerlink" title="重构四原则"></a>重构四原则</h3><ul>
+<li><p>论-结论先行</p>
+<blockquote>
+<p>一段表达有一个核心观点，最好放在开头</p>
+</blockquote>
+</li>
+<li><p>证-以上统下</p>
+<blockquote>
+<p>任何一层的论点，是下一层思想的概括</p>
+</blockquote>
+</li>
+<li><p>类-归类分组</p>
+<blockquote>
+<p>每一组思想属于同一个范畴</p>
+</blockquote>
+</li>
+<li><p>比-逻辑递进</p>
+<blockquote>
+<p>每一组思想按照一定的逻辑顺序排列</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="论-结论先行"><a href="#论-结论先行" class="headerlink" title="论-结论先行"></a>论-结论先行</h3><p>结论先行可以提升我们的表达效率，让人快速理解你的核心意思。结论先行的难点不是先行，而是如何得出结论，需要反复联系</p>
+<p><img src="/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%864.png"></p>
+<h3 id="证-以上统下"><a href="#证-以上统下" class="headerlink" title="证-以上统下"></a>证-以上统下</h3><p>上有结论，下有理由，结论概括理由，理由支撑结论，上下对应</p>
+<p><img src="/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%865.png"></p>
+<h3 id="类-归类分组"><a href="#类-归类分组" class="headerlink" title="类-归类分组"></a>类-归类分组</h3><blockquote>
+<p>人类大脑一次性接收的信息量是有范围的，这个范围有两个说法：5+-2 和 7+-2，不管是哪个说法，7都是一个临界值，当超过7时都会对记忆造成负担，所以在写方案时最好不要超过7条</p>
+</blockquote>
+<blockquote>
+<p>而很多领导讲话都喜欢讲3点，理由有</p>
+<ol>
+<li>好记</li>
+<li>对方更容易倾听</li>
+<li>具有说服力；同时在物理结构中，3是稳定结构</li>
+</ol>
+<p>但是3点要能把事情说轻，说全，而这依赖 归类分组</p>
+</blockquote>
+<h4 id="MECE原则"><a href="#MECE原则" class="headerlink" title="MECE原则"></a>MECE原则</h4><blockquote>
+<p>归类分组标准采用 MECE原则</p>
+</blockquote>
+<p>相互独立、完全穷尽</p>
+<p>分类时不能有交叉、更不能有遗漏，不重不漏</p>
+<p><img src="/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%866.png"></p>
+<h3 id="比-逻辑递进"><a href="#比-逻辑递进" class="headerlink" title="比-逻辑递进"></a>比-逻辑递进</h3><p>三种顺序</p>
+<ul>
+<li>时间顺序</li>
+<li>结构顺序</li>
+<li>重要性顺序</li>
+</ul>
+<p><strong>在同一个层级、同一个分支，必须使用同一种逻辑顺序</strong></p>
+<p><img src="/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%867.png"></p>
+<h2 id="呈现：结构思维形象化"><a href="#呈现：结构思维形象化" class="headerlink" title="呈现：结构思维形象化"></a>呈现：结构思维形象化</h2><blockquote>
+<p>形象化表达是结构化思考最有力的输出方式，结构化思考是形象化表达的基础</p>
+</blockquote>
+<h3 id="结构罗盘"><a href="#结构罗盘" class="headerlink" title="结构罗盘"></a>结构罗盘</h3><blockquote>
+<p>形象化表达工具——结构罗盘</p>
+</blockquote>
+<blockquote>
+<p>“配”关系 -&gt; “得”图示 -&gt; “上”包装</p>
+</blockquote>
+<p><img src="/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%868.png"></p>
+<ul>
+<li>配关系：确定关系结构图下的一个分支的要素之间是什么关系</li>
+<li>得图示：根据关系选择不同图示</li>
+<li>上包装：对观点进行高度浓缩提炼，变得更加简洁、明了、容易记忆，及所谓“卖点包装”</li>
+</ul>
+<h3 id="配关系"><a href="#配关系" class="headerlink" title="配关系"></a>配关系</h3><p>四种模式，十六种关系</p>
+<p>根据关系分支下的要素判断属于哪一种模式中的哪一种关系</p>
+<p><img src="/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%869.png"></p>
+<h3 id="得图示"><a href="#得图示" class="headerlink" title="得图示"></a>得图示</h3><h3 id="上包装"><a href="#上包装" class="headerlink" title="上包装"></a>上包装</h3><p>可以把观点凝练成一句口诀，既好记，又有高度，这种方法为“卖点包装”</p>
+<p>可以根据四种包装方法来进行包装</p>
+<ul>
+<li>简化</li>
+<li>类比</li>
+<li>整合</li>
+<li>引用</li>
+</ul>
+<p><img src="/images/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%8610.png"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div class="post-share">分享到：</div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>赞赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt=" 微信扫一扫，向我赞赏"/>
+        <p>微信扫一扫，向我赞赏</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt=" 支付宝扫一扫，向我赞赏"/>
+        <p>支付宝扫一扫，向我赞赏</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E9%80%9A%E7%94%A8%E8%83%BD%E5%8A%9B/" rel="tag"><i class="fa fa-tag"></i> 通用能力</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/08/25/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock/" rel="next" title="单元测试-Spock">
+                <i class="fa fa-chevron-left"></i> 单元测试-Spock
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80NjMwOC8yMjgxOQ=="></div>
+    </div>
+
+  
+
+
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+   (function(d, s) {
+       var j, e = d.getElementsByTagName(s)[0];
+
+       if (typeof LivereTower === 'function') { return; }
+
+       j = d.createElement(s);
+       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+       j.async = true;
+
+       e.parentNode.insertBefore(j, e);
+   })(document, 'script');
+</script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/card3.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"><span style="opacity:.2;">咦咦</span>Tianwj</p>
+              <p class="site-description motion-element" itemprop="description">咿呀呀!</p>
+          </div>
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/ShadowTwj" target="_blank" title="GitHub" data-balloon="GitHub" data-balloon-pos="up">
+                    
+                      <i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://weibo.com/u/5545918663" target="_blank" title="微博" data-balloon="微博" data-balloon-pos="up">
+                    
+                      <i class="fa fa-fw fa-weibo"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://music.163.com/#/user/home?id=386702646" target="_blank" title="网易云音乐" data-balloon="网易云音乐" data-balloon-pos="up">
+                    
+                      <i class="fa fa-fw fa-music"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:646371601@qq.com" target="_blank" title="E-Mail" data-balloon="E-Mail" data-balloon-pos="up">
+                    
+                      <i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+            
+          </div>
+
+          
+            <div class="feed-link motion-element">
+              <a class="feed-rss" href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+            
+
+          </nav>
+
+          
+          
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.png" alt="Creative Commons" />
+              </a>
+            </div>
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E6%80%9D%E8%80%83%E5%8A%9B%E4%B8%89%E5%B1%82%E6%AC%A1%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">结构思考力三层次模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E5%B1%82%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.1.</span> <span class="nav-text">三层模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%9B%AE%E6%A0%87"><span class="nav-number">1.2.</span> <span class="nav-text">模型目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%91%E5%AD%97%E5%A1%94%E7%BB%93%E6%9E%84"><span class="nav-number">1.3.</span> <span class="nav-text">金字塔结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%90%86%E8%A7%A3%EF%BC%9A%E9%9A%90%E5%BD%A2%E6%80%9D%E7%BB%B4%E6%98%BE%E6%80%A7%E5%8C%96"><span class="nav-number">2.</span> <span class="nav-text">理解：隐形思维显性化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E5%86%B5%E5%85%A8%E6%96%87%E7%9A%84%E2%80%9C%E4%B8%87%E8%83%BD%E5%85%AC%E5%BC%8F%E2%80%9D"><span class="nav-number">2.1.</span> <span class="nav-text">概况全文的“万能公式”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E6%80%9D%E8%80%83%E5%8A%9B%E8%AF%86%E5%88%AB%E6%A6%82%E5%86%B5%E6%8A%80%E6%9C%AF"><span class="nav-number">2.2.</span> <span class="nav-text">结构思考力识别概况技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9A%90%E5%BD%A2%E6%80%9D%E7%BB%B4%E6%98%BE%E6%80%A7%E5%8C%96%E5%89%8D%E6%8F%90"><span class="nav-number">2.3.</span> <span class="nav-text">隐形思维显性化前提</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E6%9E%84%EF%BC%9A%E6%98%BE%E6%80%A7%E6%80%9D%E7%BB%B4%E7%BB%93%E6%9E%84%E5%8C%96"><span class="nav-number">3.</span> <span class="nav-text">重构：显性思维结构化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E6%9E%84%E5%9B%9B%E5%8E%9F%E5%88%99"><span class="nav-number">3.1.</span> <span class="nav-text">重构四原则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BA-%E7%BB%93%E8%AE%BA%E5%85%88%E8%A1%8C"><span class="nav-number">3.2.</span> <span class="nav-text">论-结论先行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%81-%E4%BB%A5%E4%B8%8A%E7%BB%9F%E4%B8%8B"><span class="nav-number">3.3.</span> <span class="nav-text">证-以上统下</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B1%BB-%E5%BD%92%E7%B1%BB%E5%88%86%E7%BB%84"><span class="nav-number">3.4.</span> <span class="nav-text">类-归类分组</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#MECE%E5%8E%9F%E5%88%99"><span class="nav-number">3.4.1.</span> <span class="nav-text">MECE原则</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AF%94-%E9%80%BB%E8%BE%91%E9%80%92%E8%BF%9B"><span class="nav-number">3.5.</span> <span class="nav-text">比-逻辑递进</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%88%E7%8E%B0%EF%BC%9A%E7%BB%93%E6%9E%84%E6%80%9D%E7%BB%B4%E5%BD%A2%E8%B1%A1%E5%8C%96"><span class="nav-number">4.</span> <span class="nav-text">呈现：结构思维形象化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E7%BD%97%E7%9B%98"><span class="nav-number">4.1.</span> <span class="nav-text">结构罗盘</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E5%85%B3%E7%B3%BB"><span class="nav-number">4.2.</span> <span class="nav-text">配关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%97%E5%9B%BE%E7%A4%BA"><span class="nav-number">4.3.</span> <span class="nav-text">得图示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8A%E5%8C%85%E8%A3%85"><span class="nav-number">4.4.</span> <span class="nav-text">上包装</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-image"></div>
+      <div class="footer-inner">
+        <p>博客已萌萌哒运行<span id="since"></span><span class="my-face">(●'◡'●)ﾉ♥</span></p>
+<p>custom text</p>
+
+<p>© <span itemprop="copyrightYear">2021</span> Tianwj's blog.
+    由 <a href="https://hexo.io/" target="_blank" class="external" rel="nofollow">Hexo</a> 强力驱动.
+    Theme By <a href="https://github.com/DIYgod/hexo-theme-sagiri" target="_blank" class="external" rel="nofollow">Sagiri</a> v0.0.4.
+    <a href="/sitemap.xml" target="_blank">站点地图</a>.
+    冀ICP备17030424号.
+</p>
+<p>Made with <i class="fa fa-heart throb" style="color: #d43f57;"></i> by <span class="author" itemprop="copyrightHolder">tianwj</span>. </p>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    <canvas id="evanyou"></canvas>
+    
+
+    
+
+  </div>
+
+  <script type="text/javascript" src="/js/sagiri.min.js?v=0.0.4"></script>
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'manual') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
