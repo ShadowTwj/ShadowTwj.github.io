@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="https://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.loli.net/css?family=Sigmar One:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" type="text/css" />
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/social-share.js/1.0.9/css/share.min.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.0.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=0.0.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=0.0.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=0.0.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="DB,PostgreSQL," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Tianwj's blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="关于PostgreSQLPostgreSQL 是一个强大的开源对象关系数据库系统，它使用并扩展了 SQL 语言，并结合了许多安全存储和扩展最复杂数据工作负载的功能。 PostgreSQL 是以加州大学伯克利分校计算机系开发的POSTGRES， 版本 4.2为基础的对象关系型数据库系统 PostgreSQL，也称为 Postgres，简称PG(以下都简称PG) PG 号称是“世界上最先进的开源关系">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PostgreSQL介绍">
+<meta property="og:url" content="http://yoursite.com/2021/11/26/PostgreSQL%E4%BB%8B%E7%BB%8D/index.html">
+<meta property="og:site_name" content="Tianwj&#39;s blog">
+<meta property="og:description" content="关于PostgreSQLPostgreSQL 是一个强大的开源对象关系数据库系统，它使用并扩展了 SQL 语言，并结合了许多安全存储和扩展最复杂数据工作负载的功能。 PostgreSQL 是以加州大学伯克利分校计算机系开发的POSTGRES， 版本 4.2为基础的对象关系型数据库系统 PostgreSQL，也称为 Postgres，简称PG(以下都简称PG) PG 号称是“世界上最先进的开源关系">
+<meta property="og:locale">
+<meta property="og:image" content="http://yoursite.com/images/postgresql0.png">
+<meta property="og:image" content="http://yoursite.com/images/postgresql1.png">
+<meta property="og:image" content="http://yoursite.com/images/postgresql2.png">
+<meta property="og:image" content="http://yoursite.com/images/postgresql3.png">
+<meta property="og:image" content="http://yoursite.com/images/postgresql4.png">
+<meta property="og:image" content="http://yoursite.com/images/postgresql5.png">
+<meta property="og:image" content="http://yoursite.com/images/postgresql6.png">
+<meta property="og:image" content="http://yoursite.com/images/postgresql7.png">
+<meta property="article:published_time" content="2021-11-26T05:59:37.000Z">
+<meta property="article:modified_time" content="2022-03-13T06:11:47.742Z">
+<meta property="article:author" content="tianwj">
+<meta property="article:tag" content="DB">
+<meta property="article:tag" content="PostgreSQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/postgresql0.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Pisces',
+    version: '0.0.4',
+    sidebar: {"position":"right","display":"always","offset":52,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    since: '2/9/2014 11:30:00',
+    onlineAPI: '',
+    site: {
+      title: "",
+      subtitle: '',
+      author: ''
+    },
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    leancloud: {
+      enable: false,
+      appID: '',
+      appKey: ''
+    },
+    favicon: {
+      visibilitychange: true,
+      narmal: '/images/favicon.ico',
+      hidden: '/images/failure.ico',
+      show_text: '(/≧▽≦/)咦！又好了！',
+      hide_text: '(●—●)喔哟，崩溃啦！'
+    }
+  };
+</script>
+
+
+
+  
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.1.3/jquery.min.js"></script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2021/11/26/PostgreSQL介绍/"/>
+
+
+
+
+
+  <title>PostgreSQL介绍 | Tianwj's blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-48084758-7', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-留言板">
+          <a href="/message/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-pencil"></i> <br />
+            
+            留言板
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+      <li class="menu-item search">
+          <form class="search-form">
+            <input name="keyword" type="text" class="search-input" placeholder="站内搜索">
+            <button type="submit" class="search-submit"><i class="fa fa-search"></i></button>
+          </form>
+      </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+<div class="site-brand-wrapper" style="background-image: url(/images/header3.jpg)">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <div class="brand">
+        <span class="logo-line-before"><i></i></span>
+        <div class="site-title">
+          <div id="animate" class="animate">
+            <span>T</span><span>i</span><span>a</span><span>n</span><span>w</span><span>j</span><span>'</span><span>s</span><span> </span><span>b</span><span>l</span><span>o</span><span>g</span>
+          </div>
+          <div id="guide" class="guide">
+            <span>T</span><span>i</span><span>a</span><span>n</span><span>w</span><span>j</span><span>'</span><span>s</span><span> </span><span>b</span><span>l</span><span>o</span><span>g</span>
+          </div>
+        </div>
+        <span class="logo-line-after"><i></i></span>
+      </div>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+<div class="site-master" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-master-avatar" itemprop="image" src="/images/WechatIMG48.jpeg" alt="" />
+    <h2 class="site-master-description" itemprop="description">
+        
+    </h2>
+</div>
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-date">
+			<div class="post-month">11月</div>
+			<div class="post-day">26</div>
+	</div>
+  
+  <div class="post-badge">
+    
+      <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+        <a href="/categories/DB/" itemprop="url" rel="index">
+          <span itemprop="name">DB</span>
+        </a>
+      </span>
+    
+  </div>
+  
+
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/11/26/PostgreSQL%E4%BB%8B%E7%BB%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/WechatIMG48.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tianwj's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">PostgreSQL介绍</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-11-26T13:59:37+08:00">
+                2021-11-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <span class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">•</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="/images/postgresql0.png"></p>
+<h1 id="关于PostgreSQL"><a href="#关于PostgreSQL" class="headerlink" title="关于PostgreSQL"></a>关于PostgreSQL</h1><p><code>PostgreSQL</code> 是一个强大的开源对象关系数据库系统，它使用并扩展了 SQL 语言，并结合了许多安全存储和扩展最复杂数据工作负载的功能。</p>
+<p><code>PostgreSQL</code> 是以加州大学伯克利分校计算机系开发的<a target="_blank" rel="noopener" href="https://dsf.berkeley.edu/postgres.html">POSTGRES， 版本 4.2</a>为基础的对象关系型数据库系统</p>
+<p><code>PostgreSQL</code>，也称为 <code>Postgres</code>，简称<strong>PG</strong>(以下都简称PG)</p>
+<p>PG 号称是“世界上最先进的开源关系型数据库”，和“世界上最好的语言”不同，PG的自吹自擂并没有受到大家的调侃</p>
+<p>PG 不属于任何一家公司，它背后的控制机构是——<strong>PostgreSQL全球开发小组</strong>，是一个松散的组织</p>
+<p>其核心成员来自全球各地的不同公司，如果感兴趣，可以在PG<a target="_blank" rel="noopener" href="https://www.postgresql.org/community/contributors/">官网</a>查询到这个组织的成员列表</p>
+<p>可以这么说，没有任何一个公司享有对 PG 的绝对控制权，PG永远是属于社区</p>
+<h2 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h2><blockquote>
+<p>开源大家都不陌生，但是开源并不等于免费，下面是几种协议的区别</p>
+</blockquote>
+<p><img src="/images/postgresql1.png"></p>
+<ul>
+<li><p>GPL 协议：</p>
+<p>GPL 是一种传染协议，如果修改了源码，也必须使用 GPL 协议</p>
+<p>GPL 是一种“非商业”友好协议，如果是商业项目，那一定要注意 GPL 的可能带来的问题</p>
+<p>Linux 内核 使用的就是 GPL 协议，免费的 MySQL 社区版使用的也是 GPL 协议</p>
+</li>
+<li><p>BSD 协议：</p>
+<p>BSD 是一个给予使用者很大自由的协议</p>
+<p>基本上使用者可以“为所欲为”可以自由的使用,修改源代码,也可以将修改后的代码作为开源或者专有软件再发布</p>
+</li>
+</ul>
+<p>PG 早期使用的就是 BSD 协议，后面换成了自有协议——<strong>PostgreSQL License</strong>，虽然换了自由协议，但并没有多少改变，依然属于最为友好的协议类型</p>
+<p>不论是自用还是商用，都是完全没有问题，修改代码并且用来盈利也是毫无商业风险的</p>
+<h2 id="PG影响力"><a href="#PG影响力" class="headerlink" title="PG影响力"></a>PG影响力</h2><ul>
+<li><p>在行业中的应用(几年前的图)</p>
+<p><img src="/images/postgresql2.png"></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://db-engines.com/en/ranking_trend">DB-Engines 排名</a></p>
+<p><img src="/images/postgresql3.png"></p>
+</li>
+<li><p>Stack Overflow 问卷调查</p>
+<p><a target="_blank" rel="noopener" href="https://insights.stackoverflow.com/survey/2021#section-most-loved-dreaded-and-wanted-databases">2021最受欢迎数据库排名</a></p>
+<p><img src="/images/postgresql4.png"></p>
+<p><a target="_blank" rel="noopener" href="https://insights.stackoverflow.com/survey/2021#section-most-loved-dreaded-and-wanted-databases">2021使用数据库排名</a></p>
+<p><img src="/images/postgresql5.png"></p>
+</li>
+</ul>
+<h1 id="PG功能"><a href="#PG功能" class="headerlink" title="PG功能"></a>PG功能</h1><h2 id="SQL标准"><a href="#SQL标准" class="headerlink" title="SQL标准"></a>SQL标准</h2><p>最新的 SQL 标准是 SQL:2016</p>
+<p>SQL:2016 标准中的核心标准中的<strong>179</strong>项特性，而 PG 至少实现了<strong>170</strong>项，在数据库中也算名列前茅的</p>
+<h2 id="Schema"><a href="#Schema" class="headerlink" title="Schema"></a>Schema</h2><h3 id="Schema定义"><a href="#Schema定义" class="headerlink" title="Schema定义"></a>Schema定义</h3><p>一个 PG 集群可以包含多个数据库，一个数据库包含一个或多个命名<em>模式</em>，模式中包含着表</p>
+<p><code>schema</code> 还包含其他类型的命名对象，包括数据类型、函数和操作符。相同的对象名称可以被用于不同的模式中而不会出现冲突，例如 schema1 和 myschema 都可以包含名为 mytable 的表</p>
+<p>下面是一些使用 <code>schema</code> 的原因：</p>
+<ul>
+<li>允许多个用户使用一个数据库并且不会互相干扰</li>
+<li>将数据库对象组织成逻辑组以便更容易管理</li>
+<li>第三方应用的对象可以放在独立的模式中，这样它们就不会与其他对象的名称发生冲突</li>
+</ul>
+<p><code>schema</code> 类似于操作系统层的目录，但是 <code>schema</code> 不能嵌套</p>
+<img src="/images/postgresql6.png" style="zoom:50%;" />
+
+<p>默认情况下，新创建的数据库有一个 <code>public</code> 的模式，但可以添加任何其他模式，并且 <code>public</code> 模式不是必需的</p>
+<h3 id="Schema使用"><a href="#Schema使用" class="headerlink" title="Schema使用"></a>Schema使用</h3><p>在 SQL 中需要在表名前添加 <code>schema</code> 前缀，如不添加则默认是 <code>public</code> 模式，或使用 <code>search_path</code> 指定 <code>schema</code></p>
+<img src="/images/postgresql7.png" style="zoom: 50%;" />
+
+
+
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p>PG 支持非常丰富的数据类型，下面是普通数据类型，同时下面所有普通数据类型都支持数组类型</p>
+<table>
+<thead>
+<tr>
+<th align="left">名字</th>
+<th align="left">别名(曾经使用过)</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">bigint</td>
+<td align="left">int8</td>
+<td align="left">有符号的8字节整数</td>
+</tr>
+<tr>
+<td align="left">bigserial</td>
+<td align="left">serial8</td>
+<td align="left">自动增长的8字节整数</td>
+</tr>
+<tr>
+<td align="left">bit [ (<em><strong>n</strong></em>) ]</td>
+<td align="left"></td>
+<td align="left">定长位串</td>
+</tr>
+<tr>
+<td align="left">bit varying [ (<em><strong>n</strong></em>) ]</td>
+<td align="left">varbit [ (<em><strong>n</strong></em>) ]</td>
+<td align="left">变长位串</td>
+</tr>
+<tr>
+<td align="left">boolean</td>
+<td align="left">bool</td>
+<td align="left">逻辑布尔值（真/假）</td>
+</tr>
+<tr>
+<td align="left">box</td>
+<td align="left"></td>
+<td align="left">平面上的普通方框</td>
+</tr>
+<tr>
+<td align="left">bytea</td>
+<td align="left"></td>
+<td align="left">二进制数据（“字节数组”）</td>
+</tr>
+<tr>
+<td align="left">character [ (<em><strong>n</strong></em>) ]</td>
+<td align="left">char [ (<em><strong>n</strong></em>) ]</td>
+<td align="left">定长字符串</td>
+</tr>
+<tr>
+<td align="left">character varying [ (<em><strong>n</strong></em>) ]</td>
+<td align="left">varchar [ (<em><strong>n</strong></em>) ]</td>
+<td align="left">变长字符串</td>
+</tr>
+<tr>
+<td align="left">cidr</td>
+<td align="left"></td>
+<td align="left">IPv4或IPv6网络地址</td>
+</tr>
+<tr>
+<td align="left">circle</td>
+<td align="left"></td>
+<td align="left">平面上的圆</td>
+</tr>
+<tr>
+<td align="left">date</td>
+<td align="left"></td>
+<td align="left">日历日期（年、月、日）</td>
+</tr>
+<tr>
+<td align="left">double precision</td>
+<td align="left">float8</td>
+<td align="left">双精度浮点数（8字节）</td>
+</tr>
+<tr>
+<td align="left">inet</td>
+<td align="left"></td>
+<td align="left">IPv4或IPv6主机地址</td>
+</tr>
+<tr>
+<td align="left">integer</td>
+<td align="left">int, int4</td>
+<td align="left">有符号4字节整数</td>
+</tr>
+<tr>
+<td align="left">interval [ <em><strong>fields</strong></em> ] [ (<em><strong>p</strong></em>) ]</td>
+<td align="left"></td>
+<td align="left">时间段</td>
+</tr>
+<tr>
+<td align="left">json</td>
+<td align="left"></td>
+<td align="left">文本 JSON 数据</td>
+</tr>
+<tr>
+<td align="left">jsonb</td>
+<td align="left"></td>
+<td align="left">二进制 JSON 数据，已分解</td>
+</tr>
+<tr>
+<td align="left">line</td>
+<td align="left"></td>
+<td align="left">平面上的无限长的线</td>
+</tr>
+<tr>
+<td align="left">lseg</td>
+<td align="left"></td>
+<td align="left">平面上的线段</td>
+</tr>
+<tr>
+<td align="left">macaddr</td>
+<td align="left"></td>
+<td align="left">MAC（Media Access Control）地址</td>
+</tr>
+<tr>
+<td align="left">macaddr8</td>
+<td align="left"></td>
+<td align="left">MAC（Media Access Control）地址（EUI-64格式）</td>
+</tr>
+<tr>
+<td align="left">money</td>
+<td align="left"></td>
+<td align="left">货币数量</td>
+</tr>
+<tr>
+<td align="left">numeric [ (<em><strong>p</strong></em>, <em><strong>s</strong></em>) ]</td>
+<td align="left">decimal [ (<em><strong>p</strong></em>, <em><strong>s</strong></em>) ]</td>
+<td align="left">可选择精度的精确数字</td>
+</tr>
+<tr>
+<td align="left">path</td>
+<td align="left"></td>
+<td align="left">平面上的几何路径</td>
+</tr>
+<tr>
+<td align="left">pg_lsn</td>
+<td align="left"></td>
+<td align="left">PostgreSQL日志序列号</td>
+</tr>
+<tr>
+<td align="left">pg_snapshot</td>
+<td align="left"></td>
+<td align="left">用户级事务ID快照</td>
+</tr>
+<tr>
+<td align="left">point</td>
+<td align="left"></td>
+<td align="left">平面上的几何点</td>
+</tr>
+<tr>
+<td align="left">polygon</td>
+<td align="left"></td>
+<td align="left">平面上的封闭几何路径</td>
+</tr>
+<tr>
+<td align="left">real</td>
+<td align="left">float4</td>
+<td align="left">单精度浮点数（4字节）</td>
+</tr>
+<tr>
+<td align="left">smallint</td>
+<td align="left">int2</td>
+<td align="left">有符号2字节整数</td>
+</tr>
+<tr>
+<td align="left">smallserial</td>
+<td align="left">serial2</td>
+<td align="left">自动增长的2字节整数</td>
+</tr>
+<tr>
+<td align="left">serial</td>
+<td align="left">serial4</td>
+<td align="left">自动增长的4字节整数</td>
+</tr>
+<tr>
+<td align="left">text</td>
+<td align="left"></td>
+<td align="left">变长字符串</td>
+</tr>
+<tr>
+<td align="left">time [ (<em><strong>p</strong></em>) ] [ without time zone ]</td>
+<td align="left"></td>
+<td align="left">一天中的时间（无时区）</td>
+</tr>
+<tr>
+<td align="left">time [ (<em><strong>p</strong></em>) ] with time zone</td>
+<td align="left">timetz</td>
+<td align="left">一天中的时间，包括时区</td>
+</tr>
+<tr>
+<td align="left">timestamp [ (<em><strong>p</strong></em>) ] [ without time zone ]</td>
+<td align="left"></td>
+<td align="left">日期和时间（无时区）</td>
+</tr>
+<tr>
+<td align="left">timestamp [ (<em><strong>p</strong></em>) ] with time zone</td>
+<td align="left">timestamptz</td>
+<td align="left">日期和时间，包括时区</td>
+</tr>
+<tr>
+<td align="left">tsquery</td>
+<td align="left"></td>
+<td align="left">文本搜索查询</td>
+</tr>
+<tr>
+<td align="left">tsvector</td>
+<td align="left"></td>
+<td align="left">文本搜索文档</td>
+</tr>
+<tr>
+<td align="left">txid_snapshot</td>
+<td align="left"></td>
+<td align="left">用户级别事务ID快照(废弃; 参见 pg_snapshot)</td>
+</tr>
+<tr>
+<td align="left">uuid</td>
+<td align="left"></td>
+<td align="left">通用唯一标识码</td>
+</tr>
+<tr>
+<td align="left">xml</td>
+<td align="left"></td>
+<td align="left">XML数据</td>
+</tr>
+</tbody></table>
+<p>PG 还可以自定义数据类型，用户可以使用<a target="_blank" rel="noopener" href="http://www.postgres.cn/docs/13/sql-createtype.html">CREATE TYPE</a>命令为 <code>PostgreSQL</code>增加新的数据类型</p>
+<h2 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h2><h3 id="索引类型"><a href="#索引类型" class="headerlink" title="索引类型"></a>索引类型</h3><p>PG 提供了多种索引类型： <code>B-tree</code>、<code>Hash</code>、<code>GiST</code>、<code>SP-GiST</code> 、<code>GIN</code> 和 <code>BRIN</code></p>
+<ul>
+<li><p><code>B-tree</code> 可以在可排序数据上的处理等值和范围查询</p>
+</li>
+<li><p><code>Hash</code> 索引只能处理简单等值比较</p>
+</li>
+<li><p><code>GiST</code> 索引并不是一种单独的索引，是一个通用的索引接口</p>
+</li>
+<li><p><code>SP-GiST</code> 类似 <code>GiST</code>，是一个通用的索引接口，但是 <code>SP-GIST</code> 使用了空间分区的方法，使得 <code>SP-GiST</code> 可以更好的支持非平衡数据结构，例如四叉树、k-d树和radix树</p>
+</li>
+<li><p><code>GIN</code> 索引是“倒排索引”，它适合于包含多个组成值的数据值，例如数组</p>
+</li>
+<li><p><code>BRIN</code> 索引是块级索引，有别于 <code>B-TREE</code> 等索引，BRIN 记录并不是以行号为单位记录索引明细，而是记录每个数据块或者每段连续的数据块的统计信息</p>
+<p>因此 <code>BRIN</code> 索引空间占用特别的小，对数据写入、更新、删除的影响也很小</p>
+<p>被索引列的值与物理存储相关性很强时，BRIN 索引的效果非常的好。例如时序数据，在时间或序列字段创建 <code>BRIN</code> 索引，进行等值、范围查询时效果很棒</p>
+</li>
+</ul>
+<p>用户可以通过索引接口自定义索引</p>
+<p>所以除上面的内置索引外，还有许多自定义索引，可以根据需求安装其他索引</p>
+<h3 id="部分索引"><a href="#部分索引" class="headerlink" title="部分索引"></a>部分索引</h3><p>部分索引 又习惯称 <code>条件索引</code></p>
+<p>一个条件索引是建立在表的一个子集上，而该子集则由一个条件表达式定义</p>
+<p>而索引中只包含那些符合条件表达式的行。条件索引是一种专门的特性，但在很多种情况下它们也很有用</p>
+<p>使用场景：</p>
+<p>多租户的场景下，数据存在一个表中，不同租户存储的数据不同，使用场景不同，可以根据不同租户场景建立条件索引</p>
+<h3 id="表达式索引"><a href="#表达式索引" class="headerlink" title="表达式索引"></a>表达式索引</h3><p>部分索引 又习惯称 <code>函数索引</code></p>
+<p>一个索引列并不一定是底层表的一个列，也可以是从表的一列或多列计算而来的一个函数或者标量表达式</p>
+<h2 id="过程语言"><a href="#过程语言" class="headerlink" title="过程语言"></a>过程语言</h2><blockquote>
+<p>Procedural Language（过程语言）简称 PL</p>
+</blockquote>
+<p>几乎每个关系型数据库都有自己的PL实现，比如 Oracle 的 PL/SQL、SQL Server 的 T-SQL，而在 PG 中，提供的就是 PL/pgSQL</p>
+<p>但是 PG 的 PL 支持多种语言，如下：</p>
+<ul>
+<li>PL/Java</li>
+<li>PL/PHP</li>
+<li>PL/Perl</li>
+<li>PL/Python</li>
+<li>PL/V8(JavaScript)</li>
+</ul>
+<h2 id="PostGIS"><a href="#PostGIS" class="headerlink" title="PostGIS"></a>PostGIS</h2><blockquote>
+<p>官网：<a target="_blank" rel="noopener" href="https://postgis.net/">https://postgis.net/</a></p>
+</blockquote>
+<h3 id="PostGIS介绍"><a href="#PostGIS介绍" class="headerlink" title="PostGIS介绍"></a>PostGIS介绍</h3><p><code>PostGIS</code> 是 PG 的一个空间对象扩展模块</p>
+<p><code>PostGIS</code> 通过向 PG 添加对空间数据类型、空间索引和空间函数的支持，使其成为一个真正的大型空间数据库</p>
+<p><code>PostGIS</code> 使 PG 目前成为开源空间信息软件领域性能最优的数据库</p>
+<h3 id="PostGIS特性与功能"><a href="#PostGIS特性与功能" class="headerlink" title="PostGIS特性与功能"></a>PostGIS特性与功能</h3><ul>
+<li><p><code>PostGIS</code> 支持所有的空间数据类型</p>
+<p>这些类型包括：点（POINT）、线（LINESTRING）、多边形（POLYGON）、多点 （MULTIPOINT）、多线（MULTILINESTRING）、多多边形（MULTIPOLYGON）和集合对象集 （GEOMETRYCOLLECTION）等</p>
+</li>
+<li><p><code>PostGIS</code> 支持所有的对象表达方法</p>
+<p>比如WKT和WKB。</p>
+</li>
+<li><p><code>PostGIS</code> 支持所有的数据存取和构造方法</p>
+<p>如GeomFromText()、AsBinary()，以及GeometryN()等</p>
+</li>
+<li><p><code>PostGIS</code> 提供简单的空间分析函数</p>
+<p>如Area和Length</p>
+<p>同时也提供其他一些具有复杂分析功能的函数</p>
+<p>比如Distance。</p>
+</li>
+<li><p><code>PostGIS</code> 提供了对于元数据的支持</p>
+<p>如GEOMETRY_COLUMNS和SPATIAL_REF_SYS</p>
+<p>同时，PostGIS也提供了相应的支持函数</p>
+<p>如AddGeometryColumn和DropGeometryColumn。</p>
+</li>
+<li><p><code>PostGIS</code> 提供了一系列的二元谓词（如Contains、Within、Overlaps和Touches）用于检测空间对象之间的空间关系，同时返回布尔值来表征对象之间符合这个关系</p>
+</li>
+<li><p><code>PostGIS</code> 提供了空间操作符（如Union和Difference）用于空间数据操作</p>
+<p>比如，Union操作符融合多边形之间的边界。两个交迭的多边形通过Union运算就会形成一个新的多边形，这个新的多边形的边界为两个多边形中最大边界</p>
+</li>
+<li><p>数据库坐标变换</p>
+</li>
+<li><p>球体长度运算</p>
+</li>
+<li><p>三维的几何类型</p>
+</li>
+<li><p>空间聚集函数</p>
+</li>
+<li><p>栅格数据类型</p>
+</li>
+<li><p>……</p>
+</li>
+</ul>
+<p>PostGIS 的功能非常强大，PG 有目前的影响力 PostGIS 功不可没~</p>
+<h1 id="PG的特殊能力"><a href="#PG的特殊能力" class="headerlink" title="PG的特殊能力"></a>PG的特殊能力</h1><h2 id="用户自定义对象"><a href="#用户自定义对象" class="headerlink" title="用户自定义对象"></a>用户自定义对象</h2><p>用户可以创建数据库中几乎所有对象的新类型，包括但不限于：</p>
+<ul>
+<li>自定义数据类型</li>
+<li>自定义类型转换</li>
+<li>自定义操作符</li>
+<li>自定义函数，包括聚合函数和窗口函数</li>
+<li>自定义索引</li>
+<li>自定义过程语言</li>
+</ul>
+<h2 id="窗口函数"><a href="#窗口函数" class="headerlink" title="窗口函数"></a>窗口函数</h2><p>一个窗口函数在一系列与当前行有某种关联的表行上执行一种计算。这与一个聚集函数所完成的计算有可比之处。但是窗口函数并不会使多行被聚集成一个单独的输出行，这与通常的非窗口聚集函数不同。取而代之，行保留它们独立的标识。在这些现象背后，窗口函数可以访问的不仅仅是查询结果的当前行。</p>
+<ol>
+<li>可以访问与当前记录相关的多行记录；</li>
+<li>不会使多行聚集成一行， 与聚集函数的区别；</li>
+</ol>
+<p>例如结合窗口函数得到总行数</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">select * from testtable;</span><br><span class="line"> id | value</span><br><span class="line">----+-------</span><br><span class="line"> <span class="number">1</span> | <span class="number">1</span></span><br><span class="line"> <span class="number">2</span> | <span class="number">2</span></span><br><span class="line"> <span class="number">3</span> | <span class="number">3</span></span><br><span class="line"> <span class="number">4</span> | <span class="number">4</span></span><br><span class="line"> <span class="number">5</span> | <span class="number">5</span></span><br><span class="line"> <span class="number">6</span> | <span class="number">6</span></span><br><span class="line"> <span class="number">7</span> | <span class="number">7</span></span><br><span class="line"> <span class="number">8</span> | <span class="number">8</span></span><br><span class="line"> <span class="number">9</span> | <span class="number">9</span></span><br><span class="line"> <span class="number">10</span> | <span class="number">10</span></span><br><span class="line">(<span class="number">10</span> rows)</span><br><span class="line">select id,count(*) over () from testtable where id &lt; <span class="number">9</span> limit <span class="number">3</span>;</span><br><span class="line"> id | count</span><br><span class="line">----+-------</span><br><span class="line"> <span class="number">1</span> | <span class="number">8</span></span><br><span class="line"> <span class="number">2</span> | <span class="number">8</span></span><br><span class="line"> <span class="number">3</span> | <span class="number">8</span></span><br><span class="line">即，count over会在limit 和 offset之前计算，结果就是总行数。</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h2 id="其他-1"><a href="#其他-1" class="headerlink" title="其他"></a>其他</h2><blockquote>
+<p>PG 还有许多特殊的能力，只有想不到的，没有做不到的</p>
+</blockquote>
+<ul>
+<li><p>表继承</p>
+</li>
+<li><p>触发器不光可以拦截 DML 还可以拦截 DDL 语句</p>
+</li>
+<li><p>时序数据支持</p>
+</li>
+<li><p>分区表</p>
+</li>
+<li><p>外部数据源FDW，PG 中可以引用多种外部数据，包括MySQL、Oracle等主流关系型数据库，甚至还支持Redis、MongoDB等非关系型数据库</p>
+</li>
+<li><p>……</p>
+</li>
+</ul>
+<h1 id="PG、MySQL对比"><a href="#PG、MySQL对比" class="headerlink" title="PG、MySQL对比"></a>PG、MySQL对比</h1><h2 id="数据表存储结构对比"><a href="#数据表存储结构对比" class="headerlink" title="数据表存储结构对比"></a>数据表存储结构对比</h2><p>堆表(heap table）和索引组织表（Index Oragnization Table，简称IOT)是两种数据表的存储结构</p>
+<p><strong>PG 中的表是堆表。MySQL Innodb引擎中的表是索引组织表</strong></p>
+<ul>
+<li><p>堆表</p>
+<p>堆表的特点就是索引和数据分开存储</p>
+<p>表数据行在堆中存储，没有任何特定顺序，向一个全新的没有做过更新和删除的堆中插入一行时候，总是 append 到堆表文件的最后一页当中。因为不用考虑排序，所以插入速度会比较快。</p>
+<p>索引存储在索引里，所有索引都是二级索引，或叫辅助索引。所以主键索引也是二级索引，没有完整记录，区别只有唯一或非唯一</p>
+<p><strong>优点：</strong>写入速度快、辅助索引查询较快、全表扫描快</p>
+<p><strong>缺点：</strong>磁盘空间消耗较大、主键查询较慢，需要先按主键索引找到数据的物理位置、</p>
+</li>
+<li><p>索引组织表</p>
+<p>索引组织表特点是数据和主键索引一起存储</p>
+<p>数据存储在聚簇索引中，或者说，数据按照主键的顺序来组织数据，两者合二为一。主键索引，叶子节点存放整行数据。其他索引称为辅助索引(二级索引），叶子节点存放键值和主键值</p>
+<p><strong>优点：</strong>主键查询比较快、比较节约磁盘、更新效率更高</p>
+<p><strong>缺点：</strong>二级索引查询慢，需要回表</p>
+</li>
+</ul>
+<h2 id="MVCC对比"><a href="#MVCC对比" class="headerlink" title="MVCC对比"></a>MVCC对比</h2><p>MVCC的两种实现方法：</p>
+<ol>
+<li><p>当写入新数据时，把原有数据转移到一个单独的地方，如undo段中，其他人读数据时，会读取undo中的旧数据</p>
+</li>
+<li><p>当写入新数据时，原有数据不删除，而是把新数据插入，在不同版本的原有数据不需要时，垃圾回收器将回收这些过期的数据</p>
+</li>
+</ol>
+<p>MySQL：</p>
+<p>MySQL采用的就是第一种方式，详细不在说明</p>
+<p>PG：</p>
+<p>PG 采用的第二种方式，数据文件中存放着每一逻辑行的多个版本，问题随之而来，表空间会非常容易膨胀</p>
+<p>为了解决表空间膨胀的问题，PG 采用 <a target="_blank" rel="noopener" href="http://postgres.cn/docs/13/sql-vacuum.html">VACUUM</a> 方式，来回收历史数据，且需要定期手动进行 VACUUM</p>
+<h2 id="性能对比"><a href="#性能对比" class="headerlink" title="性能对比"></a>性能对比</h2><p>任何系统都有它的性能极限，在高并发读写，负载逼近极限下，PG的性能指标仍可以维持双曲线甚至对数曲线，到顶峰之后不再下降，而 MySQL 明显出现一个波峰后下滑（5.5版本之后，在企业级版本中有个插件可以改善很多，不过需要付费）</p>
+<h2 id="其他对比"><a href="#其他对比" class="headerlink" title="其他对比"></a>其他对比</h2><table>
+<thead>
+<tr>
+<th align="left">特性</th>
+<th align="left">PG</th>
+<th align="left">MySQL</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">口号性特点</td>
+<td align="left">最先进的开源数据库</td>
+<td align="left">最流行的开源数据库</td>
+</tr>
+<tr>
+<td align="left">SQL编程能力</td>
+<td align="left">强大的SQL能力，包括丰富的统计函数和统计分析，对BI 有很好的支持</td>
+<td align="left">没有强大的统计功能支持</td>
+</tr>
+<tr>
+<td align="left">数据类型</td>
+<td align="left">丰富的数据类型支持，包括地理信息、几何图形、 json、数组等，json也可以建立索引</td>
+<td align="left">在地理信息支持度上不如PG，不支持几何图形等数据 类型</td>
+</tr>
+<tr>
+<td align="left">事务能力</td>
+<td align="left">完整的ACID事务支持</td>
+<td align="left">不是完整的支持ACID事务特性</td>
+</tr>
+<tr>
+<td align="left">join</td>
+<td align="left">支持nested-loop, sort-merge, hash三种类型</td>
+<td align="left">只支持nested-loop</td>
+</tr>
+<tr>
+<td align="left">Text类型</td>
+<td align="left">没有长度限制，可以直接访问，可以索引，可以全文索 引</td>
+<td align="left">有长度限制</td>
+</tr>
+<tr>
+<td align="left">复杂查询</td>
+<td align="left">支持窗口函数，支持递归，支持with语句</td>
+<td align="left">不支持窗口函数、递归等</td>
+</tr>
+<tr>
+<td align="left">索引</td>
+<td align="left">多种索引类型，包括b-tree，hash，gin，gist等，可以 对模糊查询、正则表达式、地理信息系统等建立索引</td>
+<td align="left">主要是b-tree索引</td>
+</tr>
+<tr>
+<td align="left">数据复制</td>
+<td align="left">同步，异步，半同步复制，以及基于日志逻辑复制，可以实现表级别的订阅和发布</td>
+<td align="left">只支持异步复制</td>
+</tr>
+<tr>
+<td align="left">查询优化器</td>
+<td align="left">功能更强大，对子查询的支持更高效</td>
+<td align="left">子查询效率不高</td>
+</tr>
+<tr>
+<td align="left">7*24</td>
+<td align="left">隔一段时间需要进行VACUUM</td>
+<td align="left">适用7*24</td>
+</tr>
+<tr>
+<td align="left">性能和适用场景</td>
+<td align="left">复杂查询</td>
+<td align="left">简单业务场景，更高的TPS</td>
+</tr>
+<tr>
+<td align="left">大小写</td>
+<td align="left">大小写敏感</td>
+<td align="left">大小写不敏感</td>
+</tr>
+<tr>
+<td align="left">行大小限制</td>
+<td align="left">无限制</td>
+<td align="left">65535</td>
+</tr>
+</tbody></table>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><p>官方文档</p>
+<p><a target="_blank" rel="noopener" href="https://www.postgresql.org/">https://www.postgresql.org/</a></p>
+</li>
+<li><p>PG中文社区</p>
+<p><a target="_blank" rel="noopener" href="http://www.postgres.cn/v2/home">http://www.postgres.cn/v2/home</a></p>
+</li>
+<li><p>PG官方客户端工具</p>
+<p><a target="_blank" rel="noopener" href="https://www.pgadmin.org/">https://www.pgadmin.org/</a></p>
+</li>
+<li><p>PG相关高质量博客</p>
+<p><a target="_blank" rel="noopener" href="https://postgres.fun/">https://postgres.fun/</a></p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div class="post-share">分享到：</div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>赞赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt=" 微信扫一扫，向我赞赏"/>
+        <p>微信扫一扫，向我赞赏</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt=" 支付宝扫一扫，向我赞赏"/>
+        <p>支付宝扫一扫，向我赞赏</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/DB/" rel="tag"><i class="fa fa-tag"></i> DB</a>
+          
+            <a href="/tags/PostgreSQL/" rel="tag"><i class="fa fa-tag"></i> PostgreSQL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/09/24/%E9%87%91%E5%AD%97%E5%A1%94%E5%8E%9F%E7%90%86/" rel="next" title="金字塔原理">
+                <i class="fa fa-chevron-left"></i> 金字塔原理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80NjMwOC8yMjgxOQ=="></div>
+    </div>
+
+  
+
+
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+   (function(d, s) {
+       var j, e = d.getElementsByTagName(s)[0];
+
+       if (typeof LivereTower === 'function') { return; }
+
+       j = d.createElement(s);
+       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+       j.async = true;
+
+       e.parentNode.insertBefore(j, e);
+   })(document, 'script');
+</script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/card3.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"><span style="opacity:.2;">咦咦</span>Tianwj</p>
+              <p class="site-description motion-element" itemprop="description">咿呀呀!</p>
+          </div>
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/ShadowTwj" target="_blank" title="GitHub" data-balloon="GitHub" data-balloon-pos="up">
+                    
+                      <i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://weibo.com/u/5545918663" target="_blank" title="微博" data-balloon="微博" data-balloon-pos="up">
+                    
+                      <i class="fa fa-fw fa-weibo"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://music.163.com/#/user/home?id=386702646" target="_blank" title="网易云音乐" data-balloon="网易云音乐" data-balloon-pos="up">
+                    
+                      <i class="fa fa-fw fa-music"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:646371601@qq.com" target="_blank" title="E-Mail" data-balloon="E-Mail" data-balloon-pos="up">
+                    
+                      <i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+            
+          </div>
+
+          
+            <div class="feed-link motion-element">
+              <a class="feed-rss" href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+            
+
+          </nav>
+
+          
+          
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.png" alt="Creative Commons" />
+              </a>
+            </div>
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B3%E4%BA%8EPostgreSQL"><span class="nav-number">1.</span> <span class="nav-text">关于PostgreSQL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%8F%E8%AE%AE"><span class="nav-number">1.1.</span> <span class="nav-text">协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PG%E5%BD%B1%E5%93%8D%E5%8A%9B"><span class="nav-number">1.2.</span> <span class="nav-text">PG影响力</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PG%E5%8A%9F%E8%83%BD"><span class="nav-number">2.</span> <span class="nav-text">PG功能</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL%E6%A0%87%E5%87%86"><span class="nav-number">2.1.</span> <span class="nav-text">SQL标准</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Schema"><span class="nav-number">2.2.</span> <span class="nav-text">Schema</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Schema%E5%AE%9A%E4%B9%89"><span class="nav-number">2.2.1.</span> <span class="nav-text">Schema定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Schema%E4%BD%BF%E7%94%A8"><span class="nav-number">2.2.2.</span> <span class="nav-text">Schema使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.3.</span> <span class="nav-text">数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95"><span class="nav-number">2.4.</span> <span class="nav-text">索引</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.4.1.</span> <span class="nav-text">索引类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%83%A8%E5%88%86%E7%B4%A2%E5%BC%95"><span class="nav-number">2.4.2.</span> <span class="nav-text">部分索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%B4%A2%E5%BC%95"><span class="nav-number">2.4.3.</span> <span class="nav-text">表达式索引</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%87%E7%A8%8B%E8%AF%AD%E8%A8%80"><span class="nav-number">2.5.</span> <span class="nav-text">过程语言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PostGIS"><span class="nav-number">2.6.</span> <span class="nav-text">PostGIS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PostGIS%E4%BB%8B%E7%BB%8D"><span class="nav-number">2.6.1.</span> <span class="nav-text">PostGIS介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PostGIS%E7%89%B9%E6%80%A7%E4%B8%8E%E5%8A%9F%E8%83%BD"><span class="nav-number">2.6.2.</span> <span class="nav-text">PostGIS特性与功能</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PG%E7%9A%84%E7%89%B9%E6%AE%8A%E8%83%BD%E5%8A%9B"><span class="nav-number">3.</span> <span class="nav-text">PG的特殊能力</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AF%B9%E8%B1%A1"><span class="nav-number">3.1.</span> <span class="nav-text">用户自定义对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AA%97%E5%8F%A3%E5%87%BD%E6%95%B0"><span class="nav-number">3.2.</span> <span class="nav-text">窗口函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">3.3.</span> <span class="nav-text">其他</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96-1"><span class="nav-number">3.4.</span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PG%E3%80%81MySQL%E5%AF%B9%E6%AF%94"><span class="nav-number">4.</span> <span class="nav-text">PG、MySQL对比</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E8%A1%A8%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84%E5%AF%B9%E6%AF%94"><span class="nav-number">4.1.</span> <span class="nav-text">数据表存储结构对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MVCC%E5%AF%B9%E6%AF%94"><span class="nav-number">4.2.</span> <span class="nav-text">MVCC对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94"><span class="nav-number">4.3.</span> <span class="nav-text">性能对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%AF%B9%E6%AF%94"><span class="nav-number">4.4.</span> <span class="nav-text">其他对比</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-image"></div>
+      <div class="footer-inner">
+        <p>博客已萌萌哒运行<span id="since"></span><span class="my-face">(●'◡'●)ﾉ♥</span></p>
+<p>custom text</p>
+
+<p>© <span itemprop="copyrightYear">2022</span> Tianwj's blog.
+    由 <a href="https://hexo.io/" target="_blank" class="external" rel="nofollow">Hexo</a> 强力驱动.
+    Theme By <a href="https://github.com/DIYgod/hexo-theme-sagiri" target="_blank" class="external" rel="nofollow">Sagiri</a> v0.0.4.
+    <a href="/sitemap.xml" target="_blank">站点地图</a>.
+    冀ICP备17030424号.
+</p>
+<p>Made with <i class="fa fa-heart throb" style="color: #d43f57;"></i> by <span class="author" itemprop="copyrightHolder">tianwj</span>. </p>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    <canvas id="evanyou"></canvas>
+    
+
+    
+
+  </div>
+
+  <script type="text/javascript" src="/js/sagiri.min.js?v=0.0.4"></script>
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'manual') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
