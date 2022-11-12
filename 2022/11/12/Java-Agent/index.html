@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="https://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.loli.net/css?family=Sigmar One:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" type="text/css" />
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/social-share.js/1.0.9/css/share.min.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.0.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=0.0.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=0.0.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=0.0.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java,JVM," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Tianwj's blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="简介 Java Agent 直译过来叫做 Java 代理，但更多称叫做 Java 探针  Java Agent是一种特殊的Java程序（Jar文件），与普通Java程序通过main方法启动不同，agent并不是一个可以单独启动的程序，而必须依附在一个Java应用程序（JVM）上，与它运行在同一个进程中，通过Instrumentation API与虚拟机交互 相关概念InstrumentationI">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java-Agent">
+<meta property="og:url" content="http://yoursite.com/2022/11/12/Java-Agent/index.html">
+<meta property="og:site_name" content="Tianwj&#39;s blog">
+<meta property="og:description" content="简介 Java Agent 直译过来叫做 Java 代理，但更多称叫做 Java 探针  Java Agent是一种特殊的Java程序（Jar文件），与普通Java程序通过main方法启动不同，agent并不是一个可以单独启动的程序，而必须依附在一个Java应用程序（JVM）上，与它运行在同一个进程中，通过Instrumentation API与虚拟机交互 相关概念InstrumentationI">
+<meta property="og:locale">
+<meta property="og:image" content="http://yoursite.com/images/image-20221008202408373.png">
+<meta property="og:image" content="http://yoursite.com/images/image-20221010202535725.png">
+<meta property="og:image" content="http://yoursite.com/images/image-20221010202839064.png">
+<meta property="og:image" content="http://yoursite.com/images/image-20221011110030840.png">
+<meta property="og:image" content="http://yoursite.com/images/image-20221011110416104.png">
+<meta property="og:image" content="http://yoursite.com/images/image-20221011110730915.png">
+<meta property="og:image" content="http://yoursite.com/images/image-20221011111320354.png">
+<meta property="og:image" content="http://yoursite.com/images/image-20221011111737935.png">
+<meta property="og:image" content="http://yoursite.com/images/image-20221011112040162.png">
+<meta property="og:image" content="http://yoursite.com/images/image-20221112180722715.png">
+<meta property="og:image" content="http://yoursite.com/images/image-20221112182332843.png">
+<meta property="og:image" content="http://yoursite.com/images/image-20221112182533197.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1071038/202101/1071038-20210112143707325-1984756789.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1071038/202101/1071038-20210112143615738-1489695442.png">
+<meta property="article:published_time" content="2022-11-12T10:36:35.000Z">
+<meta property="article:modified_time" content="2022-11-12T10:49:13.048Z">
+<meta property="article:author" content="tianwj">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="JVM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/image-20221008202408373.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Pisces',
+    version: '0.0.4',
+    sidebar: {"position":"right","display":"always","offset":52,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    since: '2/9/2014 11:30:00',
+    onlineAPI: '',
+    site: {
+      title: "",
+      subtitle: '',
+      author: ''
+    },
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    leancloud: {
+      enable: false,
+      appID: '',
+      appKey: ''
+    },
+    favicon: {
+      visibilitychange: true,
+      narmal: '/images/favicon.ico',
+      hidden: '/images/failure.ico',
+      show_text: '(/≧▽≦/)咦！又好了！',
+      hide_text: '(●—●)喔哟，崩溃啦！'
+    }
+  };
+</script>
+
+
+
+  
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.1.3/jquery.min.js"></script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2022/11/12/Java-Agent/"/>
+
+
+
+
+
+  <title>Java-Agent | Tianwj's blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-48084758-7', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-留言板">
+          <a href="/message/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-pencil"></i> <br />
+            
+            留言板
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+      <li class="menu-item search">
+          <form class="search-form">
+            <input name="keyword" type="text" class="search-input" placeholder="站内搜索">
+            <button type="submit" class="search-submit"><i class="fa fa-search"></i></button>
+          </form>
+      </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+<div class="site-brand-wrapper" style="background-image: url(/images/header3.jpg)">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <div class="brand">
+        <span class="logo-line-before"><i></i></span>
+        <div class="site-title">
+          <div id="animate" class="animate">
+            <span>T</span><span>i</span><span>a</span><span>n</span><span>w</span><span>j</span><span>'</span><span>s</span><span> </span><span>b</span><span>l</span><span>o</span><span>g</span>
+          </div>
+          <div id="guide" class="guide">
+            <span>T</span><span>i</span><span>a</span><span>n</span><span>w</span><span>j</span><span>'</span><span>s</span><span> </span><span>b</span><span>l</span><span>o</span><span>g</span>
+          </div>
+        </div>
+        <span class="logo-line-after"><i></i></span>
+      </div>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+<div class="site-master" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-master-avatar" itemprop="image" src="/images/WechatIMG48.jpeg" alt="" />
+    <h2 class="site-master-description" itemprop="description">
+        
+    </h2>
+</div>
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-date">
+			<div class="post-month">11月</div>
+			<div class="post-day">12</div>
+	</div>
+  
+  <div class="post-badge">
+    
+      <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+        <a href="/categories/Java/" itemprop="url" rel="index">
+          <span itemprop="name">Java</span>
+        </a>
+      </span>
+    
+  </div>
+  
+
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/11/12/Java-Agent/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/WechatIMG48.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tianwj's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java-Agent</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-11-12T18:36:35+08:00">
+                2022-11-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <span class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">•</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><blockquote>
+<p>Java Agent 直译过来叫做 Java 代理，但更多称叫做 Java 探针</p>
+</blockquote>
+<p>Java Agent是一种特殊的Java程序（Jar文件），与普通Java程序通过main方法启动不同，agent并不是一个可以单独启动的程序，而必须依附在一个Java应用程序（JVM）上，与它运行在同一个进程中，通过<code>Instrumentation API</code>与虚拟机交互</p>
+<h2 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h2><h3 id="Instrumentation"><a href="#Instrumentation" class="headerlink" title="Instrumentation"></a>Instrumentation</h3><p><code>Instrumentation</code>是Java提供的一个来自JVM的接口，该接口提供了一系列查看和操作Java类定义的方法，例如修改类的字节码、向<code>classLoader</code>的<code>classpath</code>下加入jar文件等。使得开发者可以通过Java语言来操作和监控JVM内部的一些状态，进而实现Java程序的监控分析，甚至实现一些特殊功能（如AOP、热部署）</p>
+<p>主流的JVM都提供了<code>Instrumentation</code>的实现，但是鉴于<code>Instrumentation</code>的特殊功能，并不适合直接提供在JDK的runtime里，而更适合出现在Java程序的外层，以上帝视角在合适的时机出现。因此如果想使用<code>Instrumentation</code>功能，<strong>「拿到Instrumentation实例，我们必须通过Java agent」</strong>，<code>Instrumentation</code>常用方法如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Instrumentation</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//增加一个Class 文件的转换器，转换器用于改变 Class 二进制流的数据，参数 canRetransform 设置是否允许重新转换。</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">addTransformer</span><span class="params">(ClassFileTransformer transformer, <span class="keyword">boolean</span> canRetransform)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//在类加载之前，重新定义 Class 文件，ClassDefinition 表示对一个类新的定义，</span></span><br><span class="line">    <span class="comment">//如果在类加载之后，需要使用 retransformClasses 方法重新定义。addTransformer方法配置之后，后续的类加载都会被Transformer拦截。</span></span><br><span class="line">    <span class="comment">//对于已经加载过的类，可以执行retransformClasses来重新触发这个Transformer的拦截。类加载的字节码被修改后，除非再次被retransform，否则不会恢复。</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">addTransformer</span><span class="params">(ClassFileTransformer transformer)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//删除一个类转换器</span></span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">removeTransformer</span><span class="params">(ClassFileTransformer transformer)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//是否允许对class retransform</span></span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">isRetransformClassesSupported</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//在类加载之后，重新定义 Class。这个很重要，该方法是1.6 之后加入的，事实上，该方法是 update 了一个类。</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">retransformClasses</span><span class="params">(Class&lt;?&gt;... classes)</span> <span class="keyword">throws</span> UnmodifiableClassException</span>;</span><br><span class="line">   </span><br><span class="line">    <span class="comment">//是否允许对class重新定义</span></span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">isRedefineClassesSupported</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//此方法用于替换类的定义，而不引用现有的类文件字节，就像从源代码重新编译以进行修复和继续调试时所做的那样。</span></span><br><span class="line">    <span class="comment">//在要转换现有类文件字节的地方（例如在字节码插装中），应该使用retransformClasses。</span></span><br><span class="line">    <span class="comment">//该方法可以修改方法体、常量池和属性值，但不能新增、删除、重命名属性或方法，也不能修改方法的签名</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">redefineClasses</span><span class="params">(ClassDefinition... definitions)</span> <span class="keyword">throws</span>  ClassNotFoundException, UnmodifiableClassException</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取已经被JVM加载的class，有className可能重复（可能存在多个classloader）</span></span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;rawtypes&quot;)</span></span><br><span class="line">    Class[] getAllLoadedClasses();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中最常用的方法就是<code>addTransformer(ClassFileTransformer transformer)</code>了，这个方法可以在类加载时做拦截，对输入的类的字节码进行修改，其参数是一个<code>ClassFileTransformer</code>接口，定义如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 传入参数表示一个即将被加载的类，包括了classloader，classname和字节码byte[]</span></span><br><span class="line"><span class="comment"> * 返回值为需要被修改后的字节码byte[]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">byte</span>[] transform( ClassLoader loader, String className, Class&lt;?&gt; classBeingRedefined, ProtectionDomain protectionDomain, <span class="keyword">byte</span>[] classfileBuffer) <span class="keyword">throws</span> IllegalClassFormatException;</span><br></pre></td></tr></table></figure>
+
+<p><code>addTransformer</code>方法配置之后，后续的类加载都会被<code>Transformer</code>拦截。对于已经加载过的类，可以执行<code>retransformClasses</code>来重新触发这个<code>Transformer</code>的拦截。类加载的字节码被修改后，除非再次被<code>retransform</code>，否则不会恢复</p>
+<h3 id="Attach"><a href="#Attach" class="headerlink" title="Attach"></a>Attach</h3><p><code>Attach API</code>其实是跨JVM进程通讯的工具，能够将某种指令从一个JVM进程发送给另一个JVM进程</p>
+<p><code>Attach</code>机制可以对目标进程收集很多信息，如内存<code>dump</code>，线程<code>dump</code>，类信息统计(比如加载的类及大小以及实例个数等)，动态加载agent，动态设置vm flag，打印vm flag，获取系统属性等等</p>
+<h2 id="Java-Agent结构"><a href="#Java-Agent结构" class="headerlink" title="Java Agent结构"></a>Java Agent结构</h2><p>Java Agent 最终以 jar 包的形式存在。主要包含两个部分，一部分是实现代码，一部分是配置文件。配置文件放在 META-INF 目录下，文件名为 <code>MANIFEST.MF</code> </p>
+<p>代码入口是<code>premain</code>或<code>agentmain</code>方法，具体选用哪个方法以及其中的内容根据应用场景决定</p>
+<p>配置文件参数说明：</p>
+<ul>
+<li>Manifest-Version: 版本号</li>
+<li>Created-By: 创作者</li>
+<li>Agent-Class: agentmain方法所在类</li>
+<li>Can-Redefine-Classes: 是否可以实现类的重定义</li>
+<li>Can-Retransform-Classes: 是否可以实现字节码替换</li>
+<li>Premain-Class: premain 方法所在类</li>
+</ul>
+<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><p>   Java Agent 技术有以下主要功能：</p>
+<ul>
+<li>在加载Java文件前拦截字节码并做修改</li>
+<li>在运行期间变更已加载的类的字节码</li>
+<li> 获取所有已经被加载过的类</li>
+<li>获取所有已经被初始化过了的类</li>
+<li>获取某个对象的大小</li>
+</ul>
+<p>基于这些功能，衍生出了很多常见工具，Java调式、热部署、线上诊断等工具都有依赖Java Agent：</p>
+<ul>
+<li><p>各个 Java IDE 的调试功能，例如 eclipse、IntelliJ </p>
+</li>
+<li><p>热部署功能，例如 JRebel、XRebel、spring-loaded</p>
+</li>
+<li><p>各种线上诊断工具，例如 Btrace、Greys，还有阿里的 Arthas</p>
+</li>
+<li><p>各种性能分析工具，例如 Visual VM、JConsole 等</p>
+</li>
+</ul>
+<h1 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h1><p>Java Agent分为两种：静态<code>Agent</code>与动态<code>Agent</code></p>
+<p><img src="/images/image-20221008202408373.png" alt="image-20221008202408373"></p>
+<h2 id="静态Agent"><a href="#静态Agent" class="headerlink" title="静态Agent"></a>静态Agent</h2><p> 这种方式是使用<code>premain</code>作为<code>Agent</code>的入口方法，以JVM启动参数<code>-javaagent:xxx.jar</code>方式载入，在Java程序的<code>main</code>方法执行之前执行</p>
+<ol>
+<li><p>编写<code>premain</code>方法，应该包含以下两个方法中的一个：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">premain</span><span class="params">(String args, Instrumentation inst)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">premain</span><span class="params">(String args)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>JVM 会优先加载带<code>Instrumentation</code>签名的方法1，加载成功忽略方法2，如果没有<code>Instrumentation</code>签名的方法，则加载方法2</p>
+</li>
+<li><p>定义一个<code>MANIFEST.MF</code>文件，其中必须包含Premain-Class选项</p>
+</li>
+<li><p>将包含<code>premain</code>的类与<code>MANIFEST.MF</code>配置文件打包成一个 jar 包</p>
+</li>
+<li><p>在JVM启动参数中添加<code>-javaagent:[path]</code>，其中的<code>path</code>为对应的<code>Agent</code>的jar包路径。这样则将<code>Agent</code>挂载成功，Java程序再执行<code>main</code>方法前执行</p>
+</li>
+</ol>
+<h2 id="动态Agent"><a href="#动态Agent" class="headerlink" title="动态Agent"></a>动态Agent</h2><p> 与静态方式不同，动态<code>Agent</code>允许代理的目标程序的JVM先启动，再通过<code>attach</code>机制载入</p>
+<ol>
+<li><p>同样需要实现<code>agentmain</code>方法，加载优先级与<code>premain</code>相同，带<code>Instrumentation</code>签名的方法优先</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">agentmain</span><span class="params">(String args, Instrumentation inst)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">agentmain</span><span class="params">(String args)</span></span>;</span><br></pre></td></tr></table></figure></li>
+<li><p>定义一个<code>MANIFEST.MF</code>文件，与静态<code>Agent</code>不同的是，此时必须包含Agent-Class选项</p>
+</li>
+<li><p>同样将包含<code>agentmain</code>的类与<code>MANIFEST.MF</code>配置文件打包成一个 jar 包</p>
+</li>
+<li><p>和<code>premain</code>模式不同，不再通过添加启动参数的方式来连接<code>agent</code>和主程序了，而使用<code>attach</code>方式来挂载。<code>attach</code>方式使用了<code>com.sun.tools.attach</code>包下的<code>VirtualMachine</code>工具类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取所有VM实例</span></span><br><span class="line">List&lt;VirtualMachineDescriptor&gt; list = VirtualMachine.list();</span><br><span class="line"><span class="comment">// attach对应VM</span></span><br><span class="line">VirtualMachine attach = VirtualMachine.attach(descriptor);</span><br><span class="line"><span class="comment">// 加载目标Agent</span></span><br><span class="line">attach.loadAgent(<span class="string">&quot;Java-Agent路径&quot;</span>);</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h1 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h1><p>最常用<code>Instrumentation</code>的<code>addTransformer</code>方法对类加载做拦截，对输入的类的字节码进行修改、增强。依赖字节码修改，字节码修改技术主要有 Javassist、ASM，Javassist使用更简单，这里使用Javassist来进行字节码修改，引入相关maven包</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>javassist<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>javassist<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.12.1.GA<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>Javassist</code> 使用可以参考下面文档：</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/chiangchou/p/javassist.html">基于 Javassist 和 Javaagent 实现动态切面</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/jboss-javassist/javassist/wiki">Javassist API</a></p>
+<h2 id="实现极简的watch命令"><a href="#实现极简的watch命令" class="headerlink" title="实现极简的watch命令"></a>实现极简的watch命令</h2><blockquote>
+<p>模拟Arthas的watch命令，来统计方法执行耗时</p>
+</blockquote>
+<h3 id="开发Agent"><a href="#开发Agent" class="headerlink" title="开发Agent"></a>开发Agent</h3><p><a target="_blank" rel="noopener" href="https://github.com/ShadowTwj/sandbox/tree/master/agent/src/main/java/cn/tianwenjie/watch">https://github.com/ShadowTwj/sandbox/tree/master/agent/src/main/java/cn/tianwenjie/watch</a></p>
+<h4 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h4><ol>
+<li>Agent入口方法，包括<code>premain</code>和<code>agentmain</code>两个方法，后面会分别测试两个场景</li>
+</ol>
+<img src="/images/image-20221010202535725.png" alt="image-20221010202535725" style="zoom: 33%;" />
+
+<ol start="2">
+<li><p>实现类转换器，来对指定类和方法增强</p>
+<img src="/images/image-20221010202839064.png" alt="image-20221010202839064" style="zoom:33%;" /></li>
+</ol>
+<h4 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h4><p>配置<code>MANIFEST.MF</code>文件，指定<code>Premain-Class</code>和<code>Agent-Class</code>等属性，将配置文件与代码一同打包生成jar包</p>
+<p>也可以使用maven的<code>maven-assembly-plugin</code>插件，来进行打包，参数可直接配置在pom文件中，打包的时候就会自动将配置信息生成 <code>MANIFEST.MF</code> 配置文件打进包里</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-assembly-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">archive</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">manifest</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">addClasspath</span>&gt;</span>true<span class="tag">&lt;/<span class="name">addClasspath</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">manifestEntries</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Built-By</span>&gt;</span>neo<span class="tag">&lt;/<span class="name">Built-By</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Premain-Class</span>&gt;</span>cn.tianwenjie.watch.WatchDemo<span class="tag">&lt;/<span class="name">Premain-Class</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Agent-Class</span>&gt;</span>cn.tianwenjie.watch.WatchDemo<span class="tag">&lt;/<span class="name">Agent-Class</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Main-Class</span>&gt;</span>cn.tianwenjie.watch.WatchDemo<span class="tag">&lt;/<span class="name">Main-Class</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Can-Redefine-Classes</span>&gt;</span>true<span class="tag">&lt;/<span class="name">Can-Redefine-Classes</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Can-Retransform-Classes</span>&gt;</span>true<span class="tag">&lt;/<span class="name">Can-Retransform-Classes</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Can-Set-Native-Method-Prefix</span>&gt;</span>true<span class="tag">&lt;/<span class="name">Can-Set-Native-Method-Prefix</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">manifestEntries</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">archive</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">descriptorRefs</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">descriptorRef</span>&gt;</span>jar-with-dependencies<span class="tag">&lt;/<span class="name">descriptorRef</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">descriptorRefs</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><blockquote>
+<p>分别测试Agent的两种方式</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/ShadowTwj/sandbox/tree/master/agent-run/src/main/java/cn/tianwenjie/watch">https://github.com/ShadowTwj/sandbox/tree/master/agent-run/src/main/java/cn/tianwenjie/watch</a></p>
+<h4 id="静态Agent测试"><a href="#静态Agent测试" class="headerlink" title="静态Agent测试"></a>静态Agent测试</h4><ul>
+<li>打印控制台输入，统计打印方法耗时</li>
+</ul>
+<img src="/images/image-20221011110030840.png" alt="image-20221011110030840" style="zoom: 33%;" />
+
+<ul>
+<li>添加<code>VM options</code>，指定<code>Agent</code> Jar包路径</li>
+</ul>
+<img src="/images/image-20221011110416104.png" alt="image-20221011110416104" style="zoom:33%;" />
+
+<ul>
+<li><p>执行<code>main</code>方法，观察<code>print</code>方法耗时</p>
+<img src="/images/image-20221011110730915.png" alt="image-20221011110730915" style="zoom:33%;" /></li>
+</ul>
+<h4 id="动态Agent测试"><a href="#动态Agent测试" class="headerlink" title="动态Agent测试"></a>动态Agent测试</h4><ul>
+<li><p>测试方法如上，打印控制台输入，统计打印方法耗时</p>
+</li>
+<li><p>不需要添加<code>VM options</code>，直接执行<code>main</code>方法，观察未挂载<code>Agent</code>前控制台只打印了输入参数，没有打印方法耗时，该方法不要结束，等待下面<code>Attach</code></p>
+<img src="/images/image-20221011111320354.png" alt="image-20221011111320354" style="zoom:33%;" /></li>
+<li><p><code>Attach</code> VM，挂载<code>Agent</code> Jar包</p>
+<img src="/images/image-20221011111737935.png" alt="image-20221011111737935" style="zoom:33%;" /></li>
+<li><p><code>Attach</code>成功后，再执行测试类，观察到方法增强成功，打印控制台输入的同时打印方法耗时</p>
+<img src="/images/image-20221011112040162.png" alt="image-20221011112040162" style="zoom:33%;" /></li>
+</ul>
+<h2 id="模拟热加载"><a href="#模拟热加载" class="headerlink" title="模拟热加载"></a>模拟热加载</h2><blockquote>
+<p>模拟热加载，重新加载修改的类</p>
+<p>与watch命令最大的区别是没有使用字节码修改技术，而是自定义编译器，将新的代码编译为字节码</p>
+</blockquote>
+<h3 id="开发Agent-1"><a href="#开发Agent-1" class="headerlink" title="开发Agent"></a>开发Agent</h3><p><a target="_blank" rel="noopener" href="https://github.com/ShadowTwj/sandbox/tree/master/agent/src/main/java/cn/tianwenjie/hotdeploy">https://github.com/ShadowTwj/sandbox/tree/master/agent/src/main/java/cn/tianwenjie/hotdeploy</a></p>
+<h4 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h4><ol>
+<li><p>Agent入口方法，静态Agent对热加载无用，这里只实现动态Agent的<code>agentmain</code>方法</p>
+<p>使用<code>retransform</code>和<code>redefineClasses</code>方法效果一样，这里使用<code>redefineClasses</code>方法，不在实现类转换器</p>
+<img src="/images/image-20221112180722715.png" alt="image-20221112180722715" style="zoom:50%;" /></li>
+<li><p>自定义编译器，因为热加载改动代码大多都不可预测，使用字节码修改技术并不方便，这里自定义编译器，来编译成字节码</p>
+<p>具体代码：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ShadowTwj/sandbox/blob/master/agent/src/main/java/cn/tianwenjie/hotdeploy/common/DynamicCompiler.java">https://github.com/ShadowTwj/sandbox/blob/master/agent/src/main/java/cn/tianwenjie/hotdeploy/common/DynamicCompiler.java</a></p>
+</li>
+</ol>
+<h4 id="配置文件-1"><a href="#配置文件-1" class="headerlink" title="配置文件"></a>配置文件</h4><p>修改<code>maven-assembly-plugin</code>插件配置，打包生成配置文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-assembly-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">archive</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">manifest</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">addClasspath</span>&gt;</span>true<span class="tag">&lt;/<span class="name">addClasspath</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">manifestEntries</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Built-By</span>&gt;</span>neo<span class="tag">&lt;/<span class="name">Built-By</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Premain-Class</span>&gt;</span>cn.tianwenjie.hotdeploy.HotLoadingDemo<span class="tag">&lt;/<span class="name">Premain-Class</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Agent-Class</span>&gt;</span>cn.tianwenjie.hotdeploy.HotLoadingDemo<span class="tag">&lt;/<span class="name">Agent-Class</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Main-Class</span>&gt;</span>cn.tianwenjie.hotdeploy.HotLoadingDemo<span class="tag">&lt;/<span class="name">Main-Class</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Can-Redefine-Classes</span>&gt;</span>true<span class="tag">&lt;/<span class="name">Can-Redefine-Classes</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Can-Retransform-Classes</span>&gt;</span>true<span class="tag">&lt;/<span class="name">Can-Retransform-Classes</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Can-Set-Native-Method-Prefix</span>&gt;</span>true<span class="tag">&lt;/<span class="name">Can-Set-Native-Method-Prefix</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">manifestEntries</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">archive</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">descriptorRefs</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">descriptorRef</span>&gt;</span>jar-with-dependencies<span class="tag">&lt;/<span class="name">descriptorRef</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">descriptorRefs</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="测试-1"><a href="#测试-1" class="headerlink" title="测试"></a>测试</h3><p><a target="_blank" rel="noopener" href="https://github.com/ShadowTwj/sandbox/tree/master/agent-run/src/main/java/cn/tianwenjie/hotdeploy">https://github.com/ShadowTwj/sandbox/tree/master/agent-run/src/main/java/cn/tianwenjie/hotdeploy</a></p>
+<ul>
+<li><p>测试方法同上watch命令，打印控制台输入</p>
+<img src="/images/image-20221112182332843.png" alt="image-20221112182332843" style="zoom:50%;" /></li>
+<li><p><code>Attach</code> VM，挂载<code>Agent</code> Jar包，热加载新类。如下图，继续打印控制台输入，可以看到热加载成功</p>
+<img src="/images/image-20221112182533197.png" alt="image-20221112182533197" style="zoom:50%;" /></li>
+</ul>
+<h1 id="Java-Agent原理"><a href="#Java-Agent原理" class="headerlink" title="Java-Agent原理"></a>Java-Agent原理</h1><h2 id="静态Agent-1"><a href="#静态Agent-1" class="headerlink" title="静态Agent"></a>静态Agent</h2><h3 id="启动时加载过程"><a href="#启动时加载过程" class="headerlink" title="启动时加载过程"></a>启动时加载过程</h3><blockquote>
+<p>JPLISAgent：作用是初始化所有通过Java Instrumentation API编写的Agent，并且也承担着通过JVMTI实现Java Instrumentation中暴露API的责任</p>
+</blockquote>
+<ol>
+<li>创建并初始化 JPLISAgent；</li>
+<li>监听 VMInit 事件，在 JVM 初始化完成之后做下面的事情：<ol>
+<li>创建 InstrumentationImpl 对象 ；</li>
+<li>监听 ClassFileLoadHook 事件 ；</li>
+<li>调用 InstrumentationImpl 的loadClassAndCallPremain方法，在这个方法里会去调用 javaagent 中 MANIFEST.MF 里指定的Premain-Class 类的 premain 方法 ；</li>
+</ol>
+</li>
+<li>解析 javaagent 中 MANIFEST.MF 文件的参数，并根据这些参数来设置 JPLISAgent 里的一些内容。</li>
+</ol>
+<img src="https://img2020.cnblogs.com/blog/1071038/202101/1071038-20210112143707325-1984756789.png" />
+
+<h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3><ol>
+<li><p>参数解析</p>
+<p>JVM启动时解析对应参数，观察<code>hotspot/src/share/vm/runtime/arguments.cpp</code>中的<code>Arguments::parse_each_vm_init_arg</code>函数片段</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// -agentlib and -agentpath</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">match_option</span>(option, <span class="string">&quot;-agentlib:&quot;</span>, &amp;tail) ||</span><br><span class="line">          (is_absolute_path = <span class="built_in">match_option</span>(option, <span class="string">&quot;-agentpath:&quot;</span>, &amp;tail))) &#123;</span><br><span class="line">      <span class="keyword">if</span>(tail != <span class="literal">NULL</span>) &#123;</span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">char</span>* pos = <span class="built_in">strchr</span>(tail, <span class="string">&#x27;=&#x27;</span>);</span><br><span class="line">        <span class="keyword">char</span>* name;</span><br><span class="line">        <span class="keyword">if</span> (pos == <span class="literal">NULL</span>) &#123;</span><br><span class="line">          name = os::<span class="built_in">strdup_check_oom</span>(tail, mtArguments);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="keyword">size_t</span> len = pos - tail;</span><br><span class="line">          name = <span class="built_in">NEW_C_HEAP_ARRAY</span>(<span class="keyword">char</span>, len + <span class="number">1</span>, mtArguments);</span><br><span class="line">          <span class="built_in">memcpy</span>(name, tail, len);</span><br><span class="line">          name[len] = <span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">char</span> *options = <span class="literal">NULL</span>;</span><br><span class="line">        <span class="keyword">if</span>(pos != <span class="literal">NULL</span>) &#123;</span><br><span class="line">          options = os::<span class="built_in">strdup_check_oom</span>(pos + <span class="number">1</span>, mtArguments);</span><br><span class="line">        &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> !INCLUDE_JVMTI</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">valid_jdwp_agent</span>(name, is_absolute_path)) &#123;</span><br><span class="line">          <span class="built_in">jio_fprintf</span>(defaultStream::<span class="built_in">error_stream</span>(),</span><br><span class="line">            <span class="string">&quot;Debugging agents are not supported in this VM\n&quot;</span>);</span><br><span class="line">          <span class="keyword">return</span> JNI_ERR;</span><br><span class="line">        &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">// !INCLUDE_JVMTI</span></span></span><br><span class="line">        <span class="comment">// 存储Agent解析结果</span></span><br><span class="line">        <span class="comment">// name:&quot;instrument&quot;，动态链接库</span></span><br><span class="line">        <span class="built_in">add_init_agent</span>(name, options, is_absolute_path);</span><br><span class="line">      &#125;</span><br><span class="line">    <span class="comment">// -javaagent</span></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">match_option</span>(option, <span class="string">&quot;-javaagent:&quot;</span>, &amp;tail)) &#123;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> !INCLUDE_JVMTI</span></span><br><span class="line">      <span class="built_in">jio_fprintf</span>(defaultStream::<span class="built_in">error_stream</span>(),</span><br><span class="line">        <span class="string">&quot;Instrumentation agents are not supported in this VM\n&quot;</span>);</span><br><span class="line">      <span class="keyword">return</span> JNI_ERR;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">      <span class="keyword">if</span> (tail != <span class="literal">NULL</span>) &#123;</span><br><span class="line">        <span class="keyword">size_t</span> length = <span class="built_in">strlen</span>(tail) + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">char</span> *options = <span class="built_in">NEW_C_HEAP_ARRAY</span>(<span class="keyword">char</span>, length, mtArguments);</span><br><span class="line">        <span class="built_in">jio_snprintf</span>(options, length, <span class="string">&quot;%s&quot;</span>, tail);</span><br><span class="line">        <span class="built_in">add_instrument_agent</span>(<span class="string">&quot;instrument&quot;</span>, options, <span class="literal">false</span>);</span><br><span class="line">        <span class="comment">// java agents need module java.instrument</span></span><br><span class="line">        <span class="keyword">if</span> (!<span class="built_in">create_numbered_module_property</span>(<span class="string">&quot;jdk.module.addmods&quot;</span>, <span class="string">&quot;java.instrument&quot;</span>, addmods_count++)) &#123;</span><br><span class="line">          <span class="keyword">return</span> JNI_ENOMEM;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">// !INCLUDE_JVMTI</span></span></span><br></pre></td></tr></table></figure>
+
+<p>这段逻辑用来解析需要加载的Agent路径，然后调用<code>add_init_agent</code>存储解析结果到<code>_agentList</code>中，<code>AgentLibraryList</code>是一个链表</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// -agentlib and -agentpath arguments</span></span><br><span class="line"><span class="keyword">static</span> AgentLibraryList _agentList;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Arguments::add_init_agent</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* name, <span class="keyword">char</span>* options, <span class="keyword">bool</span> absolute_path)</span> </span>&#123;</span><br><span class="line">  _agentList.<span class="built_in">add</span>(<span class="keyword">new</span> <span class="built_in">AgentLibrary</span>(name, options, absolute_path, <span class="literal">NULL</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>加载Agent</p>
+<p>观察<code>hotspot/src/share/vm/runtime/threads.cpp</code>中的<code>Threads::create_vm</code>函数，JVM在解析完参数后，判断<code>_agentList</code>是否为空，不为空加载<code>Agent</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Launch -agentlib/-agentpath and converted -Xrun agents</span></span><br><span class="line"><span class="comment">// 判断agent链表是否为空，不为空加载Agent</span></span><br><span class="line"><span class="keyword">if</span> (Arguments::<span class="built_in">init_agents_at_startup</span>()) &#123;</span><br><span class="line">  <span class="built_in">create_vm_init_agents</span>();</span><br><span class="line">&#125;</span><br><span class="line">   </span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">init_agents_at_startup</span><span class="params">()</span>      </span>&#123; <span class="keyword">return</span> !_agentList.<span class="built_in">is_empty</span>(); &#125;</span><br></pre></td></tr></table></figure>
+
+<p>分析<code>create_vm_init_agents</code>函数，遍历<code>Agent</code>逐个加载，解析对应的<code>Agent_Onload</code>函数，最终调用<code>premain</code>方法，执行<code>Agent_Onload</code>函数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (agent = Arguments::<span class="built_in">agents</span>(); agent != <span class="literal">NULL</span>; agent = agent-&gt;<span class="built_in">next</span>()) &#123;</span><br><span class="line">  <span class="comment">// CDS dumping does not support native JVMTI agent.</span></span><br><span class="line">  <span class="comment">// CDS dumping supports Java agent if the AllowArchivingWithJavaAgent diagnostic option is specified.</span></span><br><span class="line">  <span class="keyword">if</span> (Arguments::<span class="built_in">is_dumping_archive</span>()) &#123;</span><br><span class="line">    <span class="keyword">if</span>(!agent-&gt;<span class="built_in">is_instrument_lib</span>()) &#123;</span><br><span class="line">      <span class="built_in">vm_exit_during_cds_dumping</span>(<span class="string">&quot;CDS dumping does not support native JVMTI agent, name&quot;</span>, agent-&gt;<span class="built_in">name</span>());</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!AllowArchivingWithJavaAgent) &#123;</span><br><span class="line">      <span class="built_in">vm_exit_during_cds_dumping</span>(</span><br><span class="line">        <span class="string">&quot;Must enable AllowArchivingWithJavaAgent in order to run Java agent during CDS dumping&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 解析Agent_OnLoad函数，最终调用premain方法</span></span><br><span class="line">  OnLoadEntry_t  on_load_entry = <span class="built_in">lookup_agent_on_load</span>(agent);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (on_load_entry != <span class="literal">NULL</span>) &#123;</span><br><span class="line">    <span class="comment">// Invoke the Agent_OnLoad function</span></span><br><span class="line">    <span class="comment">// 执行Agent_OnLoad函数</span></span><br><span class="line">    jint err = (*on_load_entry)(&amp;main_vm, agent-&gt;<span class="built_in">options</span>(), <span class="literal">NULL</span>);</span><br><span class="line">    <span class="keyword">if</span> (err != JNI_OK) &#123;</span><br><span class="line">      <span class="built_in">vm_exit_during_initialization</span>(<span class="string">&quot;agent library failed to init&quot;</span>, agent-&gt;<span class="built_in">name</span>());</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">vm_exit_during_initialization</span>(<span class="string">&quot;Could not find Agent_OnLoad function in the agent library&quot;</span>, agent-&gt;<span class="built_in">name</span>());</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>Agent_OnLoad函数</p>
+<blockquote>
+<p>动态链接库<code>libinstrument</code>，用来支持使用Java Instrumentation API来编写Agent，在libinstrument中有一个非常重要的类称为：JPLISAgent（Java Programming Language Instrumentation Services Agent），它的作用是初始化所有通过Java Instrumentation API编写的Agent，并且也承担着通过JVMTI实现Java Instrumentation中暴露API的责任</p>
+</blockquote>
+<p>在动态链接库<code>libinstrument</code>中找到<code>Agent_OnLoad</code>函数，在<code>java.instrument/share/native/libinstrument/InvocationAdapter.c</code>中</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">JNIEXPORT jint JNICALL</span><br><span class="line">DEF_Agent_OnLoad(JavaVM *vm, <span class="keyword">char</span> *tail, <span class="keyword">void</span> * reserved) &#123;</span><br><span class="line">    JPLISInitializationError initerror  = JPLIS_INIT_ERROR_NONE;</span><br><span class="line">    jint                     result     = JNI_OK;</span><br><span class="line">    JPLISAgent *             agent      = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 1. 创建并初始化JPLISAgent</span></span><br><span class="line">    initerror = createNewJPLISAgent(vm, &amp;agent);</span><br><span class="line">   	<span class="keyword">if</span> ( initerror == JPLIS_INIT_ERROR_NONE ) &#123;</span><br><span class="line">        <span class="keyword">int</span>             oldLen, newLen;</span><br><span class="line">        <span class="keyword">char</span> *          jarfile;</span><br><span class="line">        <span class="keyword">char</span> *          options;</span><br><span class="line">        jarAttribute*   attributes;</span><br><span class="line">        <span class="keyword">char</span> *          premainClass;</span><br><span class="line">        <span class="keyword">char</span> *          bootClassPath;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * Parse &lt;jarfile&gt;[=options] into jarfile and options</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">if</span> (parseArgumentTail(tail, &amp;jarfile, &amp;options) != <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;-javaagent: memory allocation failure.\n&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> JNI_ERR;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        attributes = readAttributes(jarfile);</span><br><span class="line">        </span><br><span class="line">      	<span class="comment">//...</span></span><br><span class="line"></span><br><span class="line">        premainClass = getAttribute(attributes, <span class="string">&quot;Premain-Class&quot;</span>);</span><br><span class="line">        </span><br><span class="line">      	<span class="comment">//...</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">/* Save the jarfile name */</span></span><br><span class="line">        agent-&gt;mJarfile = jarfile;</span><br><span class="line">				</span><br><span class="line">      	<span class="comment">//...</span></span><br><span class="line">      </span><br><span class="line">        bootClassPath = getAttribute(attributes, <span class="string">&quot;Boot-Class-Path&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * Convert JAR attributes into agent capabilities</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        convertCapabilityAttributes(attributes, agent);</span><br><span class="line"></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * Track (record) the agent class name and options data</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        initerror = recordCommandLineData(agent, premainClass, options);</span><br><span class="line"></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * Clean-up</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">if</span> (options != <span class="literal">NULL</span>) <span class="built_in">free</span>(options);</span><br><span class="line">        freeAttributes(attributes);</span><br><span class="line">        <span class="built_in">free</span>(premainClass);</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到函数中调用<code>createNewJPLISAgent</code>方法，创建JPLISAgent，在<code>createNewJPLISAgent</code>函数中又调用<code>initializeJPLISAgent</code>函数进行初始化，<code>initializeJPLISAgent</code>函数中有设置VMInit时间回调函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 2.触发VMInit事件回调</span></span><br><span class="line">callbacks.VMInit = &amp;eventHandlerVMInit;</span><br></pre></td></tr></table></figure>
+
+<p>看下<code>eventHandlerVMInit</code>函数实现，<code>eventHandlerVMInit</code> -&gt; <code>processJavaStart</code> -&gt; <code>startJavaAgent</code> -&gt; <code>invokeJavaAgentMainMethod</code>，最终<code>invokeJavaAgentMainMethod</code>函数则是调用<code>premain</code>方法</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> JNICALL</span><br><span class="line">eventHandlerVMInit( jvmtiEnv *      jvmtienv,</span><br><span class="line">                    JNIEnv *        jnienv,</span><br><span class="line">                    jthread         thread) &#123;</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">  success = processJavaStart( environment-&gt;mAgent, jnienv);</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">jboolean</span><br><span class="line">processJavaStart(   JPLISAgent *    agent,</span><br><span class="line">                    JNIEnv *        jnienv) &#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     *  Now make the InstrumentationImpl instance.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">if</span> ( result ) &#123;</span><br><span class="line">        result = createInstrumentationImpl(jnienv, agent);</span><br><span class="line">        jplis_assert_msg(result, <span class="string">&quot;instrumentation instance creation failed&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	  <span class="comment">/*</span></span><br><span class="line"><span class="comment">     *  Load the Java agent, and call the premain.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">if</span> ( result ) &#123;</span><br><span class="line">        result = startJavaAgent(agent, jnienv,</span><br><span class="line">                                agent-&gt;mAgentClassName, agent-&gt;mOptionsString,</span><br><span class="line">                                agent-&gt;mPremainCaller);</span><br><span class="line">        jplis_assert_msg(result, <span class="string">&quot;agent load/premain call failed&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">jboolean</span><br><span class="line">startJavaAgent( JPLISAgent *    agent,</span><br><span class="line">                JNIEnv *        jnienv,</span><br><span class="line">                <span class="keyword">const</span> <span class="keyword">char</span> *    classname,</span><br><span class="line">                <span class="keyword">const</span> <span class="keyword">char</span> *    optionsString,</span><br><span class="line">                jmethodID       agentMainMethod) &#123;</span><br><span class="line">		<span class="comment">//...</span></span><br><span class="line">  </span><br><span class="line">	  <span class="comment">// 3.执行premain方法</span></span><br><span class="line">  	success = invokeJavaAgentMainMethod(   jnienv,</span><br><span class="line">    	                                  agent-&gt;mInstrumentationImpl,</span><br><span class="line">      	                                agentMainMethod,</span><br><span class="line">        	                              classNameObject,</span><br><span class="line">          	                            optionsStringObject);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> success;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="动态Agent-1"><a href="#动态Agent-1" class="headerlink" title="动态Agent"></a>动态Agent</h2><h3 id="运行时加载过程"><a href="#运行时加载过程" class="headerlink" title="运行时加载过程"></a>运行时加载过程</h3><p>通过 JVM 的attach机制来请求目标 JVM 加载对应的agent，过程大致如下：</p>
+<ol>
+<li>创建并初始化JPLISAgent；</li>
+<li>解析 javaagent 里 MANIFEST.MF 里的参数；</li>
+<li>创建 InstrumentationImpl 对象；</li>
+<li>监听 ClassFileLoadHook 事件；</li>
+<li>调用 InstrumentationImpl 的loadClassAndCallAgentmain方法，在这个方法里会去调用javaagent里 MANIFEST.MF 里指定的Agent-Class类的agentmain方法。</li>
+</ol>
+<img src="https://img2020.cnblogs.com/blog/1071038/202101/1071038-20210112143615738-1489695442.png"/>
+
+<h3 id="Attach-1"><a href="#Attach-1" class="headerlink" title="Attach"></a>Attach</h3><blockquote>
+<p>动态Agent是通过Attach机制来加载，下面分析下Attach原理</p>
+</blockquote>
+<ol>
+<li><p>AttachListener</p>
+<p><code>Attach</code>机制通过<code>Attach Listener</code>线程来进行相关事务的处理，<code>AttachListener</code>初始化如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">AttachListener::init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  EXCEPTION_MARK;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">char</span>* name = <span class="string">&quot;Attach Listener&quot;</span>;</span><br><span class="line">  Handle thread_oop = JavaThread::<span class="built_in">create_system_thread_object</span>(name, <span class="literal">true</span> <span class="comment">/* visible */</span>, THREAD);</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">has_init_error</span>(THREAD)) &#123;</span><br><span class="line">    <span class="built_in">set_state</span>(AL_NOT_INITIALIZED);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  JavaThread* thread = <span class="keyword">new</span> <span class="built_in">JavaThread</span>(&amp;attach_listener_thread_entry);</span><br><span class="line">  JavaThread::<span class="built_in">vm_exit_on_osthread_failure</span>(thread);</span><br><span class="line"></span><br><span class="line">  JavaThread::<span class="built_in">start_internal_daemon</span>(THREAD, thread, thread_oop, NoPriority);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>attach_listener_thread_entry</code>函数是线程入口，代码片段如下：</p>
+<p>首先获取到<code>Attach</code>任务，然后查询匹配命令对应的函数，最后执行对应函数，funcs是命令对应的函数，其中”load”命令对应<code>load_agent</code>函数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">attach_listener_thread_entry</span><span class="params">(JavaThread* thread, TRAPS)</span> </span>&#123;</span><br><span class="line">  AttachListener::<span class="built_in">set_initialized</span>();</span><br><span class="line">  <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">	    <span class="comment">// 1.获取Attach任务</span></span><br><span class="line">      AttachOperation* op = AttachListener::<span class="built_in">dequeue</span>();</span><br><span class="line">    </span><br><span class="line">      <span class="comment">// find the function to dispatch too</span></span><br><span class="line">	    <span class="comment">// 2.查询匹配命令对应的函数，funcs是命令对应的函数，其中&quot;load&quot;命令对应load_agent函数</span></span><br><span class="line">      AttachOperationFunctionInfo* info = <span class="literal">NULL</span>;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; funcs[i].name != <span class="literal">NULL</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">char</span>* name = funcs[i].name;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">strcmp</span>(op-&gt;<span class="built_in">name</span>(), name) == <span class="number">0</span>) &#123;</span><br><span class="line">          info = &amp;(funcs[i]); <span class="keyword">break</span>;</span><br><span class="line">        &#125;&#125;</span><br><span class="line">    </span><br><span class="line">       <span class="comment">// dispatch to the function that implements this operation</span></span><br><span class="line">	    <span class="comment">// 3.执行命令对应的函数</span></span><br><span class="line">        res = (info-&gt;func)(op, &amp;st);</span><br><span class="line">      <span class="comment">//...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查看<code>dequeue</code>函数，是如何获取任务的，<code>dequeue</code>函数不系统实现不同，windows系统是<code>Win32AttachListener::dequeue()</code>，Mac系统是<code>BsdAttachListener::dequeue()</code>，Linux系统是<code>LinuxAttachListener::dequeue()</code>。下面是Linux系统实现，等待客户端连接，通过<code>accept</code>来接收，然后将请求读出来，包装成<code>AttachOperation</code>对象，返回进行处理</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">LinuxAttachOperation* <span class="title">LinuxAttachListener::dequeue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">    <span class="comment">// wait for client to connect</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr</span> <span class="title">addr</span>;</span></span><br><span class="line">    <span class="keyword">socklen_t</span> len = <span class="built_in"><span class="keyword">sizeof</span></span>(addr);</span><br><span class="line">    <span class="comment">// 等待连接，通过accept来接收</span></span><br><span class="line">    <span class="built_in">RESTARTABLE</span>(::<span class="built_in">accept</span>(<span class="built_in">listener</span>(), &amp;addr, &amp;len), s);</span><br><span class="line">    <span class="comment">// get the credentials of the peer and check the effective uid/guid</span></span><br><span class="line">    <span class="comment">// - check with jeff on this.</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ucred</span> <span class="title">cred_info</span>;</span></span><br><span class="line">    <span class="keyword">socklen_t</span> optlen = <span class="built_in"><span class="keyword">sizeof</span></span>(cred_info);</span><br><span class="line">    <span class="keyword">if</span> (::<span class="built_in">getsockopt</span>(s, SOL_SOCKET, SO_PEERCRED, (<span class="keyword">void</span>*)&amp;cred_info, &amp;optlen) == <span class="number">-1</span>) &#123;</span><br><span class="line">      ::<span class="built_in">close</span>(s);</span><br><span class="line">      <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// peer credential look okay so we read the request</span></span><br><span class="line">    <span class="comment">// 将请求读出来</span></span><br><span class="line">    LinuxAttachOperation* op = <span class="built_in">read_request</span>(s);</span><br><span class="line">    <span class="keyword">return</span> op;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><code>VirtualMachine.attach</code>方法</p>
+<p>通过<code>com.sun.tools.attach.VirtualMachine#attach</code>方法来连接指定pid的JVM进程，查看源码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> VirtualMachine <span class="title">attach</span><span class="params">(String var0)</span> <span class="keyword">throws</span> AttachNotSupportedException, IOException </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (var0 == <span class="keyword">null</span>) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException(<span class="string">&quot;id cannot be null&quot;</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    List var1 = AttachProvider.providers();</span><br><span class="line">    <span class="keyword">if</span> (var1.size() == <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> AttachNotSupportedException(<span class="string">&quot;no providers installed&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      AttachNotSupportedException var2 = <span class="keyword">null</span>;</span><br><span class="line">      Iterator var3 = var1.iterator();</span><br><span class="line"></span><br><span class="line">      <span class="keyword">while</span>(var3.hasNext()) &#123;</span><br><span class="line">        AttachProvider var4 = (AttachProvider)var3.next();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">          <span class="keyword">return</span> var4.attachVirtualMachine(var0);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (AttachNotSupportedException var6) &#123;</span><br><span class="line">          var2 = var6;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">throw</span> var2;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看出最终调用<code>AttachProvider</code>的<code>attachVirtualMachine</code>方法，<code>AttachProvider</code>是抽象类，不同系统不同实现，在MacOS中实现类是<code>BsdAttachProvider</code>，其中<code>attachVirtualMachine</code>实现是：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> VirtualMachine <span class="title">attachVirtualMachine</span><span class="params">(String var1)</span> <span class="keyword">throws</span> AttachNotSupportedException, IOException </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.checkAttachPermission();</span><br><span class="line">  <span class="keyword">this</span>.testAttachable(var1);</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> BsdVirtualMachine(<span class="keyword">this</span>, var1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查看其构造方法，通过<code>findSocketFile</code>方法用来查询目标JVM上是否已经启动了<code>Attach Listener</code>，因为<code>Attach Listener</code>是懒加载，所以JVM启动也不一定加载。检查<code>/tmp/.java_pid&#123;pid&#125;</code>文件是否存在，如果存在，则说明目标JVM Attach机制已准备就绪，可以直接通过<code>connect</code>方法来连接到目标JVM，发送命令；如果不存在，则说明目标JVM的<code>Attach Listener</code>还没有初始化，这时通过<code>sendQuitTo</code>方法向目标JVM发送信号，让其初始化<code>Attach Listener</code>，并且循环等待<code>/tmp/.java_pid&#123;pid&#125;</code>文件的创建，之后再通过<code>connect</code>方法来连接到目标JVM，发送命令</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">BsdVirtualMachine(AttachProvider var1, String var2) <span class="keyword">throws</span> AttachNotSupportedException, IOException &#123;</span><br><span class="line">  <span class="keyword">super</span>(var1, var2);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">int</span> var3;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    var3 = Integer.parseInt(var2);</span><br><span class="line">  &#125; <span class="keyword">catch</span> (NumberFormatException var22) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> AttachNotSupportedException(<span class="string">&quot;Invalid process identifier&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// var3为pid，检查/tmp/.java_pid&#123;pid&#125;是否存在</span></span><br><span class="line">  <span class="keyword">this</span>.path = <span class="keyword">this</span>.findSocketFile(var3);</span><br><span class="line">  <span class="comment">// 如果存在，则说明目标JVM Attach机制已准备就绪，可以直接通过connect方法来连接到目标JVM，发送命令</span></span><br><span class="line">  <span class="comment">// 如果不存在，则说明目标JVM的Attach Listener还没有初始化</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>.path == <span class="keyword">null</span>) &#123;</span><br><span class="line">    <span class="comment">// 创建/tmp/.java_pid&#123;pid&#125;文件</span></span><br><span class="line">    File var4 = <span class="keyword">new</span> File(tmpdir, <span class="string">&quot;.attach_pid&quot;</span> + var3);</span><br><span class="line">    createAttachFile(var4.getPath());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="comment">// 向目标JVM发送信号，让其初始化Attach Listener</span></span><br><span class="line">      sendQuitTo(var3);</span><br><span class="line">      <span class="keyword">int</span> var5 = <span class="number">0</span>;</span><br><span class="line">      <span class="keyword">long</span> var6 = <span class="number">200L</span>;</span><br><span class="line">      <span class="keyword">int</span> var8 = (<span class="keyword">int</span>)(<span class="keyword">this</span>.attachTimeout() / var6);</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 循环等待/tmp/.java_pid&#123;pid&#125;文件的创建，之后再通过connect方法来连接到目标JVM，发送命令</span></span><br><span class="line">      <span class="keyword">do</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">          Thread.sleep(var6);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException var21) &#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.path = <span class="keyword">this</span>.findSocketFile(var3);</span><br><span class="line">        ++var5;</span><br><span class="line">      &#125; <span class="keyword">while</span>(var5 &lt;= var8 &amp;&amp; <span class="keyword">this</span>.path == <span class="keyword">null</span>);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">this</span>.path == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> AttachNotSupportedException(<span class="string">&quot;Unable to open socket file: target process not responding or HotSpot VM not loaded&quot;</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">      var4.delete();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  checkPermissions(<span class="keyword">this</span>.path);</span><br><span class="line">  <span class="keyword">int</span> var24 = socket();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    connect(var24, <span class="keyword">this</span>.path);</span><br><span class="line">  &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    close(var24);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><code>loadAgent方法</code></p>
+<p>通过<code>attach</code>方法，连接上目标JVM后，通过<code>loadAgent</code>方法来加载<code>Agent</code>，其本质是向目标JVM发送<code>load</code>命令，这里不再展开</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">loadAgentLibrary</span><span class="params">(String var1, <span class="keyword">boolean</span> var2, String var3)</span> <span class="keyword">throws</span> AgentLoadException, AgentInitializationException, IOException </span>&#123;</span><br><span class="line">  InputStream var4 = <span class="keyword">this</span>.execute(<span class="string">&quot;load&quot;</span>, var1, var2 ? <span class="string">&quot;true&quot;</span> : <span class="string">&quot;false&quot;</span>, var3);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">int</span> var5 = <span class="keyword">this</span>.readInt(var4);</span><br><span class="line">    <span class="keyword">if</span> (var5 != <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> AgentInitializationException(<span class="string">&quot;Agent_OnAttach failed&quot;</span>, var5);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    var4.close();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看下JVM中<code>load</code>命令的实现，上面<code>Agtach Listener</code>的<code>attach_listener_thread_entry</code>函数中，会查询匹配命令对应的函数，然后执行对应的函数，<code>funcs</code>则是一个命令函数表，查看<code>load</code>命令对应的函数，发现是<code>load_agent</code>：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// names must be of length &lt;= AttachOperation::name_length_max</span></span><br><span class="line"><span class="keyword">static</span> AttachOperationFunctionInfo funcs[] = &#123;</span><br><span class="line">  &#123; <span class="string">&quot;agentProperties&quot;</span>,  get_agent_properties &#125;,</span><br><span class="line">  &#123; <span class="string">&quot;datadump&quot;</span>,         data_dump &#125;,</span><br><span class="line">  &#123; <span class="string">&quot;dumpheap&quot;</span>,         dump_heap &#125;,</span><br><span class="line">  &#123; <span class="string">&quot;load&quot;</span>,             load_agent &#125;,</span><br><span class="line">  &#123; <span class="string">&quot;properties&quot;</span>,       get_system_properties &#125;,</span><br><span class="line">  &#123; <span class="string">&quot;threaddump&quot;</span>,       thread_dump &#125;,</span><br><span class="line">  &#123; <span class="string">&quot;inspectheap&quot;</span>,      heap_inspection &#125;,</span><br><span class="line">  &#123; <span class="string">&quot;setflag&quot;</span>,          set_flag &#125;,</span><br><span class="line">  &#123; <span class="string">&quot;printflag&quot;</span>,        print_flag &#125;,</span><br><span class="line">  &#123; <span class="string">&quot;jcmd&quot;</span>,             jcmd &#125;,</span><br><span class="line">  &#123; <span class="literal">NULL</span>,               <span class="literal">NULL</span> &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>再查看<code>load_agent</code>函数实现：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Implementation of &quot;load&quot; command.</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> jint <span class="title">load_agent</span><span class="params">(AttachOperation* op, outputStream* out)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// get agent name and options</span></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">char</span>* agent = op-&gt;<span class="built_in">arg</span>(<span class="number">0</span>);</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">char</span>* absParam = op-&gt;<span class="built_in">arg</span>(<span class="number">1</span>);</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">char</span>* options = op-&gt;<span class="built_in">arg</span>(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// If loading a java agent then need to ensure that the java.instrument module is loaded</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">strcmp</span>(agent, <span class="string">&quot;instrument&quot;</span>) == <span class="number">0</span>) &#123;</span><br><span class="line">    JavaThread* THREAD = JavaThread::<span class="built_in">current</span>(); <span class="comment">// For exception macros.</span></span><br><span class="line">    <span class="function">ResourceMark <span class="title">rm</span><span class="params">(THREAD)</span></span>;</span><br><span class="line">    <span class="function">HandleMark <span class="title">hm</span><span class="params">(THREAD)</span></span>;</span><br><span class="line">    <span class="function">JavaValue <span class="title">result</span><span class="params">(T_OBJECT)</span></span>;</span><br><span class="line">    Handle h_module_name = java_lang_String::<span class="built_in">create_from_str</span>(<span class="string">&quot;java.instrument&quot;</span>, THREAD);</span><br><span class="line">    JavaCalls::<span class="built_in">call_static</span>(&amp;result,</span><br><span class="line">                           vmClasses::<span class="built_in">module_Modules_klass</span>(),</span><br><span class="line">                           vmSymbols::<span class="built_in">loadModule_name</span>(),</span><br><span class="line">                           vmSymbols::<span class="built_in">loadModule_signature</span>(),</span><br><span class="line">                           h_module_name,</span><br><span class="line">                           THREAD);</span><br><span class="line">    <span class="keyword">if</span> (HAS_PENDING_EXCEPTION) &#123;</span><br><span class="line">      java_lang_Throwable::<span class="built_in">print</span>(PENDING_EXCEPTION, out);</span><br><span class="line">      CLEAR_PENDING_EXCEPTION;</span><br><span class="line">      <span class="keyword">return</span> JNI_ERR;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> JvmtiExport::<span class="built_in">load_agent_library</span>(agent, absParam, options, out);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>主要作用是加载<code>Agent</code>动态链接库，如果是通过<code>Java instrument API</code>实现的Agent，则加载的是<code>libinstrument</code>动态链接库。然后通过动态链接库中的<code>Agent_OnAttach</code>函数来创建<code>JPLISAgent</code>，从而调用<code>agentmain</code>方法。这一部分内容和<code>libinstrument</code>中的<code>Agent_OnLoad</code>函数来创建<code>JPLISAgent</code>，调用<code>premain</code>方法的逻辑相似</p>
+</li>
+</ol>
+<h1 id="相关开源项目"><a href="#相关开源项目" class="headerlink" title="相关开源项目"></a>相关开源项目</h1><p>很多开源项目都用到了<code>Java-Agent</code>，下面列举两个项目，有兴趣可以阅读一下</p>
+<h2 id="Arthas"><a href="#Arthas" class="headerlink" title="Arthas"></a>Arthas</h2><p>Arthas用到非常重要的技术就是Java-Agent，以及相关的字节码增强等技术，从启动方式就能看出来使用的是动态Agent的方式</p>
+<p>代码地址：<a target="_blank" rel="noopener" href="https://github.com/alibaba/arthas">https://github.com/alibaba/arthas</a></p>
+<h2 id="ja-netfilter"><a href="#ja-netfilter" class="headerlink" title="ja-netfilter"></a>ja-netfilter</h2><p>一个Java Instrumentation框架，也是通过Java-Agent实现的，支持插件化。使用的是静态Agent方式</p>
+<p>相关文章：<a target="_blank" rel="noopener" href="https://zhile.io/2021/11/29/ja-netfilter-javaagent-lib.html">https://zhile.io/2021/11/29/ja-netfilter-javaagent-lib.html</a></p>
+<p>代码地址：<a target="_blank" rel="noopener" href="https://gitee.com/ja-netfilter/ja-netfilter">https://gitee.com/ja-netfilter/ja-netfilter</a></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a target="_blank" rel="noopener" href="https://blog.51cto.com/alex4dream/3247542">https://blog.51cto.com/alex4dream/3247542</a></p>
+<p><a target="_blank" rel="noopener" href="https://tech.meituan.com/2019/11/07/java-dynamic-debugging-technology.html">https://tech.meituan.com/2019/11/07/java-dynamic-debugging-technology.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://tech.meituan.com/2022/03/17/java-hotswap-sonic.html">https://tech.meituan.com/2022/03/17/java-hotswap-sonic.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzkyMjIzOTQ3NA==&amp;mid=2247484609&amp;idx=1&amp;sn=8bd852871d656f5a5dcb216f810a273f&amp;source=41#wechat_redirect">https://mp.weixin.qq.com/s?__biz=MzkyMjIzOTQ3NA==&amp;mid=2247484609&amp;idx=1&amp;sn=8bd852871d656f5a5dcb216f810a273f&amp;source=41#wechat_redirect</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div class="post-share">分享到：</div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>赞赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt=" 微信扫一扫，向我赞赏"/>
+        <p>微信扫一扫，向我赞赏</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt=" 支付宝扫一扫，向我赞赏"/>
+        <p>支付宝扫一扫，向我赞赏</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
+          
+            <a href="/tags/JVM/" rel="tag"><i class="fa fa-tag"></i> JVM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/11/26/PostgreSQL%E4%BB%8B%E7%BB%8D/" rel="next" title="PostgreSQL介绍">
+                <i class="fa fa-chevron-left"></i> PostgreSQL介绍
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80NjMwOC8yMjgxOQ=="></div>
+    </div>
+
+  
+
+
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+   (function(d, s) {
+       var j, e = d.getElementsByTagName(s)[0];
+
+       if (typeof LivereTower === 'function') { return; }
+
+       j = d.createElement(s);
+       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+       j.async = true;
+
+       e.parentNode.insertBefore(j, e);
+   })(document, 'script');
+</script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/card3.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"><span style="opacity:.2;">咦咦</span>Tianwj</p>
+              <p class="site-description motion-element" itemprop="description">咿呀呀!</p>
+          </div>
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/ShadowTwj" target="_blank" title="GitHub" data-balloon="GitHub" data-balloon-pos="up">
+                    
+                      <i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://weibo.com/u/5545918663" target="_blank" title="微博" data-balloon="微博" data-balloon-pos="up">
+                    
+                      <i class="fa fa-fw fa-weibo"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://music.163.com/#/user/home?id=386702646" target="_blank" title="网易云音乐" data-balloon="网易云音乐" data-balloon-pos="up">
+                    
+                      <i class="fa fa-fw fa-music"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:646371601@qq.com" target="_blank" title="E-Mail" data-balloon="E-Mail" data-balloon-pos="up">
+                    
+                      <i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+            
+          </div>
+
+          
+            <div class="feed-link motion-element">
+              <a class="feed-rss" href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+            
+
+          </nav>
+
+          
+          
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.png" alt="Creative Commons" />
+              </a>
+            </div>
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">相关概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Instrumentation"><span class="nav-number">1.1.1.</span> <span class="nav-text">Instrumentation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Attach"><span class="nav-number">1.1.2.</span> <span class="nav-text">Attach</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-Agent%E7%BB%93%E6%9E%84"><span class="nav-number">1.2.</span> <span class="nav-text">Java Agent结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">1.3.</span> <span class="nav-text">使用场景</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">使用方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%99%E6%80%81Agent"><span class="nav-number">2.1.</span> <span class="nav-text">静态Agent</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%80%81Agent"><span class="nav-number">2.2.</span> <span class="nav-text">动态Agent</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Demo"><span class="nav-number">3.</span> <span class="nav-text">Demo</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%9E%81%E7%AE%80%E7%9A%84watch%E5%91%BD%E4%BB%A4"><span class="nav-number">3.1.</span> <span class="nav-text">实现极简的watch命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E5%8F%91Agent"><span class="nav-number">3.1.1.</span> <span class="nav-text">开发Agent</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">3.1.1.1.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">3.1.1.2.</span> <span class="nav-text">配置文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95"><span class="nav-number">3.1.2.</span> <span class="nav-text">测试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%99%E6%80%81Agent%E6%B5%8B%E8%AF%95"><span class="nav-number">3.1.2.1.</span> <span class="nav-text">静态Agent测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A8%E6%80%81Agent%E6%B5%8B%E8%AF%95"><span class="nav-number">3.1.2.2.</span> <span class="nav-text">动态Agent测试</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E6%8B%9F%E7%83%AD%E5%8A%A0%E8%BD%BD"><span class="nav-number">3.2.</span> <span class="nav-text">模拟热加载</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E5%8F%91Agent-1"><span class="nav-number">3.2.1.</span> <span class="nav-text">开发Agent</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-1"><span class="nav-number">3.2.1.1.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6-1"><span class="nav-number">3.2.1.2.</span> <span class="nav-text">配置文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95-1"><span class="nav-number">3.2.2.</span> <span class="nav-text">测试</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-Agent%E5%8E%9F%E7%90%86"><span class="nav-number">4.</span> <span class="nav-text">Java-Agent原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%99%E6%80%81Agent-1"><span class="nav-number">4.1.</span> <span class="nav-text">静态Agent</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E6%97%B6%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B"><span class="nav-number">4.1.1.</span> <span class="nav-text">启动时加载过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BA%90%E7%A0%81"><span class="nav-number">4.1.2.</span> <span class="nav-text">源码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%80%81Agent-1"><span class="nav-number">4.2.</span> <span class="nav-text">动态Agent</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B"><span class="nav-number">4.2.1.</span> <span class="nav-text">运行时加载过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Attach-1"><span class="nav-number">4.2.2.</span> <span class="nav-text">Attach</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE"><span class="nav-number">5.</span> <span class="nav-text">相关开源项目</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Arthas"><span class="nav-number">5.1.</span> <span class="nav-text">Arthas</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ja-netfilter"><span class="nav-number">5.2.</span> <span class="nav-text">ja-netfilter</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-image"></div>
+      <div class="footer-inner">
+        <p>博客已萌萌哒运行<span id="since"></span><span class="my-face">(●'◡'●)ﾉ♥</span></p>
+<p>custom text</p>
+
+<p>© <span itemprop="copyrightYear">2022</span> Tianwj's blog.
+    由 <a href="https://hexo.io/" target="_blank" class="external" rel="nofollow">Hexo</a> 强力驱动.
+    Theme By <a href="https://github.com/DIYgod/hexo-theme-sagiri" target="_blank" class="external" rel="nofollow">Sagiri</a> v0.0.4.
+    <a href="/sitemap.xml" target="_blank">站点地图</a>.
+    冀ICP备17030424号.
+</p>
+<p>Made with <i class="fa fa-heart throb" style="color: #d43f57;"></i> by <span class="author" itemprop="copyrightHolder">tianwj</span>. </p>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    <canvas id="evanyou"></canvas>
+    
+
+    
+
+  </div>
+
+  <script type="text/javascript" src="/js/sagiri.min.js?v=0.0.4"></script>
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'manual') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
