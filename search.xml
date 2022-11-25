@@ -164,130 +164,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Code Review</title>
-    <url>/2021/06/19/Code%20Review/</url>
-    <content><![CDATA[<h2 id="认识-Code-Review"><a href="#认识-Code-Review" class="headerlink" title="认识 Code Review"></a>认识 Code Review</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>Code Review是一种用来确认方案设计和代码实现的质量保证机制，通过这个机制对代码、测试过程和注释进行检查，确保整体代码运行状况随着时间的推移而得到改善。</p>
-<h3 id="目的和意义"><a href="#目的和意义" class="headerlink" title="目的和意义"></a>目的和意义</h3><ul>
-<li>目的：代码质量、知识共享、团队规范</li>
-<li>意义：<ul>
-<li>查找系统和代码的缺陷，把控风险</li>
-<li>保证代码整体健康度不会随时间的推移而降低</li>
-<li>提高开发者自身水平</li>
-</ul>
-</li>
-</ul>
-<h3 id="方式"><a href="#方式" class="headerlink" title="方式"></a>方式</h3><p>常见的 Code Review 有下面几种方式</p>
-<blockquote>
-<p>结对编程(瞬时评审)</p>
-</blockquote>
-<ul>
-<li>一对一的共同编程</li>
-<li>场景：复杂的业务问题、或紧急问题的修复</li>
-</ul>
-<blockquote>
-<p>即时代码评审(同步评审)</p>
-</blockquote>
-<ul>
-<li>提交人给审核人讲解任务详情、改动等</li>
-<li>场景：不清楚任务目标、或高级指导低级</li>
-</ul>
-<blockquote>
-<p>工具支持的代码评审(异步评审)</p>
-</blockquote>
-<ul>
-<li>和开发流集成，只有 Review 通过才能合并</li>
-<li>默认的方式，也是最常用的</li>
-</ul>
-<blockquote>
-<p>基于会议的代码评审(偶尔评审)</p>
-</blockquote>
-<ul>
-<li>组织会议，团队多人共同评审</li>
-<li>场景：大型、比较复杂的项目；有一定风险的项目；为了提高整体水平</li>
-</ul>
-<h3 id="不做-Code-Review-的典型场景"><a href="#不做-Code-Review-的典型场景" class="headerlink" title="不做 Code Review 的典型场景"></a>不做 Code Review 的典型场景</h3><ul>
-<li>不认同，团队整体意识不到位</li>
-<li>需求多，时间紧，疲于应付需求</li>
-<li>技术水平不足，无法给出有效意见</li>
-</ul>
-<h3 id="Code-Review-常见问题"><a href="#Code-Review-常见问题" class="headerlink" title="Code Review 常见问题"></a>Code Review 常见问题</h3><blockquote>
-<p>提交人</p>
-</blockquote>
-<ul>
-<li>提交大量代码评审</li>
-<li>发起评审前没有进行自测</li>
-<li>不进行评审，直接上线</li>
-<li>没有给评审人留够充裕的时间</li>
-</ul>
-<blockquote>
-<p>评审人</p>
-</blockquote>
-<ul>
-<li>Review 不仔细，产生低级的问题</li>
-<li>对业务不熟悉，无法判断影响面</li>
-<li>反馈时机长，不及时处理提交人提交的 Code Review</li>
-</ul>
-<blockquote>
-<p>全体</p>
-</blockquote>
-<ul>
-<li>没有规范的 Code Review 机制和自测机制</li>
-</ul>
-<h2 id="如何做好-Code-Review"><a href="#如何做好-Code-Review" class="headerlink" title="如何做好 Code Review"></a>如何做好 Code Review</h2><h3 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h3><p>要避免 Code Review 流于形式，而避免流于形式的关键点则是 <strong>大家都有主观意愿，并且客观条件允许</strong></p>
-<p>要有代码规范、Check list、总结优化、激励机制</p>
-<h3 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">+-------+      +---------+      +---------+      +---------+      +-----+      +------------+</span><br><span class="line">| 定标准 | +--&gt; | 全员学习 | +--&gt; | 需求梳理  | +--&gt; | 代码评审 | +--&gt; | 讨论 | +--&gt; | 评审结果落地 |</span><br><span class="line">+-------+      +---------+      +---------+      +---------+      +-----+      +------------+ </span><br></pre></td></tr></table></figure>
-
-<ol>
-<li>定标准<ul>
-<li>目的：有法可依、团队一致</li>
-<li>内容：<ul>
-<li>共识标准：权利责任标准、冲突处理标准、特例紧急case处理标准、检查单标准</li>
-<li>提交人标准：发起时机标准、选择评审人标准、Commit 标准、代码标准、合并分支标准、处理评论标准</li>
-<li>评审人标准：检查内容标准、可通过标准、评论标准、反馈周期标准</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>全员学习<ul>
-<li>目的：统一思想、确认标准可落地</li>
-</ul>
-</li>
-<li>需求梳理<ul>
-<li>统一对需求理解，设计评审有理可依</li>
-<li>内容：<ul>
-<li>提交人要有基于需求的代码改动设计方案</li>
-<li>评审人要有基于需求理解之下的代码改造意见</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>代码评审<ul>
-<li>目的：实现正确的业务需求，代码长期的可维护性</li>
-<li>内容：参照检查单（功能拆解；架构设计；代码逻辑；库表设计；编码风格；性能；等等）</li>
-<li>工具：<a href="http://www.sonar.org.cn/">Sonar</a>、<a href="https://www.gerritcodereview.com/">Gerrit</a> 等工具</li>
-</ul>
-</li>
-<li>讨论<ul>
-<li>目的：达成共识，求同存异</li>
-</ul>
-</li>
-<li>评审结果落地<ul>
-<li>总结归纳，持续优化标准</li>
-</ul>
-</li>
-</ol>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Code Review 是提高代码质量、把控项目风险的一剂良药，同时也是提高个人水平的一个重要渠道。而长期维持良好的 Code Review 并不容易，但是良好的 Code Review 是个人和团队成功不可或缺的一环。</p>
-<h2 id="资料"><a href="#资料" class="headerlink" title="资料"></a>资料</h2><p>GoogleCR机制（原文）：<a href="https://google.github.io/eng-practices/review/reviewer/">https://google.github.io/eng-practices/review/reviewer/</a></p>
-<p>GoogleCR机制（翻译版）：<a href="https://cloud.tencent.com/developer/article/1514271">https://cloud.tencent.com/developer/article/1514271</a></p>
-]]></content>
-      <categories>
-        <category>规范</category>
-      </categories>
-      <tags>
-        <tag>规范</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Elasticsearch安装启动报错</title>
     <url>/2018/01/02/Elasticsearch%E5%AE%89%E8%A3%85%E5%90%AF%E5%8A%A8%E6%8A%A5%E9%94%99/</url>
     <content><![CDATA[<p>Elasticsearch在启动./elasticsearch时报错:</p>
@@ -299,6 +175,39 @@
       </categories>
       <tags>
         <tag>Elasticsearch</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Guava CaChe</title>
+    <url>/2017/11/08/Guava-CaChe/</url>
+    <content><![CDATA[<p>Guava CaChe是本地（进程内）缓存</p>
+<blockquote>
+<h4 id="引包"><a href="#引包" class="headerlink" title="引包"></a>引包</h4></blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;  </span><br><span class="line">    &lt;groupId&gt;com.google.guava&lt;&#x2F;groupId&gt;  </span><br><span class="line">    &lt;artifactId&gt;guava&lt;&#x2F;artifactId&gt;  </span><br><span class="line">    &lt;version&gt;19.0&lt;&#x2F;version&gt;  </span><br><span class="line">&lt;&#x2F;dependency&gt;  </span><br></pre></td></tr></table></figure>
+<blockquote>
+<h4 id="Cache接口及其实现"><a href="#Cache接口及其实现" class="headerlink" title="Cache接口及其实现"></a>Cache接口及其实现</h4></blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Cache&lt;k, v&gt; cache &#x3D; CacheBuilder.newBuilder()  </span><br><span class="line">        &#x2F;&#x2F;设置cache的初始大小为10，要合理设置该值  </span><br><span class="line">        .initialCapacity(10)  </span><br><span class="line">        &#x2F;&#x2F;设置并发数为5，即同一时间最多只能有5个线程往cache执行写入操作  </span><br><span class="line">        .concurrencyLevel(5)  </span><br><span class="line">        &#x2F;&#x2F;设置cache中的数据在写入之后的存活时间为10秒  </span><br><span class="line">        .expireAfterWrite(10, TimeUnit.SECONDS)  </span><br><span class="line">        &#x2F;&#x2F;构建cache实例  </span><br><span class="line">        .....</span><br><span class="line">        .build();  </span><br></pre></td></tr></table></figure>
+<p>接口Cache是泛型，很好的支持了不同类型的key和value<br>TimeUnit.SECONDS 存活时间单位为秒<br>TimeUnit.HOURSC 存活时间单位为小时<br>TimeUnit.DAYS 存活时间单位为天</p>
+<p>例如:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">LoadingCache&lt;Key, Object&gt; cache&#x3D; CacheBuilder.newBuilder()</span><br><span class="line">        .expireAfterWrite(10, TimeUnit.MINUTES)</span><br><span class="line">        .build(</span><br><span class="line">            new CacheLoader&lt;Key, Object&gt;() &#123;</span><br><span class="line">                public Object load(Key key) throws AnyException &#123;</span><br><span class="line">                    return getObject(key);</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<h4 id="Cache提供的常用方法"><a href="#Cache提供的常用方法" class="headerlink" title="Cache提供的常用方法"></a>Cache提供的常用方法</h4></blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;** </span><br><span class="line"> * 该接口的实现被认为是线程安全的，即可在多线程中调用 </span><br><span class="line"> * 通过被定义单例使用 </span><br><span class="line"> *&#x2F;  </span><br><span class="line">public interface Cache&lt;K, V&gt; &#123;  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 通过key获取缓存中的value，若不存在直接返回null </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  V getIfPresent(Object key);  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 通过key获取缓存中的value，若不存在就通过valueLoader来加载该value </span><br><span class="line">   * 整个过程为 &quot;if cached, return; otherwise create, cache and return&quot; </span><br><span class="line">   * 注意valueLoader要么返回非null值，要么抛出异常，绝对不能返回null </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  V get(K key, Callable&lt;? extends V&gt; valueLoader) throws ExecutionException;  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 添加缓存，若key存在，就覆盖旧值 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void put(K key, V value);  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 删除该key关联的缓存 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void invalidate(Object key);  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 删除所有缓存 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void invalidateAll();  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 执行一些维护操作，包括清理缓存 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void cleanUp();  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<h4 id="清除缓存"><a href="#清除缓存" class="headerlink" title="清除缓存"></a>清除缓存</h4></blockquote>
+<h5 id="基于存活时间的清除"><a href="#基于存活时间的清除" class="headerlink" title="基于存活时间的清除"></a>基于存活时间的清除</h5><p>这应该是最常用的清除策略，在构建Cache实例的时候，CacheBuilder提供两种基于存活时间的构建方法：<br>（1）expireAfterAccess(long, TimeUnit)：缓存项在创建后，在给定时间内没有被读/写访问，则清除。<br>（2）expireAfterWrite(long, TimeUnit)：缓存项在创建后，在给定时间内没有被写访问（创建或覆盖），则清除。expireAfterWrite()方法有些类似于redis中的expire命令，但显然它只能设置所有缓存都具有相同的存活时间。</p>
+<h5 id="基于容量的清除"><a href="#基于容量的清除" class="headerlink" title="基于容量的清除"></a>基于容量的清除</h5><p>在构建Cache实例的时候，通过CacheBuilder.maximumSize(long)方法可以设置Cache的最大容量数，当缓存数量达到或接近该最大值时，Cache将清除掉那些最近最少使用的缓存。<br>以上是这种方式是以缓存的“数量”作为容量的计算方式，还有另外一种基于“权重”的计算方式。比如每一项缓存所占据的内存空间大小都不一样，可以看作它们有不同的“权重”（weights）。你可以使用CacheBuilder.weigher(Weigher)指定一个权重函数，并且用CacheBuilder.maximumWeight(long)指定最大总重</p>
+<h5 id="显式清除"><a href="#显式清除" class="headerlink" title="显式清除"></a>显式清除</h5><p>任何时候，都可以显式地清除缓存项，而不是等到它被回收，Cache接口提供了如下API：<br>（1）个别清除：Cache.invalidate(key)<br>（2）批量清除：Cache.invalidateAll(keys)<br>（3）清除所有缓存项：Cache.invalidateAll()  </p>
+<h5 id="基于引用的清除"><a href="#基于引用的清除" class="headerlink" title="基于引用的清除"></a>基于引用的清除</h5><p>在构建Cache实例过程中，通过设置使用弱引用的键、或弱引用的值、或软引用的值，从而使JVM在GC时顺带实现缓存的清除，不过一般不轻易使用这个特性。<br>（1）CacheBuilder.weakKeys()：使用弱引用存储键<br>（2）CacheBuilder.weakValues()：使用弱引用存储值<br>（3）CacheBuilder.softValues()：使用软引用存储值  </p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Guava</tag>
+        <tag>Cache</tag>
       </tags>
   </entry>
   <entry>
@@ -345,39 +254,6 @@
       <tags>
         <tag>Java</tag>
         <tag>Guava</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Guava CaChe</title>
-    <url>/2017/11/08/Guava-CaChe/</url>
-    <content><![CDATA[<p>Guava CaChe是本地（进程内）缓存</p>
-<blockquote>
-<h4 id="引包"><a href="#引包" class="headerlink" title="引包"></a>引包</h4></blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;  </span><br><span class="line">    &lt;groupId&gt;com.google.guava&lt;&#x2F;groupId&gt;  </span><br><span class="line">    &lt;artifactId&gt;guava&lt;&#x2F;artifactId&gt;  </span><br><span class="line">    &lt;version&gt;19.0&lt;&#x2F;version&gt;  </span><br><span class="line">&lt;&#x2F;dependency&gt;  </span><br></pre></td></tr></table></figure>
-<blockquote>
-<h4 id="Cache接口及其实现"><a href="#Cache接口及其实现" class="headerlink" title="Cache接口及其实现"></a>Cache接口及其实现</h4></blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Cache&lt;k, v&gt; cache &#x3D; CacheBuilder.newBuilder()  </span><br><span class="line">        &#x2F;&#x2F;设置cache的初始大小为10，要合理设置该值  </span><br><span class="line">        .initialCapacity(10)  </span><br><span class="line">        &#x2F;&#x2F;设置并发数为5，即同一时间最多只能有5个线程往cache执行写入操作  </span><br><span class="line">        .concurrencyLevel(5)  </span><br><span class="line">        &#x2F;&#x2F;设置cache中的数据在写入之后的存活时间为10秒  </span><br><span class="line">        .expireAfterWrite(10, TimeUnit.SECONDS)  </span><br><span class="line">        &#x2F;&#x2F;构建cache实例  </span><br><span class="line">        .....</span><br><span class="line">        .build();  </span><br></pre></td></tr></table></figure>
-<p>接口Cache是泛型，很好的支持了不同类型的key和value<br>TimeUnit.SECONDS 存活时间单位为秒<br>TimeUnit.HOURSC 存活时间单位为小时<br>TimeUnit.DAYS 存活时间单位为天</p>
-<p>例如:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">LoadingCache&lt;Key, Object&gt; cache&#x3D; CacheBuilder.newBuilder()</span><br><span class="line">        .expireAfterWrite(10, TimeUnit.MINUTES)</span><br><span class="line">        .build(</span><br><span class="line">            new CacheLoader&lt;Key, Object&gt;() &#123;</span><br><span class="line">                public Object load(Key key) throws AnyException &#123;</span><br><span class="line">                    return getObject(key);</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<h4 id="Cache提供的常用方法"><a href="#Cache提供的常用方法" class="headerlink" title="Cache提供的常用方法"></a>Cache提供的常用方法</h4></blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;** </span><br><span class="line"> * 该接口的实现被认为是线程安全的，即可在多线程中调用 </span><br><span class="line"> * 通过被定义单例使用 </span><br><span class="line"> *&#x2F;  </span><br><span class="line">public interface Cache&lt;K, V&gt; &#123;  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 通过key获取缓存中的value，若不存在直接返回null </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  V getIfPresent(Object key);  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 通过key获取缓存中的value，若不存在就通过valueLoader来加载该value </span><br><span class="line">   * 整个过程为 &quot;if cached, return; otherwise create, cache and return&quot; </span><br><span class="line">   * 注意valueLoader要么返回非null值，要么抛出异常，绝对不能返回null </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  V get(K key, Callable&lt;? extends V&gt; valueLoader) throws ExecutionException;  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 添加缓存，若key存在，就覆盖旧值 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void put(K key, V value);  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 删除该key关联的缓存 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void invalidate(Object key);  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 删除所有缓存 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void invalidateAll();  </span><br><span class="line">  </span><br><span class="line">  &#x2F;** </span><br><span class="line">   * 执行一些维护操作，包括清理缓存 </span><br><span class="line">   *&#x2F;  </span><br><span class="line">  void cleanUp();  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<h4 id="清除缓存"><a href="#清除缓存" class="headerlink" title="清除缓存"></a>清除缓存</h4></blockquote>
-<h5 id="基于存活时间的清除"><a href="#基于存活时间的清除" class="headerlink" title="基于存活时间的清除"></a>基于存活时间的清除</h5><p>这应该是最常用的清除策略，在构建Cache实例的时候，CacheBuilder提供两种基于存活时间的构建方法：<br>（1）expireAfterAccess(long, TimeUnit)：缓存项在创建后，在给定时间内没有被读/写访问，则清除。<br>（2）expireAfterWrite(long, TimeUnit)：缓存项在创建后，在给定时间内没有被写访问（创建或覆盖），则清除。expireAfterWrite()方法有些类似于redis中的expire命令，但显然它只能设置所有缓存都具有相同的存活时间。</p>
-<h5 id="基于容量的清除"><a href="#基于容量的清除" class="headerlink" title="基于容量的清除"></a>基于容量的清除</h5><p>在构建Cache实例的时候，通过CacheBuilder.maximumSize(long)方法可以设置Cache的最大容量数，当缓存数量达到或接近该最大值时，Cache将清除掉那些最近最少使用的缓存。<br>以上是这种方式是以缓存的“数量”作为容量的计算方式，还有另外一种基于“权重”的计算方式。比如每一项缓存所占据的内存空间大小都不一样，可以看作它们有不同的“权重”（weights）。你可以使用CacheBuilder.weigher(Weigher)指定一个权重函数，并且用CacheBuilder.maximumWeight(long)指定最大总重</p>
-<h5 id="显式清除"><a href="#显式清除" class="headerlink" title="显式清除"></a>显式清除</h5><p>任何时候，都可以显式地清除缓存项，而不是等到它被回收，Cache接口提供了如下API：<br>（1）个别清除：Cache.invalidate(key)<br>（2）批量清除：Cache.invalidateAll(keys)<br>（3）清除所有缓存项：Cache.invalidateAll()  </p>
-<h5 id="基于引用的清除"><a href="#基于引用的清除" class="headerlink" title="基于引用的清除"></a>基于引用的清除</h5><p>在构建Cache实例过程中，通过设置使用弱引用的键、或弱引用的值、或软引用的值，从而使JVM在GC时顺带实现缓存的清除，不过一般不轻易使用这个特性。<br>（1）CacheBuilder.weakKeys()：使用弱引用存储键<br>（2）CacheBuilder.weakValues()：使用弱引用存储值<br>（3）CacheBuilder.softValues()：使用软引用存储值  </p>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>Guava</tag>
-        <tag>Cache</tag>
       </tags>
   </entry>
   <entry>
@@ -428,85 +304,6 @@
         <tag>Java</tag>
         <tag>Guava</tag>
         <tag>转载</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java线程：Atomic</title>
-    <url>/2018/01/09/Java%E7%BA%BF%E7%A8%8B%EF%BC%9AAtomic/</url>
-    <content><![CDATA[<blockquote>
-<p>==<strong>原文链接：<a href="http://thomaschen2011.iteye.com/blog/1468085">http://thomaschen2011.iteye.com/blog/1468085</a></strong>==  </p>
-</blockquote>
-<h4 id="一、何谓Atomic？"><a href="#一、何谓Atomic？" class="headerlink" title="一、何谓Atomic？"></a>一、何谓Atomic？</h4><p>Atomic一词跟原子有点关系，后者曾被人认为是最小物质的单位。计算机中的Atomic是指不能分割成若干部分的意思。如果一段代码被认为是Atomic，则表示这段代码在执行过程中，是不能被中断的。通常来说，原子指令由硬件提供，供软件来实现原子方法（某个线程进入该方法后，就不会被中断，直到其执行完成）</p>
-<p> 在x86 平台上，CPU提供了在指令执行期间对总线加锁的手段。CPU芯片上有一条引线#HLOCK pin，如果汇编语言的程序中在一条指令前面加上前缀”LOCK”，经过汇编以后的机器代码就使CPU在执行这条指令的时候把#HLOCK pin的电位拉低，持续到这条指令结束时放开，从而把总线锁住，这样同一总线上别的CPU就暂时不能通过总线访问内存了，保证了这条指令在多处理器环境中的原子性。</p>
-<h4 id="二、JDK1-5的原子包：java-util-concurrent-atomic"><a href="#二、JDK1-5的原子包：java-util-concurrent-atomic" class="headerlink" title="二、JDK1.5的原子包：java.util.concurrent.atomic"></a>二、JDK1.5的原子包：java.util.concurrent.atomic</h4><p>这个包里面提供了一组原子类。==其基本的特性就是在多线程环境下，当有多个线程同时执行这些类的实例包含的方法时，具有排他性，即当某个线程进入方法，执行其中的指令时，不会被其他线程打断，而别的线程就像自旋锁一样，一直等到该方法执行完成，才由JVM从等待队列中选择一个另一个线程进入，这只是一种逻辑上的理解==。实际上是借助硬件的相关指令来实现的，不会阻塞线程(或者说只是在硬件级别上阻塞了)。其中的类可以分成4组</p>
-<ul>
-<li>AtomicBoolean，AtomicInteger，AtomicLong，AtomicReference  </li>
-<li>AtomicIntegerArray，AtomicLongArray  </li>
-<li>AtomicLongFieldUpdater，AtomicIntegerFieldUpdater，AtomicReferenceFieldUpdater  </li>
-<li>AtomicMarkableReference，AtomicStampedReference，AtomicReferenceArray  </li>
-</ul>
-<p>Atomic类的作用:  </p>
-<ul>
-<li>使得让对单一数据的操作，实现了原子化  </li>
-<li>使用Atomic类构建复杂的，无需阻塞的代码<br>访问对2个或2个以上的atomic变量（或者对单个atomic变量进行2次或2次以上的操作）通常认为是需要同步的，以达到让这些操作能被作为一个原子单元。  </li>
-</ul>
-<h5 id="2-1-AtomicBoolean-AtomicInteger-AtomicLong-AtomicReference"><a href="#2-1-AtomicBoolean-AtomicInteger-AtomicLong-AtomicReference" class="headerlink" title="2.1 AtomicBoolean , AtomicInteger, AtomicLong, AtomicReference"></a>2.1 AtomicBoolean , AtomicInteger, AtomicLong, AtomicReference</h5><p>这四种基本类型用来处理布尔，整数，长整数，对象四种数据。  </p>
-<ul>
-<li><p>构造函数（两个构造函数）  </p>
-</li>
-<li><p>默认的构造函数：初始化的数据分别是false，0，0，null  </p>
-</li>
-<li><p>带参构造函数：参数为初始化的数据 </p>
-</li>
-<li><p>set( )和get( )方法：可以原子地设定和获取atomic的数据。类似于volatile，保证数据会在主存中设置或读取  </p>
-</li>
-<li><p>getAndSet( )方法  </p>
-</li>
-<li><p>原子的将变量设定为新数据，同时返回先前的旧数据  </p>
-</li>
-<li><p>其本质是get( )操作，然后做set( )操作。尽管这2个操作都是atomic，但是他们合并在一起的时候，就不是atomic。在Java的源程序的级别上，如果不依赖synchronized的机制来完成这个工作，是不可能的。只有依靠native方法才可以。  </p>
-</li>
-<li><p>compareAndSet( ) 和weakCompareAndSet( )方法  </p>
-</li>
-<li><p>这两个方法都是conditional modifier方法。这2个方法接受2个参数，一个是期望数据(expected)，一个是新数据(new)；如果atomic里面的数据和期望数据一致，则将新数据设定给atomic的数据，返回true，表明成功；否则就不设定，并返回false。  </p>
-</li>
-<li><p>对于AtomicInteger、AtomicLong还提供了一些特别的方法。getAndIncrement( )、incrementAndGet( )、getAndDecrement( )、decrementAndGet ( )、addAndGet( )、getAndAdd( )以实现一些加法，减法原子操作。(==注意 –i、++i不是原子操作，其中包含有3个操作步骤：第一步，读取i；第二步，加1或减1；第三步：写回内存==)  </p>
-</li>
-</ul>
-<h6 id="2-1-1-1个例子-使用AtomicReference创建线程安全的堆栈"><a href="#2-1-1-1个例子-使用AtomicReference创建线程安全的堆栈" class="headerlink" title="2.1.1 1个例子-使用AtomicReference创建线程安全的堆栈"></a>2.1.1 1个例子-使用AtomicReference创建线程安全的堆栈</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class LinkedStack&lt;T&gt; &#123;  </span><br><span class="line">  </span><br><span class="line">    private AtomicReference&lt;Node&lt;T&gt;&gt; stacks &#x3D; new AtomicReference&lt;Node&lt;T&gt;&gt;();  </span><br><span class="line">  </span><br><span class="line">    public T push(T e) &#123;  </span><br><span class="line">        Node&lt;T&gt; oldNode, newNode;  </span><br><span class="line">        while (true) &#123; &#x2F;&#x2F;这里的处理非常的特别，也是必须如此的。  </span><br><span class="line">            oldNode &#x3D; stacks.get();  </span><br><span class="line">            newNode &#x3D; new Node&lt;T&gt;(e, oldNode);  </span><br><span class="line">            if (stacks.compareAndSet(oldNode, newNode)) &#123;  </span><br><span class="line">                return e;  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">      </span><br><span class="line">    public T pop() &#123;  </span><br><span class="line">        Node&lt;T&gt; oldNode, newNode;  </span><br><span class="line">        while (true) &#123;  </span><br><span class="line">            oldNode &#x3D; stacks.get();  </span><br><span class="line">            newNode &#x3D; oldNode.next;  </span><br><span class="line">            if (stacks.compareAndSet(oldNode, newNode)) &#123;  </span><br><span class="line">                return oldNode.object;  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    private static final class Node&lt;T&gt; &#123;  </span><br><span class="line">        private T object;  </span><br><span class="line">          </span><br><span class="line">        private Node&lt;T&gt; next;  </span><br><span class="line">  </span><br><span class="line">        private Node(T object, Node&lt;T&gt; next) &#123;  </span><br><span class="line">            this.object &#x3D; object;  </span><br><span class="line">            this.next &#x3D; next;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
-
-<h6 id="2-1-2-几个问题"><a href="#2-1-2-几个问题" class="headerlink" title="2.1.2 几个问题"></a>2.1.2 几个问题</h6><p>Q1： compareAndSet和weakCompareAndSet的区别？</p>
-<p>A1： 有人认为这是个坑，因为这2个方法其中的内容是一模一样的。疑惑ing（环境JDK1.6.0_20_b02）</p>
-<p>Q2：volatile boolean和AtomicBoolean的区别？</p>
-<p>Q3：volatile int和AtomicInteger的区别？</p>
-<p>Q4：LazySet()和Set()的区别？</p>
-]]></content>
-      <categories>
-        <category>转载</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>转载</tag>
-        <tag>并发</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java字符串生成对应MD5摘要</title>
-    <url>/2017/10/13/Java%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%94%9F%E6%88%90%E5%AF%B9%E5%BA%94MD5%E6%91%98%E8%A6%81/</url>
-    <content><![CDATA[<p>MD5全名Message-Digest Algorithm 5（信息-摘要算法）是一种不可逆的加密算法  </p>
-<p>MD5可以用来一致性验证、数字签名和安全访问认证</p>
-<p>在Java中有时需要生成给定字符串的MD5摘要：</p>
-<h5 id="1-导包"><a href="#1-导包" class="headerlink" title="1.导包"></a>1.导包</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;commons-codec&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;commons-codec&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.8&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
-<h5 id="2-调用md5Hex方法"><a href="#2-调用md5Hex方法" class="headerlink" title="2.调用md5Hex方法"></a>2.调用md5Hex方法</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">String str &#x3D; &quot;123456&quot;;</span><br><span class="line">String md5 &#x3D; DigestUtils.md5Hex(str);</span><br><span class="line">System.out.println(md5); </span><br><span class="line">&#x2F;&#x2F;e10adc3949ba59abbe56e057f20f883e</span><br></pre></td></tr></table></figure>
-<p>还可以加盐来增加保密性：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">String salt &#x3D; &quot;MD5盐&quot;;</span><br><span class="line">md5 &#x3D; DigestUtils.md5Hex(salt+str);</span><br><span class="line">System.out.println(md5); </span><br><span class="line">&#x2F;&#x2F;196c6ed9e9e3af1a576f5938b35f1b46</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
@@ -597,6 +394,85 @@
       <tags>
         <tag>Java</tag>
         <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java字符串生成对应MD5摘要</title>
+    <url>/2017/10/13/Java%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%94%9F%E6%88%90%E5%AF%B9%E5%BA%94MD5%E6%91%98%E8%A6%81/</url>
+    <content><![CDATA[<p>MD5全名Message-Digest Algorithm 5（信息-摘要算法）是一种不可逆的加密算法  </p>
+<p>MD5可以用来一致性验证、数字签名和安全访问认证</p>
+<p>在Java中有时需要生成给定字符串的MD5摘要：</p>
+<h5 id="1-导包"><a href="#1-导包" class="headerlink" title="1.导包"></a>1.导包</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;commons-codec&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;commons-codec&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.8&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="2-调用md5Hex方法"><a href="#2-调用md5Hex方法" class="headerlink" title="2.调用md5Hex方法"></a>2.调用md5Hex方法</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">String str &#x3D; &quot;123456&quot;;</span><br><span class="line">String md5 &#x3D; DigestUtils.md5Hex(str);</span><br><span class="line">System.out.println(md5); </span><br><span class="line">&#x2F;&#x2F;e10adc3949ba59abbe56e057f20f883e</span><br></pre></td></tr></table></figure>
+<p>还可以加盐来增加保密性：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">String salt &#x3D; &quot;MD5盐&quot;;</span><br><span class="line">md5 &#x3D; DigestUtils.md5Hex(salt+str);</span><br><span class="line">System.out.println(md5); </span><br><span class="line">&#x2F;&#x2F;196c6ed9e9e3af1a576f5938b35f1b46</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java线程：Atomic</title>
+    <url>/2018/01/09/Java%E7%BA%BF%E7%A8%8B%EF%BC%9AAtomic/</url>
+    <content><![CDATA[<blockquote>
+<p>==<strong>原文链接：<a href="http://thomaschen2011.iteye.com/blog/1468085">http://thomaschen2011.iteye.com/blog/1468085</a></strong>==  </p>
+</blockquote>
+<h4 id="一、何谓Atomic？"><a href="#一、何谓Atomic？" class="headerlink" title="一、何谓Atomic？"></a>一、何谓Atomic？</h4><p>Atomic一词跟原子有点关系，后者曾被人认为是最小物质的单位。计算机中的Atomic是指不能分割成若干部分的意思。如果一段代码被认为是Atomic，则表示这段代码在执行过程中，是不能被中断的。通常来说，原子指令由硬件提供，供软件来实现原子方法（某个线程进入该方法后，就不会被中断，直到其执行完成）</p>
+<p> 在x86 平台上，CPU提供了在指令执行期间对总线加锁的手段。CPU芯片上有一条引线#HLOCK pin，如果汇编语言的程序中在一条指令前面加上前缀”LOCK”，经过汇编以后的机器代码就使CPU在执行这条指令的时候把#HLOCK pin的电位拉低，持续到这条指令结束时放开，从而把总线锁住，这样同一总线上别的CPU就暂时不能通过总线访问内存了，保证了这条指令在多处理器环境中的原子性。</p>
+<h4 id="二、JDK1-5的原子包：java-util-concurrent-atomic"><a href="#二、JDK1-5的原子包：java-util-concurrent-atomic" class="headerlink" title="二、JDK1.5的原子包：java.util.concurrent.atomic"></a>二、JDK1.5的原子包：java.util.concurrent.atomic</h4><p>这个包里面提供了一组原子类。==其基本的特性就是在多线程环境下，当有多个线程同时执行这些类的实例包含的方法时，具有排他性，即当某个线程进入方法，执行其中的指令时，不会被其他线程打断，而别的线程就像自旋锁一样，一直等到该方法执行完成，才由JVM从等待队列中选择一个另一个线程进入，这只是一种逻辑上的理解==。实际上是借助硬件的相关指令来实现的，不会阻塞线程(或者说只是在硬件级别上阻塞了)。其中的类可以分成4组</p>
+<ul>
+<li>AtomicBoolean，AtomicInteger，AtomicLong，AtomicReference  </li>
+<li>AtomicIntegerArray，AtomicLongArray  </li>
+<li>AtomicLongFieldUpdater，AtomicIntegerFieldUpdater，AtomicReferenceFieldUpdater  </li>
+<li>AtomicMarkableReference，AtomicStampedReference，AtomicReferenceArray  </li>
+</ul>
+<p>Atomic类的作用:  </p>
+<ul>
+<li>使得让对单一数据的操作，实现了原子化  </li>
+<li>使用Atomic类构建复杂的，无需阻塞的代码<br>访问对2个或2个以上的atomic变量（或者对单个atomic变量进行2次或2次以上的操作）通常认为是需要同步的，以达到让这些操作能被作为一个原子单元。  </li>
+</ul>
+<h5 id="2-1-AtomicBoolean-AtomicInteger-AtomicLong-AtomicReference"><a href="#2-1-AtomicBoolean-AtomicInteger-AtomicLong-AtomicReference" class="headerlink" title="2.1 AtomicBoolean , AtomicInteger, AtomicLong, AtomicReference"></a>2.1 AtomicBoolean , AtomicInteger, AtomicLong, AtomicReference</h5><p>这四种基本类型用来处理布尔，整数，长整数，对象四种数据。  </p>
+<ul>
+<li><p>构造函数（两个构造函数）  </p>
+</li>
+<li><p>默认的构造函数：初始化的数据分别是false，0，0，null  </p>
+</li>
+<li><p>带参构造函数：参数为初始化的数据 </p>
+</li>
+<li><p>set( )和get( )方法：可以原子地设定和获取atomic的数据。类似于volatile，保证数据会在主存中设置或读取  </p>
+</li>
+<li><p>getAndSet( )方法  </p>
+</li>
+<li><p>原子的将变量设定为新数据，同时返回先前的旧数据  </p>
+</li>
+<li><p>其本质是get( )操作，然后做set( )操作。尽管这2个操作都是atomic，但是他们合并在一起的时候，就不是atomic。在Java的源程序的级别上，如果不依赖synchronized的机制来完成这个工作，是不可能的。只有依靠native方法才可以。  </p>
+</li>
+<li><p>compareAndSet( ) 和weakCompareAndSet( )方法  </p>
+</li>
+<li><p>这两个方法都是conditional modifier方法。这2个方法接受2个参数，一个是期望数据(expected)，一个是新数据(new)；如果atomic里面的数据和期望数据一致，则将新数据设定给atomic的数据，返回true，表明成功；否则就不设定，并返回false。  </p>
+</li>
+<li><p>对于AtomicInteger、AtomicLong还提供了一些特别的方法。getAndIncrement( )、incrementAndGet( )、getAndDecrement( )、decrementAndGet ( )、addAndGet( )、getAndAdd( )以实现一些加法，减法原子操作。(==注意 –i、++i不是原子操作，其中包含有3个操作步骤：第一步，读取i；第二步，加1或减1；第三步：写回内存==)  </p>
+</li>
+</ul>
+<h6 id="2-1-1-1个例子-使用AtomicReference创建线程安全的堆栈"><a href="#2-1-1-1个例子-使用AtomicReference创建线程安全的堆栈" class="headerlink" title="2.1.1 1个例子-使用AtomicReference创建线程安全的堆栈"></a>2.1.1 1个例子-使用AtomicReference创建线程安全的堆栈</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class LinkedStack&lt;T&gt; &#123;  </span><br><span class="line">  </span><br><span class="line">    private AtomicReference&lt;Node&lt;T&gt;&gt; stacks &#x3D; new AtomicReference&lt;Node&lt;T&gt;&gt;();  </span><br><span class="line">  </span><br><span class="line">    public T push(T e) &#123;  </span><br><span class="line">        Node&lt;T&gt; oldNode, newNode;  </span><br><span class="line">        while (true) &#123; &#x2F;&#x2F;这里的处理非常的特别，也是必须如此的。  </span><br><span class="line">            oldNode &#x3D; stacks.get();  </span><br><span class="line">            newNode &#x3D; new Node&lt;T&gt;(e, oldNode);  </span><br><span class="line">            if (stacks.compareAndSet(oldNode, newNode)) &#123;  </span><br><span class="line">                return e;  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">      </span><br><span class="line">    public T pop() &#123;  </span><br><span class="line">        Node&lt;T&gt; oldNode, newNode;  </span><br><span class="line">        while (true) &#123;  </span><br><span class="line">            oldNode &#x3D; stacks.get();  </span><br><span class="line">            newNode &#x3D; oldNode.next;  </span><br><span class="line">            if (stacks.compareAndSet(oldNode, newNode)) &#123;  </span><br><span class="line">                return oldNode.object;  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    private static final class Node&lt;T&gt; &#123;  </span><br><span class="line">        private T object;  </span><br><span class="line">          </span><br><span class="line">        private Node&lt;T&gt; next;  </span><br><span class="line">  </span><br><span class="line">        private Node(T object, Node&lt;T&gt; next) &#123;  </span><br><span class="line">            this.object &#x3D; object;  </span><br><span class="line">            this.next &#x3D; next;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+<h6 id="2-1-2-几个问题"><a href="#2-1-2-几个问题" class="headerlink" title="2.1.2 几个问题"></a>2.1.2 几个问题</h6><p>Q1： compareAndSet和weakCompareAndSet的区别？</p>
+<p>A1： 有人认为这是个坑，因为这2个方法其中的内容是一模一样的。疑惑ing（环境JDK1.6.0_20_b02）</p>
+<p>Q2：volatile boolean和AtomicBoolean的区别？</p>
+<p>Q3：volatile int和AtomicInteger的区别？</p>
+<p>Q4：LazySet()和Set()的区别？</p>
+]]></content>
+      <categories>
+        <category>转载</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>转载</tag>
+        <tag>并发</tag>
       </tags>
   </entry>
   <entry>
@@ -737,128 +613,6 @@
       <tags>
         <tag>DB</tag>
         <tag>MySQL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Netty-BetyBuf</title>
-    <url>/2021/06/11/Netty-BetyBuf/</url>
-    <content><![CDATA[<blockquote>
-<p>ByteBuf 是 Netty 中的数据交互单位，本质是一个 Byte 数组的缓冲区，有不同实现机制，首先看 ByteBuf 的数据结构</p>
-</blockquote>
-<h3 id="ByteBuf结构"><a href="#ByteBuf结构" class="headerlink" title="ByteBuf结构"></a>ByteBuf结构</h3><pre><code>+-------------------+------------------+------------------+
-| discardable bytes |  readable bytes  |  writable bytes  |
-|                   |     (CONTENT)    |                  |
-+-------------------+------------------+------------------+
-|                   |                  |                  |
-0      &lt;=      readerIndex   &lt;=   writerIndex    &lt;=    capacity
-</code></pre>
-<p>ByteBuf 包括三部分，丢弃字节、可读字节、可写字节</p>
-<p>通过两个指针，读指针（readerIndex）和写指针（writerIndex）来分成三部分，当 readerIndex = writerIndex 时不可读，当 writerIndex = capacity 时不可写。还有个参数 maxCapacity，当写入数据容量不足时会自动扩容，扩容的最大容量为 maxCapacity 值</p>
-<h3 id="常用API"><a href="#常用API" class="headerlink" title="常用API"></a>常用API</h3><h4 id="容量API"><a href="#容量API" class="headerlink" title="容量API"></a>容量API</h4><ul>
-<li><p><code>capacity()</code></p>
-<p>表示 ByteBuf 的占用字节内存，包括丢弃字节、可读字节、可写字节，不同的底层实现机制有不同的计算方式</p>
-</li>
-<li><p><code>maxCapacity()</code>  </p>
-<p>表示 ByteBuf 最大能够占用多少字节的内存</p>
-</li>
-<li><p><code>readableBytes()</code></p>
-<p>ByteBuf 当前可读的字节数，它的值等于 writerIndex-readerIndex</p>
-</li>
-<li><p><code>isReadable()</code></p>
-<p>返回是否可读，writerIndex = readerIndex 则不可读，返回 <code>false</code></p>
-</li>
-<li><p><code>writableBytes()</code></p>
-<p>ByteBuf 当前可写的字节数，它的值等于 capacity-writerIndex</p>
-</li>
-<li><p><code>isWritable()</code></p>
-<p>返回是否可写，capacity = writerIndex 则不可写</p>
-</li>
-<li><p><code>maxWritableBytes()</code></p>
-<p>ByteBuf 可写的最大字节数，它的值等于 maxCapacity-writerIndex</p>
-</li>
-</ul>
-<h4 id="指针相关API"><a href="#指针相关API" class="headerlink" title="指针相关API"></a>指针相关API</h4><ul>
-<li><p><code>readerIndex()</code></p>
-<p>返回当前读指针的 readerIndex</p>
-</li>
-<li><p><code>readerIndex(int)</code></p>
-<p>设置读指针</p>
-</li>
-<li><p><code>writeIndex()</code></p>
-<p>返回当前写指针的 writerIndex</p>
-</li>
-<li><p><code>writeIndex(int)</code></p>
-<p>设置读指针</p>
-</li>
-<li><p><code>markReaderIndex()</code>、<code>markWriterIndex()</code></p>
-<p>把当前的读、写指针保存起来</p>
-</li>
-<li><p><code>resetReaderIndex()</code>、<code>resetWriterIndex()</code></p>
-<p>把当前的读、写指针恢复到之前保存的值</p>
-</li>
-</ul>
-<h4 id="读写API"><a href="#读写API" class="headerlink" title="读写API"></a>读写API</h4><ul>
-<li><p><code>writeBytes(byte[] src)</code></p>
-<p>把字节数组 src 里面的数据全部写到 ByteBuf，src 字节数组大小的长度通常小于等于 <code>writableBytes()</code></p>
-</li>
-<li><p><code>readBytes(byte[] dst)</code></p>
-<p>把 ByteBuf 里面的数据全部读取到 dst，这里 dst 字节数组的大小通常等于 <code>readableBytes()</code></p>
-</li>
-<li><p><code>writeByte(byte b)</code></p>
-<p>表示往 ByteBuf 中写一个字节，类似还有 <code>writeBoolean()</code>、<code>writeChar()</code>、<code>writeShort()</code>、<code>writeInt()</code>、<code>writeLong()</code>、<code>writeFloat()</code>、<code>writeDouble()</code> </p>
-</li>
-<li><p><code>readByte()</code></p>
-<p>表示从 ByteBuf 中读取一个字节，类似还有  <code>readBoolean()</code>、<code>readChar()</code>、<code>readShort()</code>、<code>readInt()</code>、<code>readLong()</code>、<code>readFloat()</code>、<code>readDouble()</code></p>
-</li>
-<li><p><code>setBytes()</code>、<code>setByte()</code></p>
-<p>和 <code>writeBytes()</code> 等方法类似，但是 set 不会改变读写指针，而 write 会改变写指针</p>
-</li>
-<li><p><code>getBytes</code>、<code>getByte()</code></p>
-<p>和 <code>readBytes()</code> 等方法类似，同样 get 不会改变读写指针，而 read 会改变读指针</p>
-</li>
-<li><p><code>retain()</code></p>
-<p>将 BetyBuf 的引用计数加一</p>
-</li>
-<li><p><code>release()</code></p>
-<p>将 ByteBuf 的引用计数减一，减完之后如果发现引用计数为0，则直接回收 ByteBuf 底层的内存</p>
-</li>
-</ul>
-<blockquote>
-<p>由于 Netty 使用了堆外内存，而堆外内存是不被 jvm 直接管理的，也就是说申请到的内存无法被垃圾回收器直接回收，所以需要我们手动回收。有点类似于c语言里面，申请到的内存必须手工释放，否则会造成内存泄漏。</p>
-<p>Netty 的 ByteBuf 是通过引用计数的方式管理的，如果一个 ByteBuf 没有地方被引用到，需要回收底层内存。默认情况下，当创建完一个 ByteBuf，它的引用为1</p>
-</blockquote>
-<ul>
-<li><p><code>slice()</code></p>
-<p>从原始 ByteBuf 中截取一段，这段数据是从 readerIndex 到 writeIndex，同时，返回的新的 ByteBuf 的最大容量 maxCapacity 为原始 ByteBuf 的 <code>readableBytes()</code>；底层内存以及引用计数与原始的 ByteBuf 共享</p>
-</li>
-<li><p><code>duplicate()</code></p>
-<p>把整个 ByteBuf 都截取出来，包括所有的指针信息。底层内存以及引用计数与原始的 ByteBuf 共享</p>
-</li>
-<li><p><code>copy()</code></p>
-<p>从原始的 ByteBuf 中拷贝所有的信息，包括读写指针以及底层对应的数据，底层内存以及引用计数都独立，操作 ByteBuf 中的数据不会影响到原始的 ByteBuf </p>
-</li>
-</ul>
-<blockquote>
-<p>三个方法都会返回新的 ByteBuf 对象</p>
-<p><code>slice()</code> 与 <code>duplicate()</code> 的相同点是：<strong>底层内存以及引用计数与原始的 ByteBuf 共享</strong>，也就是说经过 <code>slice()</code> 或者 <code>duplicate()</code> 返回的 ByteBuf 调用 write 系列方法都会影响到原始的 ByteBuf，但是它们都维持着与原始 ByteBuf 相同的内存引用计数和不同的读写指针 </p>
-<p><code>slice()</code> 与 <code>duplicate()</code> 的不同点是：<code>slice()</code> 只截取从 readerIndex 到 writerIndex 之间的数据，它返回的 ByteBuf 的最大容量被限制到 原始 ByteBuf 的 <code>readableBytes()</code>, 而 <code>duplicate()</code> 是把整个 ByteBuf 都与原始的 ByteBuf 共享 </p>
-<p><code>slice()</code> 和 <code>duplicate()</code> 不会改变 ByteBuf 的引用计数，所以原始的 ByteBuf 调用 <code>release()</code> 之后发现引用计数为零，就开始释放内存，调用这两个方法返回的 ByteBuf 也会被释放，这个时候如果再对它们进行读写，就会报错。因此，我们可以通过调用一次 <code>retain()</code> 方法 来增加引用，表示它们对应的底层的内存多了一次引用，引用计数为2，在释放内存的时候，需要调用两次 <code>release()</code> 方法，将引用计数降到零，才会释放内存</p>
-<p><code>slice()</code> 、<code>duplicate()</code>、<code>copy()</code> 三个方法均维护着自己的读写指针，与原始的 ByteBuf 的读写指针无关，相互之间不受影响</p>
-</blockquote>
-<ul>
-<li><p><code>retainedSlice()</code></p>
-<p>截取内存片段的同时，增加内存的引用计数，等价于 <code>slice().retain()</code></p>
-</li>
-<li><p><code>retainedDuplicate()</code></p>
-<p>也是截取内存片段的同时，增加内存的引用计数，等价于 <code>duplicate().retain()</code></p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Netty</category>
-      </categories>
-      <tags>
-        <tag>Netty</tag>
       </tags>
   </entry>
   <entry>
@@ -1728,6 +1482,252 @@
       </categories>
   </entry>
   <entry>
+    <title>Code Review</title>
+    <url>/2021/06/19/Code%20Review/</url>
+    <content><![CDATA[<h2 id="认识-Code-Review"><a href="#认识-Code-Review" class="headerlink" title="认识 Code Review"></a>认识 Code Review</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>Code Review是一种用来确认方案设计和代码实现的质量保证机制，通过这个机制对代码、测试过程和注释进行检查，确保整体代码运行状况随着时间的推移而得到改善。</p>
+<h3 id="目的和意义"><a href="#目的和意义" class="headerlink" title="目的和意义"></a>目的和意义</h3><ul>
+<li>目的：代码质量、知识共享、团队规范</li>
+<li>意义：<ul>
+<li>查找系统和代码的缺陷，把控风险</li>
+<li>保证代码整体健康度不会随时间的推移而降低</li>
+<li>提高开发者自身水平</li>
+</ul>
+</li>
+</ul>
+<h3 id="方式"><a href="#方式" class="headerlink" title="方式"></a>方式</h3><p>常见的 Code Review 有下面几种方式</p>
+<blockquote>
+<p>结对编程(瞬时评审)</p>
+</blockquote>
+<ul>
+<li>一对一的共同编程</li>
+<li>场景：复杂的业务问题、或紧急问题的修复</li>
+</ul>
+<blockquote>
+<p>即时代码评审(同步评审)</p>
+</blockquote>
+<ul>
+<li>提交人给审核人讲解任务详情、改动等</li>
+<li>场景：不清楚任务目标、或高级指导低级</li>
+</ul>
+<blockquote>
+<p>工具支持的代码评审(异步评审)</p>
+</blockquote>
+<ul>
+<li>和开发流集成，只有 Review 通过才能合并</li>
+<li>默认的方式，也是最常用的</li>
+</ul>
+<blockquote>
+<p>基于会议的代码评审(偶尔评审)</p>
+</blockquote>
+<ul>
+<li>组织会议，团队多人共同评审</li>
+<li>场景：大型、比较复杂的项目；有一定风险的项目；为了提高整体水平</li>
+</ul>
+<h3 id="不做-Code-Review-的典型场景"><a href="#不做-Code-Review-的典型场景" class="headerlink" title="不做 Code Review 的典型场景"></a>不做 Code Review 的典型场景</h3><ul>
+<li>不认同，团队整体意识不到位</li>
+<li>需求多，时间紧，疲于应付需求</li>
+<li>技术水平不足，无法给出有效意见</li>
+</ul>
+<h3 id="Code-Review-常见问题"><a href="#Code-Review-常见问题" class="headerlink" title="Code Review 常见问题"></a>Code Review 常见问题</h3><blockquote>
+<p>提交人</p>
+</blockquote>
+<ul>
+<li>提交大量代码评审</li>
+<li>发起评审前没有进行自测</li>
+<li>不进行评审，直接上线</li>
+<li>没有给评审人留够充裕的时间</li>
+</ul>
+<blockquote>
+<p>评审人</p>
+</blockquote>
+<ul>
+<li>Review 不仔细，产生低级的问题</li>
+<li>对业务不熟悉，无法判断影响面</li>
+<li>反馈时机长，不及时处理提交人提交的 Code Review</li>
+</ul>
+<blockquote>
+<p>全体</p>
+</blockquote>
+<ul>
+<li>没有规范的 Code Review 机制和自测机制</li>
+</ul>
+<h2 id="如何做好-Code-Review"><a href="#如何做好-Code-Review" class="headerlink" title="如何做好 Code Review"></a>如何做好 Code Review</h2><h3 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h3><p>要避免 Code Review 流于形式，而避免流于形式的关键点则是 <strong>大家都有主观意愿，并且客观条件允许</strong></p>
+<p>要有代码规范、Check list、总结优化、激励机制</p>
+<h3 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">+-------+      +---------+      +---------+      +---------+      +-----+      +------------+</span><br><span class="line">| 定标准 | +--&gt; | 全员学习 | +--&gt; | 需求梳理  | +--&gt; | 代码评审 | +--&gt; | 讨论 | +--&gt; | 评审结果落地 |</span><br><span class="line">+-------+      +---------+      +---------+      +---------+      +-----+      +------------+ </span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>定标准<ul>
+<li>目的：有法可依、团队一致</li>
+<li>内容：<ul>
+<li>共识标准：权利责任标准、冲突处理标准、特例紧急case处理标准、检查单标准</li>
+<li>提交人标准：发起时机标准、选择评审人标准、Commit 标准、代码标准、合并分支标准、处理评论标准</li>
+<li>评审人标准：检查内容标准、可通过标准、评论标准、反馈周期标准</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>全员学习<ul>
+<li>目的：统一思想、确认标准可落地</li>
+</ul>
+</li>
+<li>需求梳理<ul>
+<li>统一对需求理解，设计评审有理可依</li>
+<li>内容：<ul>
+<li>提交人要有基于需求的代码改动设计方案</li>
+<li>评审人要有基于需求理解之下的代码改造意见</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>代码评审<ul>
+<li>目的：实现正确的业务需求，代码长期的可维护性</li>
+<li>内容：参照检查单（功能拆解；架构设计；代码逻辑；库表设计；编码风格；性能；等等）</li>
+<li>工具：<a href="http://www.sonar.org.cn/">Sonar</a>、<a href="https://www.gerritcodereview.com/">Gerrit</a> 等工具</li>
+</ul>
+</li>
+<li>讨论<ul>
+<li>目的：达成共识，求同存异</li>
+</ul>
+</li>
+<li>评审结果落地<ul>
+<li>总结归纳，持续优化标准</li>
+</ul>
+</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Code Review 是提高代码质量、把控项目风险的一剂良药，同时也是提高个人水平的一个重要渠道。而长期维持良好的 Code Review 并不容易，但是良好的 Code Review 是个人和团队成功不可或缺的一环。</p>
+<h2 id="资料"><a href="#资料" class="headerlink" title="资料"></a>资料</h2><p>GoogleCR机制（原文）：<a href="https://google.github.io/eng-practices/review/reviewer/">https://google.github.io/eng-practices/review/reviewer/</a></p>
+<p>GoogleCR机制（翻译版）：<a href="https://cloud.tencent.com/developer/article/1514271">https://cloud.tencent.com/developer/article/1514271</a></p>
+]]></content>
+      <categories>
+        <category>规范</category>
+      </categories>
+      <tags>
+        <tag>规范</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Netty-BetyBuf</title>
+    <url>/2021/06/11/Netty-BetyBuf/</url>
+    <content><![CDATA[<blockquote>
+<p>ByteBuf 是 Netty 中的数据交互单位，本质是一个 Byte 数组的缓冲区，有不同实现机制，首先看 ByteBuf 的数据结构</p>
+</blockquote>
+<h3 id="ByteBuf结构"><a href="#ByteBuf结构" class="headerlink" title="ByteBuf结构"></a>ByteBuf结构</h3><pre><code>+-------------------+------------------+------------------+
+| discardable bytes |  readable bytes  |  writable bytes  |
+|                   |     (CONTENT)    |                  |
++-------------------+------------------+------------------+
+|                   |                  |                  |
+0      &lt;=      readerIndex   &lt;=   writerIndex    &lt;=    capacity
+</code></pre>
+<p>ByteBuf 包括三部分，丢弃字节、可读字节、可写字节</p>
+<p>通过两个指针，读指针（readerIndex）和写指针（writerIndex）来分成三部分，当 readerIndex = writerIndex 时不可读，当 writerIndex = capacity 时不可写。还有个参数 maxCapacity，当写入数据容量不足时会自动扩容，扩容的最大容量为 maxCapacity 值</p>
+<h3 id="常用API"><a href="#常用API" class="headerlink" title="常用API"></a>常用API</h3><h4 id="容量API"><a href="#容量API" class="headerlink" title="容量API"></a>容量API</h4><ul>
+<li><p><code>capacity()</code></p>
+<p>表示 ByteBuf 的占用字节内存，包括丢弃字节、可读字节、可写字节，不同的底层实现机制有不同的计算方式</p>
+</li>
+<li><p><code>maxCapacity()</code>  </p>
+<p>表示 ByteBuf 最大能够占用多少字节的内存</p>
+</li>
+<li><p><code>readableBytes()</code></p>
+<p>ByteBuf 当前可读的字节数，它的值等于 writerIndex-readerIndex</p>
+</li>
+<li><p><code>isReadable()</code></p>
+<p>返回是否可读，writerIndex = readerIndex 则不可读，返回 <code>false</code></p>
+</li>
+<li><p><code>writableBytes()</code></p>
+<p>ByteBuf 当前可写的字节数，它的值等于 capacity-writerIndex</p>
+</li>
+<li><p><code>isWritable()</code></p>
+<p>返回是否可写，capacity = writerIndex 则不可写</p>
+</li>
+<li><p><code>maxWritableBytes()</code></p>
+<p>ByteBuf 可写的最大字节数，它的值等于 maxCapacity-writerIndex</p>
+</li>
+</ul>
+<h4 id="指针相关API"><a href="#指针相关API" class="headerlink" title="指针相关API"></a>指针相关API</h4><ul>
+<li><p><code>readerIndex()</code></p>
+<p>返回当前读指针的 readerIndex</p>
+</li>
+<li><p><code>readerIndex(int)</code></p>
+<p>设置读指针</p>
+</li>
+<li><p><code>writeIndex()</code></p>
+<p>返回当前写指针的 writerIndex</p>
+</li>
+<li><p><code>writeIndex(int)</code></p>
+<p>设置读指针</p>
+</li>
+<li><p><code>markReaderIndex()</code>、<code>markWriterIndex()</code></p>
+<p>把当前的读、写指针保存起来</p>
+</li>
+<li><p><code>resetReaderIndex()</code>、<code>resetWriterIndex()</code></p>
+<p>把当前的读、写指针恢复到之前保存的值</p>
+</li>
+</ul>
+<h4 id="读写API"><a href="#读写API" class="headerlink" title="读写API"></a>读写API</h4><ul>
+<li><p><code>writeBytes(byte[] src)</code></p>
+<p>把字节数组 src 里面的数据全部写到 ByteBuf，src 字节数组大小的长度通常小于等于 <code>writableBytes()</code></p>
+</li>
+<li><p><code>readBytes(byte[] dst)</code></p>
+<p>把 ByteBuf 里面的数据全部读取到 dst，这里 dst 字节数组的大小通常等于 <code>readableBytes()</code></p>
+</li>
+<li><p><code>writeByte(byte b)</code></p>
+<p>表示往 ByteBuf 中写一个字节，类似还有 <code>writeBoolean()</code>、<code>writeChar()</code>、<code>writeShort()</code>、<code>writeInt()</code>、<code>writeLong()</code>、<code>writeFloat()</code>、<code>writeDouble()</code> </p>
+</li>
+<li><p><code>readByte()</code></p>
+<p>表示从 ByteBuf 中读取一个字节，类似还有  <code>readBoolean()</code>、<code>readChar()</code>、<code>readShort()</code>、<code>readInt()</code>、<code>readLong()</code>、<code>readFloat()</code>、<code>readDouble()</code></p>
+</li>
+<li><p><code>setBytes()</code>、<code>setByte()</code></p>
+<p>和 <code>writeBytes()</code> 等方法类似，但是 set 不会改变读写指针，而 write 会改变写指针</p>
+</li>
+<li><p><code>getBytes</code>、<code>getByte()</code></p>
+<p>和 <code>readBytes()</code> 等方法类似，同样 get 不会改变读写指针，而 read 会改变读指针</p>
+</li>
+<li><p><code>retain()</code></p>
+<p>将 BetyBuf 的引用计数加一</p>
+</li>
+<li><p><code>release()</code></p>
+<p>将 ByteBuf 的引用计数减一，减完之后如果发现引用计数为0，则直接回收 ByteBuf 底层的内存</p>
+</li>
+</ul>
+<blockquote>
+<p>由于 Netty 使用了堆外内存，而堆外内存是不被 jvm 直接管理的，也就是说申请到的内存无法被垃圾回收器直接回收，所以需要我们手动回收。有点类似于c语言里面，申请到的内存必须手工释放，否则会造成内存泄漏。</p>
+<p>Netty 的 ByteBuf 是通过引用计数的方式管理的，如果一个 ByteBuf 没有地方被引用到，需要回收底层内存。默认情况下，当创建完一个 ByteBuf，它的引用为1</p>
+</blockquote>
+<ul>
+<li><p><code>slice()</code></p>
+<p>从原始 ByteBuf 中截取一段，这段数据是从 readerIndex 到 writeIndex，同时，返回的新的 ByteBuf 的最大容量 maxCapacity 为原始 ByteBuf 的 <code>readableBytes()</code>；底层内存以及引用计数与原始的 ByteBuf 共享</p>
+</li>
+<li><p><code>duplicate()</code></p>
+<p>把整个 ByteBuf 都截取出来，包括所有的指针信息。底层内存以及引用计数与原始的 ByteBuf 共享</p>
+</li>
+<li><p><code>copy()</code></p>
+<p>从原始的 ByteBuf 中拷贝所有的信息，包括读写指针以及底层对应的数据，底层内存以及引用计数都独立，操作 ByteBuf 中的数据不会影响到原始的 ByteBuf </p>
+</li>
+</ul>
+<blockquote>
+<p>三个方法都会返回新的 ByteBuf 对象</p>
+<p><code>slice()</code> 与 <code>duplicate()</code> 的相同点是：<strong>底层内存以及引用计数与原始的 ByteBuf 共享</strong>，也就是说经过 <code>slice()</code> 或者 <code>duplicate()</code> 返回的 ByteBuf 调用 write 系列方法都会影响到原始的 ByteBuf，但是它们都维持着与原始 ByteBuf 相同的内存引用计数和不同的读写指针 </p>
+<p><code>slice()</code> 与 <code>duplicate()</code> 的不同点是：<code>slice()</code> 只截取从 readerIndex 到 writerIndex 之间的数据，它返回的 ByteBuf 的最大容量被限制到 原始 ByteBuf 的 <code>readableBytes()</code>, 而 <code>duplicate()</code> 是把整个 ByteBuf 都与原始的 ByteBuf 共享 </p>
+<p><code>slice()</code> 和 <code>duplicate()</code> 不会改变 ByteBuf 的引用计数，所以原始的 ByteBuf 调用 <code>release()</code> 之后发现引用计数为零，就开始释放内存，调用这两个方法返回的 ByteBuf 也会被释放，这个时候如果再对它们进行读写，就会报错。因此，我们可以通过调用一次 <code>retain()</code> 方法 来增加引用，表示它们对应的底层的内存多了一次引用，引用计数为2，在释放内存的时候，需要调用两次 <code>release()</code> 方法，将引用计数降到零，才会释放内存</p>
+<p><code>slice()</code> 、<code>duplicate()</code>、<code>copy()</code> 三个方法均维护着自己的读写指针，与原始的 ByteBuf 的读写指针无关，相互之间不受影响</p>
+</blockquote>
+<ul>
+<li><p><code>retainedSlice()</code></p>
+<p>截取内存片段的同时，增加内存的引用计数，等价于 <code>slice().retain()</code></p>
+</li>
+<li><p><code>retainedDuplicate()</code></p>
+<p>也是截取内存片段的同时，增加内存的引用计数，等价于 <code>duplicate().retain()</code></p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Netty</category>
+      </categories>
+      <tags>
+        <tag>Netty</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>常用Idea插件</title>
     <url>/2018/01/17/%E5%B8%B8%E7%94%A8Idea%E6%8F%92%E4%BB%B6/</url>
     <content><![CDATA[<p><img src="/images/idea-plugins.jpg" alt="idea插件"></p>
@@ -1897,111 +1897,6 @@
       </tags>
   </entry>
   <entry>
-    <title>服务日志优化</title>
-    <url>/2021/01/04/%E6%9C%8D%E5%8A%A1%E6%97%A5%E5%BF%97%E4%BC%98%E5%8C%96/</url>
-    <content><![CDATA[<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><blockquote>
-<p>功能权限服务之前经手的人比较多，不同人日志打印比较乱，并且服务日志打印量很大，但当需要排查问题时，大日志量 <code>grep</code> 困难、关键信息打印不全或没有打印等问题很痛苦，决定对日志方面进行统一的优化</p>
-</blockquote>
-<h3 id="优化目标"><a href="#优化目标" class="headerlink" title="优化目标"></a>优化目标</h3><ol>
-<li>对服务日志量大、关键信息不全、代码中侵入式打印日志乱等问题进行优化</li>
-<li>人员角色模块，经常有用户、业务不知道什么时候人员角色发生了变化，针对这个模块增加审计日志，便于观察分析调用、排查问题，给出证据</li>
-<li>日志上报日志中心，使得服务发布后日志不丢失</li>
-</ol>
-<h3 id="优化记录"><a href="#优化记录" class="headerlink" title="优化记录"></a>优化记录</h3><h4 id="服务日志优化"><a href="#服务日志优化" class="headerlink" title="服务日志优化"></a>服务日志优化</h4><ul>
-<li><p>日志级别<br><img src="/images/%E6%9C%8D%E5%8A%A1%E6%97%A5%E5%BF%97%E4%BC%98%E5%8C%960.png"></p>
-</li>
-<li><p>日志内容<br><code>traceId</code>，方法名，方法调用链路，每个方法耗时，入参，出参，异常堆栈</p>
-</li>
-<li><p>相关类<br>使用 <code>Spring AOP</code>、<code>ThreadLocal</code>、<code>Spring StopWatch</code>、<code>Annotation</code> 注解<br>支持两种日志打印方式，<code>AOP</code> 打印和手动调用<br><img src="/images/%E6%9C%8D%E5%8A%A1%E6%97%A5%E5%BF%97%E4%BC%98%E5%8C%961.png"></p>
-</li>
-<li><p>使用方式  </p>
-</li>
-</ul>
-<ol>
-<li>新建切面类，继承 <code>TraceLogAop</code> 抽象类</li>
-<li>编写切点，使用环绕通知，切在需要打印日志的地方</li>
-<li>通知中调用父类的 <code>around</code> 方法，传入 <code>ProceedingJoinPoint</code> 和打印耗时日志阈值</li>
-<li>如需要特殊处理异常，则重写 <code>exceptionHandler</code> 方法<br><img src="/images/%E6%9C%8D%E5%8A%A1%E6%97%A5%E5%BF%97%E4%BC%98%E5%8C%962.png"></li>
-<li>在需要打印 <code>info</code> 日志的方法上添加 <code>@InOutLog(&quot;info&quot;)</code> 注解，<code>debug</code> 级别不用添加，默认就是 <code>debug</code> 级别<br><img src="/images/%E6%9C%8D%E5%8A%A1%E6%97%A5%E5%BF%97%E4%BC%98%E5%8C%963.png"></li>
-<li>也可以修改 <code>logback.xml</code> 文件，添加一个 <code>logger</code> 把日志打印到独立的文件中<br><img src="/images/%E6%9C%8D%E5%8A%A1%E6%97%A5%E5%BF%97%E4%BC%98%E5%8C%964.png"></li>
-</ol>
-<ul>
-<li>优化效果<br>入参、出参效果<br><img src="/images/%E6%9C%8D%E5%8A%A1%E6%97%A5%E5%BF%97%E4%BC%98%E5%8C%965.jpg"><br>方法调用链路、耗时效果<br><img src="/images/%E6%9C%8D%E5%8A%A1%E6%97%A5%E5%BF%97%E4%BC%98%E5%8C%966.jpg"><br>根据详细的入参、出参可以快速、准确的排查问题；根据调用链路和耗时可以来分析耗时长的接口，以及耗时的占比，找到最耗时的方法，从而进行优化</li>
-</ul>
-<h4 id="添加审计日志"><a href="#添加审计日志" class="headerlink" title="添加审计日志"></a>添加审计日志</h4><blockquote>
-<p>人员角色模块增加审计日志，上报ES，使用 kibana 展示，便于观察分析调用、排查问题，给出证据</p>
-</blockquote>
-<p><img src="/images/%E6%9C%8D%E5%8A%A1%E6%97%A5%E5%BF%97%E4%BC%98%E5%8C%967.jpg"></p>
-<h4 id="上报日志中心"><a href="#上报日志中心" class="headerlink" title="上报日志中心"></a>上报日志中心</h4><p>有时查问题前一天晚上有过发版，日志信息丢失，导致查询问题困难，针对这种情况把日志上报到日志中心的 Grafana Explore中</p>
-<hr>
-<p>把日志整体优化后，再也没有了以前的苦恼，有什么问题一目了然(<em>^▽^</em>)</p>
-]]></content>
-      <categories>
-        <category>优化</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>优化</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>服务缓存优化</title>
-    <url>/2021/02/03/%E6%9C%8D%E5%8A%A1%E7%BC%93%E5%AD%98%E4%BC%98%E5%8C%96/</url>
-    <content><![CDATA[<h3 id="服务介绍"><a href="#服务介绍" class="headerlink" title="服务介绍"></a>服务介绍</h3><p><code>bizconf</code>服务是公司所有业务的通用配置服务，用来保存所有企业、以及用户的业务配置。分为三个级别的配置，系统级、租户级和用户级。</p>
-<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>之前就有发现<code>bizconf</code>调用量比较大，需要优化缓存来降低调用，而最初现状是只在<code>server</code>端有<code>Redis</code>缓存</p>
-<p>问题爆发点：元旦前最后几天，数据库负载高，导致<code>bizconf</code>服务调用耗时从几毫米升高到 20~30 毫秒，这时客户反馈系统库卡顿、反应慢，经过排查发现调用耗时长的请求和<code>bizconf</code>耗时曲线一致，各个业务都用调用<code>bizconf</code>，还有的业务调用多次，<code>bizconf</code>耗时上涨导致整个系统卡顿</p>
-<h3 id="优化目标"><a href="#优化目标" class="headerlink" title="优化目标"></a>优化目标</h3><p>在<code>client</code>添加<code>jvm cahce</code>来降低调用，从而做到服务降级，前后共经过俩次优化，第一次优化因为缓存穿透的原因效果不明显，第二次优化后效果显著</p>
-<p>优化前调用量：<br><img src="/images/%E6%9C%8D%E5%8A%A1%E7%BC%93%E5%AD%98%E4%BC%98%E5%8C%960.png"></p>
-<h3 id="第一次优化"><a href="#第一次优化" class="headerlink" title="第一次优化"></a>第一次优化</h3><p>优化范围：在<code>server</code>和<code>client</code>中添加<code>jvm cache</code></p>
-<p>使用缓存：使用<code>caffeine cache</code>，分级缓存，在<code>server</code>和<code>client</code>中分别添加两个<code>cache</code>，企业级和用户级的<code>cache</code></p>
-<p>缓存设置：</p>
-<ul>
-<li>size：<code>server</code>中<code>cache size</code>为50000，<code>client</code>中<code>cache size</code>为5000，</li>
-<li>过期时间：一个小时</li>
-<li>过期策略：<code>expireAfterAccess(long, TimeUnit)</code>按最后访问时间计时</li>
-<li>基于引用：<code>softValues()</code>设置为软引用</li>
-</ul>
-<p>优化后观察：<br>观察发现虽然添加了<code>jvm cache</code>，但是调用量降低的效果不明显，甚至可以说无效果</p>
-<p>又观察<code>Redis</code>调用量和<code>db</code>调用量，发现<code>db</code>调用量和<code>Redis</code>调用量差不多，少的很有限，这时觉得这种情况不对，怀疑发生了缓存穿透，缓存没有生效</p>
-<p><code>Redis</code>和<code>db</code>调用量：<br><img src="/images/%E6%9C%8D%E5%8A%A1%E7%BC%93%E5%AD%98%E4%BC%98%E5%8C%961.png"></p>
-<p>经过排查发现一些数据多次的访问数据库，询问对应业务，是在判断企业的某些状态，如果返回<code>false</code>或不存在则认为没有，至此问题定位，缓存穿透导致大量访问数据库，从而解释了为什么优化的效果不明显</p>
-<p>针对缓存穿透有了下面的第二次的优化</p>
-<h3 id="第二次优化"><a href="#第二次优化" class="headerlink" title="第二次优化"></a>第二次优化</h3><p>针对缓存穿透一般有两种处理方式：使用布隆过滤器和缓存空值</p>
-<h4 id="布隆过滤器"><a href="#布隆过滤器" class="headerlink" title="布隆过滤器"></a>布隆过滤器</h4><p>布隆过滤器具体可以参考<a href="https://blog.csdn.net/yuanlong122716/article/details/104402602">https://blog.csdn.net/yuanlong122716/article/details/104402602</a></p>
-<p>布隆过滤器有两个非常重要的缺点：</p>
-<ol>
-<li>存在误算率，虽然不会错判但是会误判，什么意思呢，返回不存在则一定不存在，返回存在但是并不能判断一定存在</li>
-<li>不可以删除</li>
-</ol>
-<p>如果使用布隆过滤器则有两个场景，保存白名单和黑名单：</p>
-<ul>
-<li>白名单：如果保存白名单，需要把数据库中所有的数据(表示存在的逻辑true)都保存起来，并且新增时需要同步的维护布隆过滤器数据，但因为是分布式服务需要保证所有服务都同步的维护布隆过滤器，难度比较大；同时布隆过滤器不支持删除，所以不考虑使用白名单</li>
-<li>黑名单：如果保存黑名单，把不存在的数据保存起来，但因为会有误判，可能会把存在的数据认为不存在从而返回了空，从而使数据错误，所以不可取</li>
-</ul>
-<p>分析考虑，不采用布隆过滤器，采用缓存空值的方法更为有效和简单</p>
-<h4 id="缓存空值"><a href="#缓存空值" class="headerlink" title="缓存空值"></a>缓存空值</h4><p>优化目标：<br><img src="/images/fs-paas-bizconf%E9%87%8D%E6%9E%84.png"></p>
-<p>优化范围：在<code>client</code>中添加<code>jvm cache</code>，在<code>server</code>中只使用<code>Redis cache</code></p>
-<p>使用缓存：第一次优化时<code>client</code>端缓存的数据有限，这次决定使用<code>ehcache</code>，可以缓存更大的数据量，同样也是分级缓存</p>
-<p>缓存设置：</p>
-<ul>
-<li>size：每个<code>cache</code>堆内存5000条、堆外内存1MB、磁盘50MB</li>
-<li>过期时间：<code>client</code>的<code>jvm cache</code>5小时；<code>server</code>的<code>redis</code>存在的数据24小时，不存在的空值半小时(防止大量不存在的数据把<code>Redis</code>搞崩，还可以更短一些)</li>
-<li>过期策略：<code>ExpiryPolicyBuilder.timeToLiveExpiration(Duration timeToLive)</code> 按创建时间计时</li>
-</ul>
-<p>优化后观察：<br>这次优化后效果显著，调用量就下降了90%，预计所有业务方改完后调用量还会进一步下降</p>
-<p>优化前后对比：<br><img src="/images/%E6%9C%8D%E5%8A%A1%E7%BC%93%E5%AD%98%E4%BC%98%E5%8C%962.png"></p>
-<h3 id="审计日志优化"><a href="#审计日志优化" class="headerlink" title="审计日志优化"></a>审计日志优化</h3><p>优化缓存的同时，增加了审计日志，可以用来分析业务方的不合理调用</p>
-]]></content>
-      <categories>
-        <category>优化</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>Cache</tag>
-        <tag>优化</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>比较两个Json串或两个JsonArray串是否完全相等</title>
     <url>/2017/10/23/%E6%AF%94%E8%BE%83%E4%B8%A4%E4%B8%AAJson%E4%B8%B2%E6%88%96%E4%B8%A4%E4%B8%AAJsonArray%E4%B8%B2%E6%98%AF%E5%90%A6%E5%AE%8C%E5%85%A8%E7%9B%B8%E7%AD%89/</url>
     <content><![CDATA[<p>比较两个Json串或两个JsonArray串是否完全相等，使用google提供的包com.google.gson</p>
@@ -2139,6 +2034,111 @@
       <tags>
         <tag>Cache</tag>
         <tag>转载</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>服务缓存优化</title>
+    <url>/2021/02/03/%E6%9C%8D%E5%8A%A1%E7%BC%93%E5%AD%98%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<h3 id="服务介绍"><a href="#服务介绍" class="headerlink" title="服务介绍"></a>服务介绍</h3><p><code>bizconf</code>服务是公司所有业务的通用配置服务，用来保存所有企业、以及用户的业务配置。分为三个级别的配置，系统级、租户级和用户级。</p>
+<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>之前就有发现<code>bizconf</code>调用量比较大，需要优化缓存来降低调用，而最初现状是只在<code>server</code>端有<code>Redis</code>缓存</p>
+<p>问题爆发点：元旦前最后几天，数据库负载高，导致<code>bizconf</code>服务调用耗时从几毫米升高到 20~30 毫秒，这时客户反馈系统库卡顿、反应慢，经过排查发现调用耗时长的请求和<code>bizconf</code>耗时曲线一致，各个业务都用调用<code>bizconf</code>，还有的业务调用多次，<code>bizconf</code>耗时上涨导致整个系统卡顿</p>
+<h3 id="优化目标"><a href="#优化目标" class="headerlink" title="优化目标"></a>优化目标</h3><p>在<code>client</code>添加<code>jvm cahce</code>来降低调用，从而做到服务降级，前后共经过俩次优化，第一次优化因为缓存穿透的原因效果不明显，第二次优化后效果显著</p>
+<p>优化前调用量：<br><img src="/images/%E6%9C%8D%E5%8A%A1%E7%BC%93%E5%AD%98%E4%BC%98%E5%8C%960.png"></p>
+<h3 id="第一次优化"><a href="#第一次优化" class="headerlink" title="第一次优化"></a>第一次优化</h3><p>优化范围：在<code>server</code>和<code>client</code>中添加<code>jvm cache</code></p>
+<p>使用缓存：使用<code>caffeine cache</code>，分级缓存，在<code>server</code>和<code>client</code>中分别添加两个<code>cache</code>，企业级和用户级的<code>cache</code></p>
+<p>缓存设置：</p>
+<ul>
+<li>size：<code>server</code>中<code>cache size</code>为50000，<code>client</code>中<code>cache size</code>为5000，</li>
+<li>过期时间：一个小时</li>
+<li>过期策略：<code>expireAfterAccess(long, TimeUnit)</code>按最后访问时间计时</li>
+<li>基于引用：<code>softValues()</code>设置为软引用</li>
+</ul>
+<p>优化后观察：<br>观察发现虽然添加了<code>jvm cache</code>，但是调用量降低的效果不明显，甚至可以说无效果</p>
+<p>又观察<code>Redis</code>调用量和<code>db</code>调用量，发现<code>db</code>调用量和<code>Redis</code>调用量差不多，少的很有限，这时觉得这种情况不对，怀疑发生了缓存穿透，缓存没有生效</p>
+<p><code>Redis</code>和<code>db</code>调用量：<br><img src="/images/%E6%9C%8D%E5%8A%A1%E7%BC%93%E5%AD%98%E4%BC%98%E5%8C%961.png"></p>
+<p>经过排查发现一些数据多次的访问数据库，询问对应业务，是在判断企业的某些状态，如果返回<code>false</code>或不存在则认为没有，至此问题定位，缓存穿透导致大量访问数据库，从而解释了为什么优化的效果不明显</p>
+<p>针对缓存穿透有了下面的第二次的优化</p>
+<h3 id="第二次优化"><a href="#第二次优化" class="headerlink" title="第二次优化"></a>第二次优化</h3><p>针对缓存穿透一般有两种处理方式：使用布隆过滤器和缓存空值</p>
+<h4 id="布隆过滤器"><a href="#布隆过滤器" class="headerlink" title="布隆过滤器"></a>布隆过滤器</h4><p>布隆过滤器具体可以参考<a href="https://blog.csdn.net/yuanlong122716/article/details/104402602">https://blog.csdn.net/yuanlong122716/article/details/104402602</a></p>
+<p>布隆过滤器有两个非常重要的缺点：</p>
+<ol>
+<li>存在误算率，虽然不会错判但是会误判，什么意思呢，返回不存在则一定不存在，返回存在但是并不能判断一定存在</li>
+<li>不可以删除</li>
+</ol>
+<p>如果使用布隆过滤器则有两个场景，保存白名单和黑名单：</p>
+<ul>
+<li>白名单：如果保存白名单，需要把数据库中所有的数据(表示存在的逻辑true)都保存起来，并且新增时需要同步的维护布隆过滤器数据，但因为是分布式服务需要保证所有服务都同步的维护布隆过滤器，难度比较大；同时布隆过滤器不支持删除，所以不考虑使用白名单</li>
+<li>黑名单：如果保存黑名单，把不存在的数据保存起来，但因为会有误判，可能会把存在的数据认为不存在从而返回了空，从而使数据错误，所以不可取</li>
+</ul>
+<p>分析考虑，不采用布隆过滤器，采用缓存空值的方法更为有效和简单</p>
+<h4 id="缓存空值"><a href="#缓存空值" class="headerlink" title="缓存空值"></a>缓存空值</h4><p>优化目标：<br><img src="/images/fs-paas-bizconf%E9%87%8D%E6%9E%84.png"></p>
+<p>优化范围：在<code>client</code>中添加<code>jvm cache</code>，在<code>server</code>中只使用<code>Redis cache</code></p>
+<p>使用缓存：第一次优化时<code>client</code>端缓存的数据有限，这次决定使用<code>ehcache</code>，可以缓存更大的数据量，同样也是分级缓存</p>
+<p>缓存设置：</p>
+<ul>
+<li>size：每个<code>cache</code>堆内存5000条、堆外内存1MB、磁盘50MB</li>
+<li>过期时间：<code>client</code>的<code>jvm cache</code>5小时；<code>server</code>的<code>redis</code>存在的数据24小时，不存在的空值半小时(防止大量不存在的数据把<code>Redis</code>搞崩，还可以更短一些)</li>
+<li>过期策略：<code>ExpiryPolicyBuilder.timeToLiveExpiration(Duration timeToLive)</code> 按创建时间计时</li>
+</ul>
+<p>优化后观察：<br>这次优化后效果显著，调用量就下降了90%，预计所有业务方改完后调用量还会进一步下降</p>
+<p>优化前后对比：<br><img src="/images/%E6%9C%8D%E5%8A%A1%E7%BC%93%E5%AD%98%E4%BC%98%E5%8C%962.png"></p>
+<h3 id="审计日志优化"><a href="#审计日志优化" class="headerlink" title="审计日志优化"></a>审计日志优化</h3><p>优化缓存的同时，增加了审计日志，可以用来分析业务方的不合理调用</p>
+]]></content>
+      <categories>
+        <category>优化</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Cache</tag>
+        <tag>优化</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>服务日志优化</title>
+    <url>/2021/01/04/%E6%9C%8D%E5%8A%A1%E6%97%A5%E5%BF%97%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><blockquote>
+<p>功能权限服务之前经手的人比较多，不同人日志打印比较乱，并且服务日志打印量很大，但当需要排查问题时，大日志量 <code>grep</code> 困难、关键信息打印不全或没有打印等问题很痛苦，决定对日志方面进行统一的优化</p>
+</blockquote>
+<h3 id="优化目标"><a href="#优化目标" class="headerlink" title="优化目标"></a>优化目标</h3><ol>
+<li>对服务日志量大、关键信息不全、代码中侵入式打印日志乱等问题进行优化</li>
+<li>人员角色模块，经常有用户、业务不知道什么时候人员角色发生了变化，针对这个模块增加审计日志，便于观察分析调用、排查问题，给出证据</li>
+<li>日志上报日志中心，使得服务发布后日志不丢失</li>
+</ol>
+<h3 id="优化记录"><a href="#优化记录" class="headerlink" title="优化记录"></a>优化记录</h3><h4 id="服务日志优化"><a href="#服务日志优化" class="headerlink" title="服务日志优化"></a>服务日志优化</h4><ul>
+<li><p>日志级别<br><img src="/images/%E6%9C%8D%E5%8A%A1%E6%97%A5%E5%BF%97%E4%BC%98%E5%8C%960.png"></p>
+</li>
+<li><p>日志内容<br><code>traceId</code>，方法名，方法调用链路，每个方法耗时，入参，出参，异常堆栈</p>
+</li>
+<li><p>相关类<br>使用 <code>Spring AOP</code>、<code>ThreadLocal</code>、<code>Spring StopWatch</code>、<code>Annotation</code> 注解<br>支持两种日志打印方式，<code>AOP</code> 打印和手动调用<br><img src="/images/%E6%9C%8D%E5%8A%A1%E6%97%A5%E5%BF%97%E4%BC%98%E5%8C%961.png"></p>
+</li>
+<li><p>使用方式  </p>
+</li>
+</ul>
+<ol>
+<li>新建切面类，继承 <code>TraceLogAop</code> 抽象类</li>
+<li>编写切点，使用环绕通知，切在需要打印日志的地方</li>
+<li>通知中调用父类的 <code>around</code> 方法，传入 <code>ProceedingJoinPoint</code> 和打印耗时日志阈值</li>
+<li>如需要特殊处理异常，则重写 <code>exceptionHandler</code> 方法<br><img src="/images/%E6%9C%8D%E5%8A%A1%E6%97%A5%E5%BF%97%E4%BC%98%E5%8C%962.png"></li>
+<li>在需要打印 <code>info</code> 日志的方法上添加 <code>@InOutLog(&quot;info&quot;)</code> 注解，<code>debug</code> 级别不用添加，默认就是 <code>debug</code> 级别<br><img src="/images/%E6%9C%8D%E5%8A%A1%E6%97%A5%E5%BF%97%E4%BC%98%E5%8C%963.png"></li>
+<li>也可以修改 <code>logback.xml</code> 文件，添加一个 <code>logger</code> 把日志打印到独立的文件中<br><img src="/images/%E6%9C%8D%E5%8A%A1%E6%97%A5%E5%BF%97%E4%BC%98%E5%8C%964.png"></li>
+</ol>
+<ul>
+<li>优化效果<br>入参、出参效果<br><img src="/images/%E6%9C%8D%E5%8A%A1%E6%97%A5%E5%BF%97%E4%BC%98%E5%8C%965.jpg"><br>方法调用链路、耗时效果<br><img src="/images/%E6%9C%8D%E5%8A%A1%E6%97%A5%E5%BF%97%E4%BC%98%E5%8C%966.jpg"><br>根据详细的入参、出参可以快速、准确的排查问题；根据调用链路和耗时可以来分析耗时长的接口，以及耗时的占比，找到最耗时的方法，从而进行优化</li>
+</ul>
+<h4 id="添加审计日志"><a href="#添加审计日志" class="headerlink" title="添加审计日志"></a>添加审计日志</h4><blockquote>
+<p>人员角色模块增加审计日志，上报ES，使用 kibana 展示，便于观察分析调用、排查问题，给出证据</p>
+</blockquote>
+<p><img src="/images/%E6%9C%8D%E5%8A%A1%E6%97%A5%E5%BF%97%E4%BC%98%E5%8C%967.jpg"></p>
+<h4 id="上报日志中心"><a href="#上报日志中心" class="headerlink" title="上报日志中心"></a>上报日志中心</h4><p>有时查问题前一天晚上有过发版，日志信息丢失，导致查询问题困难，针对这种情况把日志上报到日志中心的 Grafana Explore中</p>
+<hr>
+<p>把日志整体优化后，再也没有了以前的苦恼，有什么问题一目了然(<em>^▽^</em>)</p>
+]]></content>
+      <categories>
+        <category>优化</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>优化</tag>
       </tags>
   </entry>
   <entry>
@@ -3135,6 +3135,210 @@
       </tags>
   </entry>
   <entry>
+    <title>常用方法论总结</title>
+    <url>/2022/11/25/%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95%E8%AE%BA%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<h2 id="5WHY"><a href="#5WHY" class="headerlink" title="5WHY"></a>5WHY</h2><blockquote>
+<p>根因分析法</p>
+</blockquote>
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>根本原因分析的一种方法，所谓5why分析法，又称“5问法”，也就是对一个问题点连续以5个“为什么”来自问，以追究其根本原因。</p>
+<p>虽为5个为什么，但使用时不限定只做“5次为什么的探讨”，主要是必须找到根本原因为止，有时可能只要3次，有时也许要10次，如古话所言：打破砂锅问到底。</p>
+<p>5why法的关键所在：鼓励解决问题的人要努力避开主观或自负的假设和逻辑陷阱，从结果着手，沿着因果关系链条，顺藤摸瓜，直至找出原有问题的根本原因。</p>
+<h3 id="实施"><a href="#实施" class="headerlink" title="实施"></a>实施</h3><p>5WHY从三个层面来实施：</p>
+<p>一、为什么会发生？从“制造”的角度。</p>
+<p>二、为什么没有发现？从“检验”的角度。</p>
+<p>三、为什么没有从系统上预防事故？从“体系”或“流程”的角度。</p>
+<p>每个层面连续5次或N次的询问，得出最终结论。只有以上三个层面的问题都探寻出来，才能发现根本问题，并寻求解决。</p>
+<h3 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h3><p>丰田汽车公司前副社长大野耐一曾举了一个例子来找出停机的真正原因</p>
+<p>问题一：为什么机器停了？</p>
+<p>答案一：因为机器超载，保险丝烧断了。</p>
+<p>问题二：为什么机器会超载？</p>
+<p>答案二：因为轴承的润滑不足。</p>
+<p>问题三：为什么轴承会润滑不足？</p>
+<p>答案三：因为润滑泵失灵了。</p>
+<p>问题四：为什么润滑泵会失灵？</p>
+<p>答案四：因为它的轮轴耗损了。</p>
+<p>问题五：为什么润滑泵的轮轴会耗损？</p>
+<p>答案五：因为杂质跑到里面去了。</p>
+<p>经过连续五次不停地问“为什么”，才找到问题的真正原因和解决的方法，在润滑泵上加装滤网。</p>
+<p>如果员工没有以这种追根究底的精神来发掘问题，他们很可能只是换根保险丝草草了事，真正的问题还是没有解决。</p>
+<h2 id="5W1H-amp-5W2H"><a href="#5W1H-amp-5W2H" class="headerlink" title="5W1H&amp;5W2H"></a>5W1H&amp;5W2H</h2><blockquote>
+<p>问题分析法</p>
+</blockquote>
+<h3 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h3><p>5W+1H：也称<strong>六何分析法</strong>，是一种思考方法，也是一种创造技法。是对选定的项目、工序或操作，都要从原因（何因Why）、对象（何事What）、地点（何地Where）、时间（何时When）、人员（何人Who）、方法（何法How）等六个方面提出问题进行思考。</p>
+<p>1、<strong>对象 （What）</strong>——什么事情</p>
+<p>公司生产什么产品？车间生产什么零配件？为什么要生产这5W1H分析法思路个产品？能不能生产别的？我到底应该生产什么？例如:如果这个产品不挣钱，换个利润高点的好不好？</p>
+<p>2、<strong>场所 （Where）</strong>——什么地点</p>
+<p>生产是在哪里干的？为什么偏偏要在这个地方干？换个地方行不行？到底应该在什么地方干？这是选择工作场所应该考虑的。</p>
+<p>3、<strong>时间和程序 （When）</strong>——什么时候</p>
+<p>例如这个工序或者零部件是在什么时候干的？为什么要在这个时候干？能不能在其他时候干？把后工序提到前面行不行？到底应该在什么时间干？</p>
+<p>4、<strong>人员 （Who）</strong>——责任人</p>
+<p>这个事情是谁在干？为什么要让他干？如果他既不负责任，脾气又很大，是不是可以换个人？有时候换一个人，整个生产就有起色了。</p>
+<p>5、<strong>为什么（Why）</strong>——原因</p>
+<p>为什么采用这个技术参数？为什么不能有变动？为什么不能使用？为什么变成红色？为什么要做成这个形状？为什么采用机器代替人力？为什么非做不可？</p>
+<p>6、<strong>方式 （How）</strong>——如何</p>
+<p>手段也就是工艺方法，例如，我们是怎样干的？为什么用这种方法来干？有没有别的方法可以干？到底应该怎么干？有时候方法一改，全局就会改变。</p>
+<h3 id="5W2H"><a href="#5W2H" class="headerlink" title="5W2H"></a>5W2H</h3><p>5W2H分析法又叫<strong>七问分析法</strong>，是二战中美国陆军兵器修理部首创。简单、方便，易于理解、使用，富有启发意义，广泛用于企业管理和技术活动，对于决策执行性的活动措施也非常有帮助，也有助于弥补考虑问题的疏漏。增加一项How much</p>
+<h2 id="SWOT"><a href="#SWOT" class="headerlink" title="SWOT"></a>SWOT</h2><blockquote>
+<p>战略分析法</p>
+</blockquote>
+<h3 id="简介-2"><a href="#简介-2" class="headerlink" title="简介"></a>简介</h3><p>SWOT分析法（也称TOWS分析法、道斯矩阵）即态势分析法，帮您清晰地把握全局，分析自己在资源方面的优势与劣势，把握环境提供的机会，防范可能存在的风险与威胁，对我们的成功有非常重要的意义</p>
+<p>S （strengths）是优势、W （weaknesses）是劣势、O （opportunities）是机会、T （threats）是威胁</p>
+<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><p>SWOT分析法是基于内外部竞争环境和竞争条件下的态势分析，就是将与研究对象密切相关的各种主要内部优势、劣势和外部的机会和威胁等，通过调查列举出来，并依照矩阵形式排列，然后用系统分析的思想，把各种因素相互匹配起来加以分析，从中得出一系列相应的结论，而结论通常带有一定的决策性。</p>
+<p>运用这种方法，可以对研究对象所处的情景进行全面、系统、准确的研究，从而根据研究结果制定相应的发展战略、计划以及对策等。</p>
+<h2 id="STAR"><a href="#STAR" class="headerlink" title="STAR"></a>STAR</h2><h3 id="简介-3"><a href="#简介-3" class="headerlink" title="简介"></a>简介</h3><blockquote>
+<p>STAR 法则最早用于面试，后来演变为 STARR，最后一个 R 是反思/Reflection</p>
+<p>但 STARR 不仅适用于面试，也适用于工作小结，项目报告等各种场景</p>
+</blockquote>
+<p>所谓STAR原则，即Situation（情景）、Task（任务）、Action（行动）和Result（结果）四个英文单词的首字母组合，STARR则在STAR的基础上增加一个Reflection（反思）</p>
+<h3 id="应用场景-1"><a href="#应用场景-1" class="headerlink" title="应用场景"></a>应用场景</h3><p>常见汇报场景使用。运用STAR法则进行工作的描述，可以让对方迅速了解你整个项目的前因后果，同时，也可以突出你在这个项目过程中的计划、组织、分析解决问题等方面的能力，这是一个十分优秀的汇报方式，需要在实际工作中好好理解运用。</p>
+<p><strong>Situation</strong>：可以描述当时任务所处于的背景，任务类型是什么？为什么做这项任务？任务的紧迫程度怎么样？有多少人？项目排期多长等等，可以有效描述该任务的一些基本信息，使对方能够对项目有一个大致了解，方便继续进行沟通。</p>
+<p><strong>Task：</strong>明确你在这个任务过程中所承担的职责，团队分工怎么样？你承担哪一块角色？可以使对方快速了解到你的工作内容。</p>
+<p><strong>Action</strong>: 在具体的实施过程中，你采用了哪些手段，解决了哪些问题？可以使对方快速了解到你的业务能力以及工作难度等。</p>
+<p><strong>Result：</strong>最终取得了什么样的结果。是你对该项任务的总结，这是一个可以量化的指标，用于度量工作成果。</p>
+<h2 id="SMART"><a href="#SMART" class="headerlink" title="SMART"></a>SMART</h2><blockquote>
+<p>目标管理</p>
+</blockquote>
+<h3 id="简介-4"><a href="#简介-4" class="headerlink" title="简介"></a>简介</h3><p>目标管理中需要遵循的原则，分别由Specific(具体的)、Measurable(可衡量)、Attainable（可达到）、Relevant（相关性）、Time－based（明确的截止期限）五个词组组成；</p>
+<p>SMART通俗解读：把（什么对象），在（什么时间），通过（什么何种方法/手段），达到（什么状态）。</p>
+<h3 id="具体介绍"><a href="#具体介绍" class="headerlink" title="具体介绍"></a>具体介绍</h3><ol>
+<li>目标必须是具体的（Specific）stresses the need for a specific goal over and against a more general one. </li>
+<li>目标必须是可以衡量的（Measurable）stresses the need for concrete criteria for measuring progress toward the attainment of the goal.</li>
+<li>目标必须是可以达到的（Attainable）stresses the importance of goals that are realistic and attainable. </li>
+<li>目标必须和总体目标具有相关性（Relevant）stresses the importance of choosing goals that matter. </li>
+<li>目标必须具有明确的截止期限（Time-bound）stresses the importance of grounding goals within a time frame, giving them a target date.</li>
+</ol>
+<h3 id="应用场景-2"><a href="#应用场景-2" class="headerlink" title="应用场景"></a>应用场景</h3><p>SMART原则是一项制定合适目标的目标管理工具</p>
+<p>人们在制定工作目标或者任务目标时，考虑一下目标与计划是不是SMART化的。只有具备SMART化的计划才是具有良好可实施性的，也才能指导保证计划得以实现</p>
+<h2 id="PDCA"><a href="#PDCA" class="headerlink" title="PDCA"></a>PDCA</h2><blockquote>
+<p>流程管理</p>
+</blockquote>
+<h3 id="简介-5"><a href="#简介-5" class="headerlink" title="简介"></a>简介</h3><p><strong>PDCA（Plan-Do-Check-Adjust，中文为计划-执行-检核-调整）</strong>是一种循环式品质管理的过程，通过计划、执行、检核、调整四阶段来提高生产品质，改善生产过程，确保目标能够达成。这个概念是由美国现代产品品质控制的始祖爱德华兹·戴明（Edwards Deming）提出的，也被称为戴明环（Deming Wheel）。这个循环后续衍生了其他版本，如Plan-Do-Study-Act（PDSA）、Observation-Plan-Do-Study-Act（OPDCA）。</p>
+<ul>
+<li><strong>计划（Plan）：</strong>识别和理解当前的问题或机会，根据已有的信息和想法，建立一个明确的目标，并制定相关计划，确定必要的程序，进行组织分工，并确定好成功标准以及如何衡量执行结果与目标的差距。</li>
+<li><strong>执行（Do）：</strong>先通过小规模试点进行安全测试，执行之前所制定的计划和程序，收集必要的信息来为下一步进行检验和调整提供依据。</li>
+<li><strong>检核（Check）：</strong>研究上一步收集的信息，和预期的目标进行比较，通过列表或数据图显示出执行结果与预期结果的差距，并提出修改方案。</li>
+<li><strong>调整（Adjust）：</strong>寻找适当的方法来缩减执行结果与计划目标之间的差距，有时会提出更详细的计划要求，来使得下一次重新执行循环时步骤更容易执行。</li>
+</ul>
+<h3 id="意义"><a href="#意义" class="headerlink" title="意义"></a>意义</h3><p>PDCA循环是一个持续改进模型，适用于日常工作和项目执行，生活中也适用</p>
+<p>每一项工作，都是一个pdca循环，都需要计划、实施、检查结果，并进一步进行改进，同时进入下一个循环，只有在日积月累的渐进改善中，才可能会有质的飞跃，才可能取得完善每一项工作。</p>
+<h2 id="SCQA"><a href="#SCQA" class="headerlink" title="SCQA"></a>SCQA</h2><blockquote>
+<p>结构化表达</p>
+</blockquote>
+<h3 id="简介-6"><a href="#简介-6" class="headerlink" title="简介"></a>简介</h3><p>SCQA模型是一个“结构化表达”工具，是麦肯锡咨询顾问芭芭拉·明托在《金字塔原理》中提出的。</p>
+<p><strong>S（Situation）情景</strong>——由大家都熟悉的情景、事实引入。<br><strong>C（Complication）冲突</strong>——实际情况往往和我们的要求有冲突。<br><strong>Q（Question）疑问</strong>——怎么办？<br><strong>A（Answer）回答</strong>——我们的解决方案是……</p>
+<p>S情景陈述的通常是大家都熟悉的事，普遍认同的事，事情发生的背景。由此切入既不突兀又容易让大家产生共鸣，产生代入感，然后引出冲突C。Q是疑问，是根据前面的冲突从对方的角度提出他所关心的问题，最后A解答，是对Q的回答也是接下来我们要表达的中心思想。</p>
+<p>整个结构其实是形成良好的沟通氛围，然后带出冲突和疑问，最后提供可行的解决方案。</p>
+<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><ul>
+<li><p>常用于广告文案</p>
+<p>得了灰指甲——陈述背景S<br>一个传染俩——在这个背景下发生了冲突C<br>问我怎么办？——站在对方的角度，提出疑惑Q<br>马上用亮甲！——给出解决方案A，这是文案要表达的重点</p>
+<p>很多广告用的都是这个套路：用一个观众已经知道的“故事”来建立跟观众的链接（他们有这方面的背景经历和情感痛点），接着用冲突引起共鸣，最后用问题引出解决方案——快买我们的产品！</p>
+</li>
+<li><p>用于开场白、表达</p>
+<table>
+<thead>
+<tr>
+<th>用于开场白：</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>S：situation（情景）</td>
+<td>从我行实行企业业务专营模式以来，业务实现了快速增长，</td>
+</tr>
+<tr>
+<td>C：complication（冲突）</td>
+<td>但小企业客户资金自身平衡问题成了制约业务进一步发展的瓶颈</td>
+</tr>
+<tr>
+<td>Q：question（疑问）</td>
+<td>如何实现我行企业业务的可持续发展？</td>
+</tr>
+<tr>
+<td>A：answer（回答）</td>
+<td>我部计划面向客户推介xxx方案，实现业务联动、多方共赢。</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>用于自我反思</p>
+<table>
+<thead>
+<tr>
+<th>用于自我反思：</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>S：situation（情景）</td>
+<td>我觉察到一天里只要我面对手机的时间偏长</td>
+</tr>
+<tr>
+<td>C：complication（冲突）</td>
+<td>就会出现效率底下，皮肤状态也不太好的情况。</td>
+</tr>
+<tr>
+<td>Q：question（疑问）</td>
+<td>手机就是一个黑洞，是一个浪费时间的坑，我该如何改变，避免掉入这样的坑呢？</td>
+</tr>
+<tr>
+<td>A：answer（回答）</td>
+<td>尽可能把零碎需要用手机的事情比如刷微博、逛淘宝、翻小红书、回微信、看闲鱼、查看手机短信……这类一打开手机就容易出现连锁反应不知不觉就浪费时间的APP都放在一个文件夹，然后集中在一个时间段查看，比如晚上泡脚的一小时里。其他时间有意识地觉察提醒自己不要翻看。</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h2 id="RACI"><a href="#RACI" class="headerlink" title="RACI"></a>RACI</h2><blockquote>
+<p>事情管理</p>
+</blockquote>
+<h3 id="简介-7"><a href="#简介-7" class="headerlink" title="简介"></a>简介</h3><p>在快速发展的过程中，会不时的冒出一些之前没有明确界定的事情，往往产生一些看似大家都在负责，事实上无人负责的事情。RACI模型对快速发展的我们的最重要的启发是：每件事都要尽早确定谁负责，也就是确定R。</p>
+<p>RACI的一个扩展，RASCI，是更加全面及适用我们的情况的。</p>
+<p><strong>谁负责（R = Responsible）</strong>：负责执行任务的角色，具体负责操控项目、解决问题。</p>
+<p><strong>谁批准（A = Accountable）</strong>：对任务负全责的角色，只有经其同意或签署之后，项目才能得以进行。</p>
+<p><strong>谁支持（S = Support）</strong>：参与具体任务，协助R完成工作的角色。</p>
+<p><strong>咨询谁（C = Consulted）</strong>：在任务实施前或中提供指定性意见的人员。</p>
+<p><strong>告知谁（I = Informed）</strong>：及时被通知结果的人员，不必向其咨询、征求意见。</p>
+<h2 id="房子图"><a href="#房子图" class="headerlink" title="房子图"></a>房子图</h2><blockquote>
+<p>战略卡片</p>
+</blockquote>
+<h3 id="简介-8"><a href="#简介-8" class="headerlink" title="简介"></a>简介</h3><p>战略卡片的样式即老板们常用的”房子图“</p>
+<p>所谓房子图：其实是一种思维工具，通过从上向下的拆解，以负责人的视角分析手中的业务，最终解决“如何做”的问题。</p>
+<p>做好一件事最重要的原则是做正确的事，而做正确的事最有效的方法之一，是从负责人的视角，通过完整的信息梳理，想清楚这件事的规划——这便是房子图的作用。</p>
+<h3 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h3><p>战略卡片包含4层结构，遵循金字塔原理逐层展开</p>
+<ul>
+<li><p>第一层：使命与愿景</p>
+<p>所谓使命，就是你为什么要做这件事，或者说为什么要做这个产品。</p>
+<p>所谓愿景，就是你期望中这件事/这个产品的理想状态是什么。</p>
+<p>使命能让我们在做规划的时候，知道手头这件事的价值。明白了价值，才能从源头上产生驱动力。愿景能让我们知道目的地在哪里，知道了目的地，才能规划出一个合理的路径。</p>
+</li>
+<li><p>第二层：价值</p>
+<p>价值又分成3个子卡片：客户价值；我们的核心能力/成功要素；如何评估我们提供了这些价值。</p>
+</li>
+<li><p>第三层：同业竞争</p>
+<p>对比企业外部市场环境和内部能力现状</p>
+</li>
+<li><p>第四层：战略规划</p>
+<p>战略规划与3年目标：以更长远的角度，凝练我们接下来一段时间的努力方向及目标；</p>
+<p>复盘及1年目标：复盘上一阶段的目标、结果、原因、经验，提出未来1年我们的短期目标是什么，兼顾定量和定性；兼顾自评与他评；兼顾效率与效果</p>
+<p>关键策略：将实现未来1年的目标的策略和路径进行提炼和规划</p>
+</li>
+</ul>
+<p><strong>HR房子图：</strong></p>
+<p><img src="/images/image-20221121113913810.png" alt="image-20221121113913810"></p>
+<h2 id="海恩法则"><a href="#海恩法则" class="headerlink" title="海恩法则"></a>海恩法则</h2><h3 id="简介-9"><a href="#简介-9" class="headerlink" title="简介"></a>简介</h3><p>海恩法则：<strong>任何不安全事故都是可以预防的</strong>。</p>
+<p>海恩法则是德国飞机涡轮机的发明者德国人帕布斯•海恩提出的一个在航空界关于飞行安全的法则。海恩法则指出: 每一起严重事故的背后，必然有29次轻微事故和300起未遂先兆以及1000起事故隐患。</p>
+<p>虽然这一分析会随着飞行器的安全系数增加和飞行器的总量变化而发生变化，但它确实说明了飞行安全与事故隐患之间的必然联系。当然，这种联系不仅仅表现在飞行领域，在其他领域也同样发生着潜在的作用。</p>
+<p>按照海恩法则分析，当一起重大事故发生后，我们在处理事故本身的同时，还要及时对同类问题的“事故征兆”和“事故苗头”进行排查处理，以此防止类似问题的重复发生，及时解决再次发生重大事故的隐患，把问题解决在萌芽状态。</p>
+<h3 id="关键点"><a href="#关键点" class="headerlink" title="关键点"></a>关键点</h3><p>海恩法则强调两点：</p>
+<p>一是事故的发生是量的积累的结果</p>
+<p>二是再好的技术，再完美的规章，在实际操作层面，也无法取代人自身的素质和责任心</p>
+]]></content>
+      <categories>
+        <category>方法论</category>
+      </categories>
+      <tags>
+        <tag>方法论</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>单元测试-Spock</title>
     <url>/2021/08/25/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Spock/</url>
     <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>单元测试的重要性不言而喻，但在实际开发中单元测试往往都是缺失的，原因有很多，其中比较重要的一点是工期短、写单测耗时长</p>
@@ -3620,7 +3824,7 @@
 </li>
 <li>解析 javaagent 中 MANIFEST.MF 文件的参数，并根据这些参数来设置 JPLISAgent 里的一些内容。</li>
 </ol>
-<img src="https://img2020.cnblogs.com/blog/1071038/202101/1071038-20210112143707325-1984756789.png" />
+<img src="/images/1071038-20210112143707325-1984756789.png" />
 
 <h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3><ol>
 <li><p>参数解析</p>
@@ -3656,7 +3860,7 @@
 <li>监听 ClassFileLoadHook 事件；</li>
 <li>调用 InstrumentationImpl 的loadClassAndCallAgentmain方法，在这个方法里会去调用javaagent里 MANIFEST.MF 里指定的Agent-Class类的agentmain方法。</li>
 </ol>
-<img src="https://img2020.cnblogs.com/blog/1071038/202101/1071038-20210112143615738-1489695442.png"/>
+<img src="/images/1071038-20210112143615738-1489695442.png"/>
 
 <h3 id="Attach-1"><a href="#Attach-1" class="headerlink" title="Attach"></a>Attach</h3><blockquote>
 <p>动态Agent是通过Attach机制来加载，下面分析下Attach原理</p>

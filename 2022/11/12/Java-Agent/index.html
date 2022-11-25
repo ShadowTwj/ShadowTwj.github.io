@@ -134,10 +134,10 @@
 <meta property="og:image" content="http://yoursite.com/images/image-20221112180722715.png">
 <meta property="og:image" content="http://yoursite.com/images/image-20221112182332843.png">
 <meta property="og:image" content="http://yoursite.com/images/image-20221112182533197.png">
-<meta property="og:image" content="https://img2020.cnblogs.com/blog/1071038/202101/1071038-20210112143707325-1984756789.png">
-<meta property="og:image" content="https://img2020.cnblogs.com/blog/1071038/202101/1071038-20210112143615738-1489695442.png">
+<meta property="og:image" content="http://yoursite.com/images/1071038-20210112143707325-1984756789.png">
+<meta property="og:image" content="http://yoursite.com/images/1071038-20210112143615738-1489695442.png">
 <meta property="article:published_time" content="2022-11-12T10:36:35.000Z">
-<meta property="article:modified_time" content="2022-11-12T10:49:13.048Z">
+<meta property="article:modified_time" content="2022-11-25T08:21:53.471Z">
 <meta property="article:author" content="tianwj">
 <meta property="article:tag" content="Java">
 <meta property="article:tag" content="JVM">
@@ -663,7 +663,7 @@
 </li>
 <li>解析 javaagent 中 MANIFEST.MF 文件的参数，并根据这些参数来设置 JPLISAgent 里的一些内容。</li>
 </ol>
-<img src="https://img2020.cnblogs.com/blog/1071038/202101/1071038-20210112143707325-1984756789.png" />
+<img src="/images/1071038-20210112143707325-1984756789.png" />
 
 <h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3><ol>
 <li><p>参数解析</p>
@@ -699,7 +699,7 @@
 <li>监听 ClassFileLoadHook 事件；</li>
 <li>调用 InstrumentationImpl 的loadClassAndCallAgentmain方法，在这个方法里会去调用javaagent里 MANIFEST.MF 里指定的Agent-Class类的agentmain方法。</li>
 </ol>
-<img src="https://img2020.cnblogs.com/blog/1071038/202101/1071038-20210112143615738-1489695442.png"/>
+<img src="/images/1071038-20210112143615738-1489695442.png"/>
 
 <h3 id="Attach-1"><a href="#Attach-1" class="headerlink" title="Attach"></a>Attach</h3><blockquote>
 <p>动态Agent是通过Attach机制来加载，下面分析下Attach原理</p>
@@ -821,6 +821,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2022/11/25/%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95%E8%AE%BA%E6%80%BB%E7%BB%93/" rel="prev" title="常用方法论总结">
+                常用方法论总结 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -989,7 +993,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-count">45</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1000,7 +1004,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
