@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="https://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.loli.net/css?family=Sigmar One:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" type="text/css" />
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/social-share.js/1.0.9/css/share.min.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.0.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=0.0.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=0.0.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=0.0.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="DDD," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Tianwj's blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="前言DDD更重要的是战略设计，DDD分层架构只是实现DDD的一种方式，但不限这一种，如六边形架构、整洁架构等。 六边形架构、整洁架构、DDD分层架构，虽然表现形式不同，但是设计思想都是相同的，都是以领域模型为中心，都体现了高内聚低耦合原则。 下面对比六边形架构、整洁架构、DDD分层架构三种架构模型，以及DDD分层架构的代码结构、命名规则。 六边形架构 六边形架构是Alistair Cockburn">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DDD-分层架构">
+<meta property="og:url" content="http://yoursite.com/2023/03/01/DDD-%E5%88%86%E5%B1%82%E6%9E%B6%E6%9E%84/index.html">
+<meta property="og:site_name" content="Tianwj&#39;s blog">
+<meta property="og:description" content="前言DDD更重要的是战略设计，DDD分层架构只是实现DDD的一种方式，但不限这一种，如六边形架构、整洁架构等。 六边形架构、整洁架构、DDD分层架构，虽然表现形式不同，但是设计思想都是相同的，都是以领域模型为中心，都体现了高内聚低耦合原则。 下面对比六边形架构、整洁架构、DDD分层架构三种架构模型，以及DDD分层架构的代码结构、命名规则。 六边形架构 六边形架构是Alistair Cockburn">
+<meta property="og:locale">
+<meta property="og:image" content="http://yoursite.com/images/85fb9fb2782b343d45b4ca18c8f21e6c.png">
+<meta property="og:image" content="http://yoursite.com/images/fc8208d9f4cfadb7949d6e98a8c18442.png">
+<meta property="og:image" content="http://yoursite.com/images/webp">
+<meta property="og:image" content="http://yoursite.com/images/1a4e5210301a669f74bff8801e3d9e1d.png">
+<meta property="og:image" content="http://yoursite.com/images/1680723ca91aa57d719d5cdbc1d910a1.jpg">
+<meta property="og:image" content="http://yoursite.com/images/webp-20230228194601354">
+<meta property="og:image" content="http://yoursite.com/images/webp-20230228194615167">
+<meta property="og:image" content="http://yoursite.com/images/b2e4dad1040857b5aedf0b1675ae4171.png">
+<meta property="og:image" content="http://yoursite.com/images/c6ea040a520c91dfe6400f206ff36fef.jpg">
+<meta property="og:image" content="http://yoursite.com/images/30caee3ceaf1085b7aa2cc388f996e61.jpg">
+<meta property="og:image" content="http://yoursite.com/images/688dd55b8399779baff8fc5b7c124c2c.jpg">
+<meta property="og:image" content="http://yoursite.com/images/5bbe3454e2ecf4ff4770e887a4967b5a.jpg">
+<meta property="og:image" content="http://yoursite.com/images/54fbb2fb43166d22431bc9244c7930fd9152d2f2.png">
+<meta property="article:published_time" content="2023-03-01T08:09:43.000Z">
+<meta property="article:modified_time" content="2023-04-16T14:07:54.120Z">
+<meta property="article:author" content="tianwj">
+<meta property="article:tag" content="DDD">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/85fb9fb2782b343d45b4ca18c8f21e6c.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Pisces',
+    version: '0.0.4',
+    sidebar: {"position":"right","display":"always","offset":52,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    since: '2/9/2014 11:30:00',
+    onlineAPI: '',
+    site: {
+      title: "",
+      subtitle: '',
+      author: ''
+    },
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    leancloud: {
+      enable: false,
+      appID: '',
+      appKey: ''
+    },
+    favicon: {
+      visibilitychange: true,
+      narmal: '/images/favicon.ico',
+      hidden: '/images/failure.ico',
+      show_text: '(/≧▽≦/)咦！又好了！',
+      hide_text: '(●—●)喔哟，崩溃啦！'
+    }
+  };
+</script>
+
+
+
+  
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.1.3/jquery.min.js"></script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2023/03/01/DDD-分层架构/"/>
+
+
+
+
+
+  <title>DDD-分层架构 | Tianwj's blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-48084758-7', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-留言板">
+          <a href="/message/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-pencil"></i> <br />
+            
+            留言板
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+      <li class="menu-item search">
+          <form class="search-form">
+            <input name="keyword" type="text" class="search-input" placeholder="站内搜索">
+            <button type="submit" class="search-submit"><i class="fa fa-search"></i></button>
+          </form>
+      </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+<div class="site-brand-wrapper" style="background-image: url(/images/header3.jpg)">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <div class="brand">
+        <span class="logo-line-before"><i></i></span>
+        <div class="site-title">
+          <div id="animate" class="animate">
+            <span>T</span><span>i</span><span>a</span><span>n</span><span>w</span><span>j</span><span>'</span><span>s</span><span> </span><span>b</span><span>l</span><span>o</span><span>g</span>
+          </div>
+          <div id="guide" class="guide">
+            <span>T</span><span>i</span><span>a</span><span>n</span><span>w</span><span>j</span><span>'</span><span>s</span><span> </span><span>b</span><span>l</span><span>o</span><span>g</span>
+          </div>
+        </div>
+        <span class="logo-line-after"><i></i></span>
+      </div>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+<div class="site-master" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-master-avatar" itemprop="image" src="/images/WechatIMG48.jpeg" alt="" />
+    <h2 class="site-master-description" itemprop="description">
+        
+    </h2>
+</div>
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-date">
+			<div class="post-month">03月</div>
+			<div class="post-day">01</div>
+	</div>
+  
+  <div class="post-badge">
+    
+      <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+        <a href="/categories/DDD/" itemprop="url" rel="index">
+          <span itemprop="name">DDD</span>
+        </a>
+      </span>
+    
+  </div>
+  
+
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/03/01/DDD-%E5%88%86%E5%B1%82%E6%9E%B6%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/WechatIMG48.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tianwj's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">DDD-分层架构</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-03-01T16:09:43+08:00">
+                2023-03-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <span class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">•</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>DDD更重要的是战略设计，DDD分层架构只是实现DDD的一种方式，但不限这一种，如六边形架构、整洁架构等。</p>
+<p>六边形架构、整洁架构、DDD分层架构，虽然表现形式不同，但是设计思想都是相同的，都是以领域模型为中心，都体现了高内聚低耦合原则。</p>
+<p>下面对比六边形架构、整洁架构、DDD分层架构三种架构模型，以及DDD分层架构的代码结构、命名规则。</p>
+<h1 id="六边形架构"><a href="#六边形架构" class="headerlink" title="六边形架构"></a>六边形架构</h1><p><img src="/images/85fb9fb2782b343d45b4ca18c8f21e6c.png" alt="img"></p>
+<p>六边形架构是Alistair Cockburn在2005年提出的，它把系统分为内部和外部。内部代表业务逻辑，外部代表业务逻辑的入口调用和底层依赖。</p>
+<p>不同形态的外部要顺利访问到内部之前，或者内部需要依赖外部之前都需要经过必要的适配实现。因此六边形架构又名<strong>端口适配器架构。</strong></p>
+<p>因为端口可能有多个，比如入口侧有用户界面、API、命令行、消息流、甚至是系统定时任务脚本等方式访问内部业务逻辑，出口侧可能会依赖数据库、缓存系统、中间件系统、外部应用系统等等，因此架构图就是一个多边形形状，只是六个端口比较形象因而得名为六边形架构。</p>
+<h2 id="各层职能"><a href="#各层职能" class="headerlink" title="各层职能"></a>各层职能</h2><p>六边形架构将系统分为内六边形和外六边形两层，这两层的职能划分如下：</p>
+<ul>
+<li>红圈内的六边形实现应用的核心业务逻辑。</li>
+<li>外六边形完成外部应用、驱动和基础资源等的交互和访问，对前端应用以API主动适配的方式提供服务，对基础资源以依赖倒置被动适配的方式实现资源访问。</li>
+</ul>
+<h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><ul>
+<li><p>对分层做了进一步明确，隔离了内部的业务逻辑和外部的主动或被动的依赖。很好地体现了DDD的思想，分开了业务和技术实现。带来很多好处，比如可测试性高，外部可替代性高。</p>
+</li>
+<li><p>解决了业务逻辑不应该依赖基础设施层的问题，实现了依赖倒置，即外部各适配器依赖内部的端口，适配器是对端口的实现。</p>
+</li>
+</ul>
+<h1 id="整洁架构"><a href="#整洁架构" class="headerlink" title="整洁架构"></a>整洁架构</h1><p><img src="/images/fc8208d9f4cfadb7949d6e98a8c18442.png" alt="img"></p>
+<p>整洁架构又名“洋葱架构”。从外部到内部每层都用圆圈表示，因为架构图很像洋葱而得名。</p>
+<p>洋葱架构是2008年Jeffrey Palermo结合六边形架构和DDD提出的，在洋葱架构里，同心圆代表应用软件的不同部分，从里到外依次是领域模型、领域服务、应用服务和最外围的容易变化的内容，比如用户界面和基础设施。</p>
+<p>整洁架构最主要的原则是依赖原则，它定义了各层的依赖关系，越往里依赖越低，代码级别越高，越是核心能力。外圆代码依赖只能指向内圆，内圆不需要知道外圆的任何情况。</p>
+<h2 id="各层职能-1"><a href="#各层职能-1" class="headerlink" title="各层职能"></a>各层职能</h2><p>在洋葱架构中，各层的职能是这样划分的：</p>
+<ul>
+<li>领域模型实现领域内核心业务逻辑，它封装了企业级的业务规则。领域模型的主体是实体，一个实体可以是一个带方法的对象，也可以是一个数据结构和方法集合。</li>
+<li>领域服务实现涉及多个实体的复杂业务逻辑。</li>
+<li>应用服务实现与用户操作相关的服务组合与编排，它包含了应用特有的业务流程规则，封装和实现了系统所有用例。</li>
+<li>最外层主要提供适配的能力，适配能力分为主动适配和被动适配。主动适配主要实现外部用户、网页、批处理和自动化测试等对内层业务逻辑访问适配。被动适配主要是实现核心业务逻辑对基础资源访问的适配，比如数据库、缓存、文件系统和消息中间件等。</li>
+<li>红圈内的领域模型、领域服务和应用服务一起组成软件核心业务能力。</li>
+</ul>
+<h1 id="DDD分层架构"><a href="#DDD分层架构" class="headerlink" title="DDD分层架构"></a>DDD分层架构</h1><h2 id="四层架构"><a href="#四层架构" class="headerlink" title="四层架构"></a>四层架构</h2><p><img src="/images/webp" alt="img"><img src="/images/1a4e5210301a669f74bff8801e3d9e1d.png" alt="image.png"></p>
+<p>从上到下依次是：用户接口层、应用层、领域层和基础设施层。</p>
+<p>四层架构是<strong>限定型松散分层架构</strong>，即Infrastructure层的任意上层都可以访问该层（“L”型），而其它层遵守<strong>严格分层架构</strong>。</p>
+<h3 id="各层职能-2"><a href="#各层职能-2" class="headerlink" title="各层职能"></a>各层职能</h3><ul>
+<li><p><strong>用户接口层：</strong></p>
+<p>用户接口层负责向用户显示信息和解释用户指令。这里的用户可能是：用户、程序、自动化测试和批处理脚本等等。</p>
+</li>
+<li><p><strong>应用层：</strong></p>
+<p>应用层是很薄的一层，理论上不应该有业务规则或逻辑，主要面向用例和流程相关的操作。但应用层又位于领域层之上，因为领域层包含多个聚合，所以它可以协调多个聚合的服务和领域对象完成服务编排和组合，协作完成业务操作。</p>
+<p>此外，应用层也是微服务之间交互的通道，它可以调用其它微服务的应用服务，完成微服务之间的服务组合和编排。</p>
+</li>
+<li><p><strong>领域层：</strong></p>
+<p>领域层的作用是实现企业核心业务逻辑，通过各种校验手段保证业务的正确性。领域层主要体现领域模型的业务能力，它用来表达业务概念、业务状态和业务规则。</p>
+<p>领域层包含聚合根、实体、值对象、领域服务等领域模型中的领域对象。</p>
+</li>
+<li><p><strong>基础设施层：</strong></p>
+<p>基础层是贯穿所有层的，它的作用就是为其它各层提供通用的技术和基础服务，包括第三方工具、驱动、消息中间件、网关、文件、缓存以及数据库等。比较常见的功能还是提供数据库持久化。</p>
+<p>基础层包含基础服务，它采用依赖倒置设计，封装基础资源服务，实现应用层、领域层与基础层的解耦，降低外部资源变化对应用的影响。</p>
+</li>
+</ul>
+<h3 id="三层架构与四层架构对应"><a href="#三层架构与四层架构对应" class="headerlink" title="三层架构与四层架构对应"></a>三层架构与四层架构对应</h3><p>传统三层架构，如何演进到四层架构，可以参考下图对应关系：</p>
+<p><img src="/images/1680723ca91aa57d719d5cdbc1d910a1.jpg" alt="img"></p>
+<p>三层架构向DDD分层架构演进，主要发生在业务逻辑层和数据访问层。</p>
+<p>DDD分层架构对三层架构的业务逻辑层进行了更清晰的划分，改善了三层架构核心业务逻辑混乱，代码改动相互影响大的情况。DDD分层架构将业务逻辑层的服务拆分到了应用层和领域层。应用层快速响应前端的变化，领域层实现领域模型的能力。</p>
+<p>另外一个重要的变化发生在数据访问层和基础层之间。三层架构数据访问采用DAO方式；DDD分层架构的数据库等基础资源访问，采用了仓储（Repository）设计模式，通过依赖倒置实现各层对基础资源的解耦。</p>
+<p>仓储又分为两部分：仓储接口和仓储实现。仓储接口放在领域层中，仓储实现放在基础层。原来三层架构通用的第三方工具包、驱动、Common、Utility、Config等通用的公共的资源类统一放到了基础层。</p>
+<h2 id="五层架构"><a href="#五层架构" class="headerlink" title="五层架构"></a>五层架构</h2><p>五层架构是基于四层架构和DCI架构扩展而来的，先了解一下DCI架构</p>
+<h3 id="DCI"><a href="#DCI" class="headerlink" title="DCI"></a>DCI</h3><p>James O. Coplien和Trygve Reenskaug在2009年发表了一篇论文《DCI架构：面向对象编程的新构想》，标志着DCI架构模式的诞生。</p>
+<p>DCI是数据Data 场景Context 交互Interactions的简称，DCI是一种特别关注行为的模式(可以对应GoF行为模式)，而MVC模式是一种结构性模式，MVC模式由于结构化，而可能忽视了行为事件。</p>
+<p>DCI目前广泛被看作是对DDD的一种发展和补充，用在基于面向对象的领域建模上。</p>
+<p>DCI 包括三层架构：</p>
+<ul>
+<li><p><strong>Data层：</strong></p>
+<p>述系统有哪些领域概念及其之间的关系，该层专注于领域对象的确立和这些对象的生命周期管理及关系，让程序员站在对象的角度思考系统，从而让“系统是什么”更容易被理解。</p>
+</li>
+<li><p><strong>Context层：</strong></p>
+<p>是尽可能薄的一层。Context往往被实现得无状态，只是找到合适的role，让role交互起来完成业务逻辑即可。但是简单并不代表不重要，显示化context层正是为人去理解软件业务流程提供切入点和主线。</p>
+</li>
+<li><p><strong>Interactive层：</strong></p>
+<p>主要体现在对role的建模，role是每个context中复杂的业务逻辑的真正执行者，体现“系统做什么”。role所做的是对行为进行建模，它联接了context和领域对象。由于系统的行为是复杂且多变的，role使得系统将稳定的领域模型层和多变的系统行为层进行了分离，由role专注于对系统行为进行建模。该层往往关注于系统的可扩展性，更加贴近于软件工程实践，在面向对象中更多的是以类的视角进行思考设计。</p>
+</li>
+</ul>
+<p>引入DCI后，DDD四层架构模式中的Domain层变薄了，以前Domain层对应DCI中的三层，而现在：</p>
+<ol>
+<li>Domain层只保留了DCI中的Data层和Interaction层，我们在实践中通常将这两层使用目录隔离，即通过两个目录object和role来分离层Data和Interaction</li>
+<li>DCI中的Context层从Domain层上移变成Context层</li>
+</ol>
+<p>因此，DDD分层架构模式就变成了五层，如下：</p>
+<p><img src="/images/webp-20230228194601354" alt="img"></p>
+<h3 id="各层职能-3"><a href="#各层职能-3" class="headerlink" title="各层职能"></a>各层职能</h3><ul>
+<li><p><strong>用户接口层：</strong></p>
+<p>主要用于处理用户发送的Restful请求和解析用户输入的配置文件等，并将信息传递给Application层的接口。</p>
+</li>
+<li><p><strong>应用层：</strong></p>
+<p>负责多进程管理及调度、多线程管理及调度、多协程调度和维护业务实例的状态模型。当调度层收到用户接口层的请求后，委托Context层与本次业务相关的上下文进行处理。</p>
+</li>
+<li><p><strong>环境层：</strong></p>
+<p>以上下文为单位，将Domain层的领域对象cast成合适的role，让role交互起来完成业务逻辑。</p>
+</li>
+<li><p><strong>领域层：</strong></p>
+<p>定义领域模型，不仅包括领域对象及其之间关系的建模，还包括对象的角色role的显式建模。</p>
+</li>
+<li><p><strong>基础实施层：</strong></p>
+<p>为其他层提供通用的技术能力：业务平台，编程框架，持久化机制，消息机制，第三方库的封装，通用算法，等等。</p>
+</li>
+</ul>
+<h2 id="六层架构"><a href="#六层架构" class="headerlink" title="六层架构"></a>六层架构</h2><p>在面向控制面或管理面且消息交互比较多的系统中，五层架构可以变体为六层架构，如下：</p>
+<p><img src="/images/webp-20230228194615167" alt="img"></p>
+<h3 id="各层职能-4"><a href="#各层职能-4" class="headerlink" title="各层职能"></a>各层职能</h3><ul>
+<li><p><strong>用户接口层：</strong></p>
+<p>主要用于处理用户发送的Restful请求和解析用户输入的配置文件等，并将信息传递给Scheduler层的接口。</p>
+</li>
+<li><p><strong>调度层：</strong></p>
+<p>负责多进程管理及调度、多线程管理及调度、多协程调度和维护业务实例的状态模型。当调度层收到用户接口层的请求后，委托Transaction层与本次操作相关的事务进行处理。</p>
+</li>
+<li><p><strong>事务层：</strong></p>
+<p>对应一个业务流程，比如UE Attach，将多个同步消息或异步消息的处理序列组合成一个事务，而且在大多场景下，都有选择结构。万一事务执行失败，则立即进行回滚。当事务层收到调度层的请求后，委托Context层的Action进行处理，常常还伴随使用Context层的Specification（谓词）进行Action的选择。</p>
+</li>
+<li><p><strong>环境层：</strong></p>
+<p>以Action为单位，处理一条同步消息或异步消息，将Domain层的领域对象cast成合适的role，让role交互起来完成业务逻辑。环境层通常也包括Specification的实现，即通过Domain层的知识去完成一个条件判断。</p>
+</li>
+<li><p><strong>领域层：</strong></p>
+<p>定义领域模型，不仅包括领域对象及其之间关系的建模，还包括对象的角色role的显式建模。</p>
+</li>
+<li><p><strong>基础实施层：</strong></p>
+<p>为其他层提供通用的技术能力：业务平台，编程框架，持久化机制，消息机制，第三方库的封装，通用算法，等等。</p>
+</li>
+</ul>
+<h1 id="三种架构对比分析"><a href="#三种架构对比分析" class="headerlink" title="三种架构对比分析"></a>三种架构对比分析</h1><p>虽然DDD分层架构、整洁架构、六边形架构的架构模型表现形式不一样，但这三种架构模型的核心思想是一致的，都是以领域模型为中心的设计思想，都完美体现了高内聚低耦合的原则。</p>
+<p><img src="/images/b2e4dad1040857b5aedf0b1675ae4171.png" alt="img"></p>
+<p>关注图中的红色线框，它们是非常重要的分界线，这三种架构里面都有，它的作用就是将核心业务逻辑与外部应用、基础资源进行隔离。</p>
+<p>红色框内部主要实现核心业务逻辑，但核心业务逻辑也是有差异的，有的业务逻辑属于领域模型的能力，有的则属于面向用户的用例和流程编排能力。按照这种功能的差异，我们在这三种架构中划分了应用层和领域层，来承担不同的业务逻辑。</p>
+<p>领域层实现面向领域模型，实现领域模型的核心业务逻辑，属于原子模型，它需要保持领域模型和业务逻辑的稳定，对外提供稳定的细粒度的领域服务，所以它处于架构的核心位置。</p>
+<p>应用层实现面向用户操作相关的用例和流程，对外提供粗粒度的API服务。它就像一个齿轮一样进行前台应用和领域层的适配，接收前台需求，随时做出响应和调整，尽量避免将前台需求传导到领域层。应用层作为配速齿轮则位于前台应用和领域层之间。</p>
+<h1 id="DDD分层架构代码结构"><a href="#DDD分层架构代码结构" class="headerlink" title="DDD分层架构代码结构"></a>DDD分层架构代码结构</h1><p>来自极客时间中的DDD实战课：<a target="_blank" rel="noopener" href="https://time.geekbang.org/column/article/165248">https://time.geekbang.org/column/article/165248</a></p>
+<p>按最常用的四层架构，目录结构如下：</p>
+<ol>
+<li><p>用户接口层</p>
+<p><img src="/images/c6ea040a520c91dfe6400f206ff36fef.jpg" alt="img"></p>
+<p><strong>Assembler：</strong>实现DTO与领域对象之间的相互转换和数据交换。一般来说Assembler与DTO总是一同出现。</p>
+<p><strong>Dto：</strong>它是数据传输的载体，内部不存在任何业务逻辑，我们可以通过DTO把内部的领域对象与外界隔离。</p>
+<p><strong>Facade：</strong>提供较粗粒度的调用接口，将用户请求委派给一个或多个应用服务进行处理。</p>
+</li>
+<li><p>应用层</p>
+<p><img src="/images/30caee3ceaf1085b7aa2cc388f996e61.jpg" alt="img"></p>
+<p><strong>Event（事件）：</strong>这层目录主要存放事件相关的代码。它包括两个子目录：publish 和 subscribe。前者主要存放事件发布相关代码，后者主要存放事件订阅相关代码（事件处理相关的核心业务逻辑在领域层实现）。</p>
+<blockquote>
+<p> 虽然应用层和领域层都可以进行事件的发布和处理，但为了实现事件的统一管理，建议将微服务内所有事件的发布和订阅的处理都统一放到应用层，事件相关的核心业务逻辑实现放在领域层。通过应用层调用领域层服务，来实现完整的事件发布和订阅处理流程。</p>
+</blockquote>
+<p><strong>Service（应用服务）：</strong>这层的服务是应用服务。应用服务会对多个领域服务或外部应用服务进行封装、编排和组合，对外提供粗粒度的服务。应用服务主要实现服务组合和编排，是一段独立的业务逻辑。</p>
+</li>
+<li><p>领域层</p>
+<p><img src="/images/688dd55b8399779baff8fc5b7c124c2c.jpg" alt="img"></p>
+<p><strong>Aggregate（聚合）：</strong>它是聚合软件包的根目录，可以根据实际项目的聚合名称命名，比如权限聚合。在聚合内定义聚合根、实体和值对象以及领域服务之间的关系和边界。聚合内实现高内聚的业务逻辑，它的代码可以独立拆分为微服务。</p>
+<p><strong>Entity（实体）：</strong>它存放聚合根、实体、值对象以及工厂模式（Factory）相关代码。实体类采用充血模型，同一实体相关的业务逻辑都在实体类代码中实现。跨实体的业务逻辑代码在领域服务中实现。</p>
+<p><strong>Event（事件）：</strong>它存放事件实体以及与事件活动相关的业务逻辑代码。</p>
+<p><strong>Service（领域服务）：</strong>它存放领域服务代码。一个领域服务是多个实体组合出来的一段业务逻辑。你可以将聚合内所有领域服务都放在一个领域服务类中，你也可以把每一个领域服务设计为一个类。如果领域服务内的业务逻辑相对复杂，我建议你将一个领域服务设计为一个领域服务类，避免由于所有领域服务代码都放在一个领域服务类中，而出现代码臃肿的问题。领域服务封装多个实体或方法后向上层提供应用服务调用。</p>
+<p><strong>Repository（仓储）：</strong>它存放所在聚合的查询或持久化领域对象的代码，通常包括仓储接口和仓储实现方法。为了方便聚合的拆分和组合，我们设定了一个原则：一个聚合对应一个仓储。</p>
+</li>
+<li><p>基础设施层</p>
+<p><img src="/images/5bbe3454e2ecf4ff4770e887a4967b5a.jpg" alt="img"></p>
+<p><strong>Config：</strong>主要存放配置相关代码。</p>
+<p><strong>Util：</strong>主要存放平台、开发框架、消息、数据库、缓存、文件、总线、网关、第三方类库、通用算法等基础代码，你可以为不同的资源类别建立不同的子目录。</p>
+</li>
+</ol>
+<p>还可以参考下面项目：</p>
+<ul>
+<li>COLA架构：<a target="_blank" rel="noopener" href="https://github.com/alibaba/COLA">https://github.com/alibaba/COLA</a></li>
+<li>DDD demo：<a target="_blank" rel="noopener" href="https://github.com/citerus/dddsample-core">https://github.com/citerus/dddsample-core</a></li>
+</ul>
+<h1 id="DDD分层架构命名规范"><a href="#DDD分层架构命名规范" class="headerlink" title="DDD分层架构命名规范"></a>DDD分层架构命名规范</h1><p>可以参考下面命名规范，来做到见名之意</p>
+<p><img src="/images/54fbb2fb43166d22431bc9244c7930fd9152d2f2.png" alt="img"></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/a775836c7e25?from=groupmessage">https://www.jianshu.com/p/a775836c7e25?from=groupmessage</a></li>
+<li><a target="_blank" rel="noopener" href="https://time.geekbang.org/column/article/156849">https://time.geekbang.org/column/article/156849</a></li>
+<li><a target="_blank" rel="noopener" href="https://baijiahao.baidu.com/s?id=1730410669695261834&amp;wfr=spider&amp;for=pc">https://baijiahao.baidu.com/s?id=1730410669695261834&amp;wfr=spider&amp;for=pc</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div class="post-share">分享到：</div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>赞赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt=" 微信扫一扫，向我赞赏"/>
+        <p>微信扫一扫，向我赞赏</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt=" 支付宝扫一扫，向我赞赏"/>
+        <p>支付宝扫一扫，向我赞赏</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/DDD/" rel="tag"><i class="fa fa-tag"></i> DDD</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2023/02/01/DDD-%E9%A2%86%E5%9F%9F%E4%BA%8B%E4%BB%B6/" rel="next" title="DDD-领域事件">
+                <i class="fa fa-chevron-left"></i> DDD-领域事件
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80NjMwOC8yMjgxOQ=="></div>
+    </div>
+
+  
+
+
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+   (function(d, s) {
+       var j, e = d.getElementsByTagName(s)[0];
+
+       if (typeof LivereTower === 'function') { return; }
+
+       j = d.createElement(s);
+       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+       j.async = true;
+
+       e.parentNode.insertBefore(j, e);
+   })(document, 'script');
+</script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/card3.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"><span style="opacity:.2;">咦咦</span>Tianwj</p>
+              <p class="site-description motion-element" itemprop="description">咿呀呀!</p>
+          </div>
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/ShadowTwj" target="_blank" title="GitHub" data-balloon="GitHub" data-balloon-pos="up">
+                    
+                      <i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://weibo.com/u/5545918663" target="_blank" title="微博" data-balloon="微博" data-balloon-pos="up">
+                    
+                      <i class="fa fa-fw fa-weibo"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://music.163.com/#/user/home?id=386702646" target="_blank" title="网易云音乐" data-balloon="网易云音乐" data-balloon-pos="up">
+                    
+                      <i class="fa fa-fw fa-music"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:646371601@qq.com" target="_blank" title="E-Mail" data-balloon="E-Mail" data-balloon-pos="up">
+                    
+                      <i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+            
+          </div>
+
+          
+            <div class="feed-link motion-element">
+              <a class="feed-rss" href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+            
+
+          </nav>
+
+          
+          
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.png" alt="Creative Commons" />
+              </a>
+            </div>
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%AD%E8%BE%B9%E5%BD%A2%E6%9E%B6%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">六边形架构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%84%E5%B1%82%E8%81%8C%E8%83%BD"><span class="nav-number">2.1.</span> <span class="nav-text">各层职能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E7%82%B9"><span class="nav-number">2.2.</span> <span class="nav-text">优点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B4%E6%B4%81%E6%9E%B6%E6%9E%84"><span class="nav-number">3.</span> <span class="nav-text">整洁架构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%84%E5%B1%82%E8%81%8C%E8%83%BD-1"><span class="nav-number">3.1.</span> <span class="nav-text">各层职能</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DDD%E5%88%86%E5%B1%82%E6%9E%B6%E6%9E%84"><span class="nav-number">4.</span> <span class="nav-text">DDD分层架构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E5%B1%82%E6%9E%B6%E6%9E%84"><span class="nav-number">4.1.</span> <span class="nav-text">四层架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%84%E5%B1%82%E8%81%8C%E8%83%BD-2"><span class="nav-number">4.1.1.</span> <span class="nav-text">各层职能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E5%B1%82%E6%9E%B6%E6%9E%84%E4%B8%8E%E5%9B%9B%E5%B1%82%E6%9E%B6%E6%9E%84%E5%AF%B9%E5%BA%94"><span class="nav-number">4.1.2.</span> <span class="nav-text">三层架构与四层架构对应</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E5%B1%82%E6%9E%B6%E6%9E%84"><span class="nav-number">4.2.</span> <span class="nav-text">五层架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DCI"><span class="nav-number">4.2.1.</span> <span class="nav-text">DCI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%84%E5%B1%82%E8%81%8C%E8%83%BD-3"><span class="nav-number">4.2.2.</span> <span class="nav-text">各层职能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E5%B1%82%E6%9E%B6%E6%9E%84"><span class="nav-number">4.3.</span> <span class="nav-text">六层架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%84%E5%B1%82%E8%81%8C%E8%83%BD-4"><span class="nav-number">4.3.1.</span> <span class="nav-text">各层职能</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E7%A7%8D%E6%9E%B6%E6%9E%84%E5%AF%B9%E6%AF%94%E5%88%86%E6%9E%90"><span class="nav-number">5.</span> <span class="nav-text">三种架构对比分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DDD%E5%88%86%E5%B1%82%E6%9E%B6%E6%9E%84%E4%BB%A3%E7%A0%81%E7%BB%93%E6%9E%84"><span class="nav-number">6.</span> <span class="nav-text">DDD分层架构代码结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DDD%E5%88%86%E5%B1%82%E6%9E%B6%E6%9E%84%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83"><span class="nav-number">7.</span> <span class="nav-text">DDD分层架构命名规范</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">8.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-image"></div>
+      <div class="footer-inner">
+        <p>博客已萌萌哒运行<span id="since"></span><span class="my-face">(●'◡'●)ﾉ♥</span></p>
+<p>custom text</p>
+
+<p>© <span itemprop="copyrightYear">2023</span> Tianwj's blog.
+    由 <a href="https://hexo.io/" target="_blank" class="external" rel="nofollow">Hexo</a> 强力驱动.
+    Theme By <a href="https://github.com/DIYgod/hexo-theme-sagiri" target="_blank" class="external" rel="nofollow">Sagiri</a> v0.0.4.
+    <a href="/sitemap.xml" target="_blank">站点地图</a>.
+    冀ICP备17030424号.
+</p>
+<p>Made with <i class="fa fa-heart throb" style="color: #d43f57;"></i> by <span class="author" itemprop="copyrightHolder">tianwj</span>. </p>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    <canvas id="evanyou"></canvas>
+    
+
+    
+
+  </div>
+
+  <script type="text/javascript" src="/js/sagiri.min.js?v=0.0.4"></script>
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'manual') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
